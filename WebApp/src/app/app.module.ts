@@ -9,11 +9,13 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { LoginComponent } from './users/login/login.component';
 import {FormsModule} from '@angular/forms';
+import { CreateAccountComponent } from './users/create-account/create-account.component';
  
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    CreateAccountComponent
   ],
   imports: [
     BrowserModule,
