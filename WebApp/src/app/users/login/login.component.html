@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+<div class="container">
+  <br>
+    <input type='text' [(ngModel)]='username'/>
+    <br>
+    <br>
+    <input type='text' [(ngModel)]='password'/>
+  <br>
+  <br>
+  <button type="submit" (click)="onLogin()">Submit</button>
+  <br>
+  <h3 *ngIf="!success"> {{errorMessage}} </h3>
+  <hr>
+  <h2> {{username}} </h2>
+  <h2> {{password}} </h2>
+</div>
