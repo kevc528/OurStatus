@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
     //   res => (this.accounts = res)
     // );
     // this.accountService.updateAccount('kevinc528', { password: 'Password3!' });
+    // this.accountService.deleteAccount('test');
   }
 
   clearFields(): void {

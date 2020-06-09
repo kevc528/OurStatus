@@ -21,12 +21,12 @@ export class CreateAccountComponent implements OnInit {
 
   onCreateAccount(): void {
     let account = {
-      username: "jqaz123",
+      username: "test",
       task_ids: [],
       password: "Password1!",
-      firstName: "Jeffrey",
-      lastName: "Deng",
-      email: "jqaz123@gmail.com",
+      firstName: "TestFirst",
+      lastName: "TestLast",
+      email: "test@gmail.com",
     } as Account;
     this.accountService.createAccount(account);
   }

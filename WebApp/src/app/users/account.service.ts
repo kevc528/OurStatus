@@ -56,4 +56,33 @@ export class AccountService {
     return {'success': success, 'promise': promise};
   }
 
+  deleteAccount(username: string) {
+    var success: boolean;
+    var accountId: string;
+    var promise: Promise<void>;
+    let subscription = this.firestore.collection('users', ref => ref.where('username', '==', username))
+      .snapshotChanges()
+      .subscribe(
+        (res) => {
+          if (res.length >= 1) {
+            subscription.unsubscribe();
+            // accountId is the key for the key value in the db for a specific account
+            accountId = res[0].payload.doc.id;
+            success = true;
+            let accountDoc = this.firestore.collection('users').doc(accountId);
+            promise = accountDoc.delete();
+          } else {
+            subscription.unsubscribe();
+            success = false;
+          }
+          // return {'success': success, 'promise': promise};
+        }
+      );
+    // setTimeout(() => {
+    //   subscription.unsubscribe();
+    //   return {'success': success, 'promise': promise};
+    // }, 30000);
+    return {'success': success, 'promise': promise};
+  }
+
 }
