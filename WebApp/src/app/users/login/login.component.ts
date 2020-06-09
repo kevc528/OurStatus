@@ -24,6 +24,7 @@ export class LoginComponent implements OnInit {
     // this.accountService.getAllAccounts().subscribe(
     //   res => (this.accounts = res)
     // );
+    // this.accountService.updateAccount('kevinc528', { password: 'Password3!' });
   }
 
   clearFields(): void {
