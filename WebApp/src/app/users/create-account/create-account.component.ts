@@ -20,6 +20,7 @@ export class CreateAccountComponent implements OnInit {
   }
 
   onCreateAccount(): void {
+    // in the actual create account page, the account vars will be bound to angular form
     let account = {
       username: "test",
       task_ids: [],
@@ -27,8 +28,17 @@ export class CreateAccountComponent implements OnInit {
       firstName: "TestFirst",
       lastName: "TestLast",
       email: "test@gmail.com",
+      friends: [],
+      group_ids: []
     } as Account;
-    this.accountService.createAccount(account);
+    // promise, then return to log in again
+    this.accountService.createAccount(account)
+      .then(function() {
+        window.location.href = 'http://www.youtube.com/watch?v=dQw4w9WgXcQ';
+      }, function() {
+        this.success = false;
+        this.errorMessage = "Account couldn't be created";
+      });
   }
 
 }

@@ -6,4 +6,6 @@ export interface Account {
     firstName: string;
     lastName: string;
     email: string;
+    friends: string[];
+    group_ids: number[];
 }

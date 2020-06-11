@@ -20,12 +20,48 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // code to display all accounts
+    // CODE TO DISPLAY ALL ACCOUNTS
     // this.accountService.getAllAccounts().subscribe(
     //   res => (this.accounts = res)
     // );
-    // this.accountService.updateAccount('kevinc528', { password: 'Password3!' });
-    // this.accountService.deleteAccount('test');
+
+    // CODE TO UPDATE ACCOUNT
+    // let subscription = this.accountService.findAccountKey('kevinc528').subscribe(
+    //   (res) => {
+    //     if (res.length >= 1) {
+    //       subscription.unsubscribe();
+    //       let accountKey = res[0].payload.doc.id;
+    //       this.accountService.updateAccount(accountKey, { password: 'Password1!' })
+    //         .then(function() {
+    //           console.log('SUCCESS');
+    //         }, function() {
+    //           console.log('ERROR');
+    //         })
+    //     } else {
+    //       subscription.unsubscribe();
+    //       console.log('NO ACCOUNT');
+    //     }
+    //   }
+    // )
+
+    //CODE TO DELETE ACCOUNT
+    // let subscription = this.accountService.findAccountKey('test').subscribe(
+    //   (res) => {
+    //     if (res.length >= 1) {
+    //       subscription.unsubscribe();
+    //       let accountKey = res[0].payload.doc.id;
+    //       this.accountService.deleteAccount(accountKey)
+    //         .then(function() {
+    //           console.log('SUCCESS');
+    //         }, function() {
+    //           console.log('ERROR');
+    //         })
+    //     } else {
+    //       subscription.unsubscribe();
+    //       console.log('NO ACCOUNT');
+    //     }
+    //   }
+    // )
   }
 
   clearFields(): void {
@@ -33,6 +69,7 @@ export class LoginComponent implements OnInit {
     this.password = '';
   }
 
+  // think about passing user keys through the url
   onLogin(): void {
     let subscription = this.accountService.getAccount(this.username).subscribe(
       (res) => {
