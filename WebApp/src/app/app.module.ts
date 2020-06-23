@@ -10,12 +10,16 @@ import { environment } from '../environments/environment';
 import { LoginComponent } from './users/login/login.component';
 import {FormsModule} from '@angular/forms';
 import { CreateAccountComponent } from './users/create-account/create-account.component';
+import { TaskListComponent } from './tasks/task-list/task-list.component';
+
+import { AccountService } from './users/account.service'; 
  
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    CreateAccountComponent
+    CreateAccountComponent,
+    TaskListComponent
   ],
   imports: [
     BrowserModule,

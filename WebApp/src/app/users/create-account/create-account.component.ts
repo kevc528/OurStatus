@@ -23,18 +23,20 @@ export class CreateAccountComponent implements OnInit {
     // in the actual create account page, the account vars will be bound to angular form
     let account = {
       username: "test",
-      task_ids: [],
+      taskIds: [],
       password: "Password1!",
       firstName: "TestFirst",
       lastName: "TestLast",
       email: "test@gmail.com",
       friends: [],
-      group_ids: []
+      groupIds: []
     } as Account;
     // promise, then return to log in again
     this.accountService.createAccount(account)
-      .then(function() {
-        window.location.href = 'http://www.youtube.com/watch?v=dQw4w9WgXcQ';
+      .then(function(ref) {
+        // this is the key for the document in the db
+        console.log(ref.id);
+        // window.location.href = 'http://www.youtube.com/watch?v=dQw4w9WgXcQ';
       }, function() {
         this.success = false;
         this.errorMessage = "Account couldn't be created";
