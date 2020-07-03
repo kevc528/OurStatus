@@ -23,7 +23,6 @@ export class CreateAccountComponent implements OnInit {
     // in the actual create account page, the account vars will be bound to angular form
     let account = {
       username: "test",
-      taskIds: [],
       password: "Password1!",
       firstName: "TestFirst",
       lastName: "TestLast",

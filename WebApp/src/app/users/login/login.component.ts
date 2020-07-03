@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccountService } from '../account.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { NgForm, NgModel } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-login',
@@ -10,16 +12,18 @@ import { Observable } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
 
-  // accounts: any[];
   username: string = '';
   password: string = '';
-  success: boolean = true;
-  errorMessage: string;
+  loginError: boolean = false;
+  errorMessage: string = '';
+  submitUsernameError: boolean = false;
+  submitPasswordError: boolean = false;
 
-  constructor(private accountService: AccountService) { 
+  constructor(private accountService: AccountService, private titleService: Title) { 
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Login');
     // CODE TO DISPLAY ALL ACCOUNTS
     // this.accountService.getAllAccounts().subscribe(
     //   res => (this.accounts = res)
@@ -70,8 +74,33 @@ export class LoginComponent implements OnInit {
   }
 
   // think about passing user keys through the url
-  onLogin(): void {
-    let subscription = this.accountService.getAccount(this.username).subscribe(
+  // onLogin(): void {
+  //   let subscription = this.accountService.getAccount(this.username).subscribe(
+  //     (res) => {
+  //       if (res.length >= 1) {
+  //         let account = res[0];
+  //         if (account.password == this.password) {
+  //           subscription.unsubscribe();
+  //           window.location.href = 'http://www.youtube.com/watch?v=dQw4w9WgXcQ';
+  //         } else {
+  //           this.success = false;
+  //           this.errorMessage = "Password doesn't match username";
+  //           this.clearFields();
+  //           subscription.unsubscribe();
+  //         }
+  //       } else {
+  //         this.success = false;
+  //         this.errorMessage = 'No username found!';
+  //         this.clearFields();
+  //         subscription.unsubscribe();
+  //       }
+  //     }
+  //   );
+  // }
+
+  onSubmit(form: NgForm): void {
+    if (form.valid) {
+      let subscription = this.accountService.getAccount(this.username).subscribe(
       (res) => {
         if (res.length >= 1) {
           let account = res[0];
@@ -79,18 +108,30 @@ export class LoginComponent implements OnInit {
             subscription.unsubscribe();
             window.location.href = 'http://www.youtube.com/watch?v=dQw4w9WgXcQ';
           } else {
-            this.success = false;
+            this.loginError = true;
             this.errorMessage = "Password doesn't match username";
             this.clearFields();
             subscription.unsubscribe();
-          }
+            }
         } else {
-          this.success = false;
+          this.loginError = true;
           this.errorMessage = 'No username found!';
           this.clearFields();
           subscription.unsubscribe();
         }
+        this.submitUsernameError = false;
+        this.submitPasswordError = false;
       }
     );
+    } else {
+      this.loginError = true;
+      if (this.username === '') {
+        this.submitUsernameError = true;
+      }
+      if (this.password === '') {
+        this.submitPasswordError = true;
+      }
+      this.errorMessage = "Please fix the above errors";
+    }
   }
 }

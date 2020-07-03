@@ -56,7 +56,7 @@ export class AccountService {
 
   updateAccount(accountKey: string, newData): Promise<void> {
     let accountDoc = this.firestore.collection('users').doc(accountKey);
-    return accountDoc.update(newData)
+    return accountDoc.update(newData);
   }
 
   // deleteAccount(username: string) {

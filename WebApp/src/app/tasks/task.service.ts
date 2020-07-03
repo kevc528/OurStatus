@@ -11,43 +11,33 @@ export class TaskService {
 
   constructor(private firestore: AngularFirestore, private accountService: AccountService) {}
 
-  getTasksForUser(username: string): Observable<any[]> {
-    return this.firestore.collection('tasks', ref => ref.where('creatorUsername', '==', username)).valueChanges();
+  getTasksForUser(username: string, level: number): Observable<any[]> {
+    return this.firestore.collection('tasks', ref => ref.where('creatorUsername', '==', username)
+      .where('level', '==', level)).valueChanges();
   }
 
   // likely need the account service to get the account for the user and then add the id to the list
   // tasks need to store their id so we can distinguish between them
-  addTask(username: string, task: Task): Promise<void> {
-    var service = this.accountService;
+  addTask(task): Promise<void> {
+    var firestore = this.firestore;
     return this.firestore.collection('tasks').add(task)
       .then(function(doc) {
-        let subscription = service.findAccountKey(username).subscribe(
-        (res) => {
-          if (res.length >= 1) {
-            subscription.unsubscribe();
-            let accountKey = res[0].payload.doc.id;
-            let taskMapList = res[0].payload.doc.EE.kt.proto.mapValue.fields.taskIds.arrayValue.values;
-            let taskList = taskMapList.map((val) => {
-              return val.stringValue;
-            })
-            taskList.push(doc.id);
-            service.updateAccount(accountKey, { taskIds: taskList })
-              .then(function() {
-                console.log('SUCCESS');
-              }, function() {
-                console.log('ERROR');
-              })
-          } else {
-            subscription.unsubscribe();
-            console.log('NO ACCOUNT');
-          }
-        })
-      })
+        firestore.collection('tasks').doc(doc.id).update({'id': doc.id});
+      });
   }
 
-  deleteTask(task_id: string) {}
+  deleteTask(taskId: string): Promise<void> {
+    let taskDoc = this.firestore.collection('tasks').doc(taskId);
+    return taskDoc.delete();
+  }
 
-  resolveTask(task_id: string) {}
+  editTask(taskId: string, newData): Promise<void> {
+    let taskDoc = this.firestore.collection('tasks').doc(taskId);
+    return taskDoc.update(newData);
+  }
 
+  resolveTask(taskId: string) {
+    this.editTask(taskId, {'dateCompleted': new Date()})
+  }
 
 }

@@ -16,21 +16,31 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = 'unfl3xible'; 
-    this.taskService.getTasksForUser(this.username).subscribe(
+    this.taskService.getTasksForUser(this.username, 0).subscribe(
       (res: Task[]) => {
         this.taskList = res;
       }
     )
+
+    // CODE TO ADD A NEW TASK
     // var newTask = {
-    //   creatorUsername: 'unfl3xible',
+    //   creatorUsername: 'jqaz123',
     //   assignees: [],
-    //   title: 'Drink milk',
+    //   title: 'Wash the dishes',
     //   dateCreated: new Date(),
     //   dateCompleted: null,
     //   targetDate: new Date(2020, 7, 30),
-    //   remind: true
-    // } as Task;
-    // this.taskService.addTask('unfl3xible', newTask);
+    //   remind: true,
+    //   level: 0
+    // };
+    // this.taskService.addTask(newTask);
+
+
+    // CODE TO DELETE A TASK
+    // this.taskService.deleteTask("v97fh6ITBdx0ezM8aXTk");
+
+    // CODE TO RESOLVE A TASK
+    // this.taskService.resolveTask("Rx9MHagavTC1dhQ58lcG");
   }
 
 }
