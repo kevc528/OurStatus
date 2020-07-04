@@ -1,0 +1,35 @@
+.card-title {
+    color: #5E64A0;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+  }
+  
+  .card {
+    margin-top: 3rem;
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+  }
+  
+  .error {
+    color: #FF0000;
+  }
+  
+  .btn-primary {
+    background-color: #616CCB;
+    border: none;
+  }
+  
+  .error {
+    border:1px solid red;
+  }
+
+  .col-left {
+    width: 45%;
+    float: left;
+  }
+
+  .col-right {
+    width: 45%;
+    float: right;
+  }
