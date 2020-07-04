@@ -1,5 +1,13 @@
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-<div class="container">
-  <li *ngFor="let task of taskList">{{ task.title }}</li>
-</div>
+<!DOCTYPE html>
+<body>
+  <div class="container">
+    <br>
+    <br>
+    <hr>
+    <div class="card">
+      <div class="card-body">
+        <app-task *ngFor="let task of taskList" [task]='task'></app-task>
+      </div>
+    </div>
+  </div>
+</body>

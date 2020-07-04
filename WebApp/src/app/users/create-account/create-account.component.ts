@@ -3,6 +3,7 @@ import { Account } from '../../shared/model/account';
 import { AccountService } from '../account.service';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-create-account',
@@ -26,10 +27,10 @@ export class CreateAccountComponent implements OnInit {
   error: boolean = false;
   errorMessage: string;
 
-  constructor(private accountService: AccountService, private router: Router) { }
+  constructor(private accountService: AccountService, private router: Router, private titleService: Title) { }
 
   ngOnInit(): void {
-    
+    this.titleService.setTitle('Create account');
   }
 
   onSubmit(form: NgForm): void {
