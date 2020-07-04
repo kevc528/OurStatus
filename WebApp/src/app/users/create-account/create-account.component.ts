@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Account } from '../../shared/model/account';
 import { AccountService } from '../account.service';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-account',
@@ -25,13 +26,14 @@ export class CreateAccountComponent implements OnInit {
   error: boolean = false;
   errorMessage: string;
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService, private router: Router) { }
 
   ngOnInit(): void {
     
   }
 
   onSubmit(form: NgForm): void {
+    var router = this.router;
     if (form.valid) {
       if (this.newAccount.password == this.confirmPassword) {
         let subscription = this.accountService.getAccount(this.newAccount.username).subscribe(
@@ -40,7 +42,7 @@ export class CreateAccountComponent implements OnInit {
               subscription.unsubscribe();
               this.accountService.createAccount(this.newAccount)
                 .then(function(ref) {
-                  window.location.href = 'login';
+                  router.navigate(['/login']);
                 }, function() {
                   this.error = true;
                   this.errorMessage = "Account couldn't be created, try again later";

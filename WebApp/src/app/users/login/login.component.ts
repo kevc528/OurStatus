@@ -4,6 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { NgForm, NgModel } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
   submitUsernameError: boolean = false;
   submitPasswordError: boolean = false;
 
-  constructor(private accountService: AccountService, private titleService: Title) { 
+  constructor(private accountService: AccountService, private titleService: Title, private router: Router) { 
   }
 
   ngOnInit(): void {
@@ -99,6 +100,7 @@ export class LoginComponent implements OnInit {
   // }
 
   onSubmit(form: NgForm): void {
+    var router = this.router;
     if (form.valid) {
       let subscription = this.accountService.getAccount(this.username).subscribe(
       (res) => {
@@ -106,7 +108,7 @@ export class LoginComponent implements OnInit {
           let account = res[0];
           if (account.password == this.password) {
             subscription.unsubscribe();
-            window.location.href = 'http://www.youtube.com/watch?v=dQw4w9WgXcQ';
+            router.navigate(['/app', this.username]);
           } else {
             this.loginError = true;
             this.errorMessage = "Password doesn't match username";

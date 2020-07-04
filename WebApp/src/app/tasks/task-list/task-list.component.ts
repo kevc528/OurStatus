@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { TaskService } from '../task.service';
 import { Task } from '../../shared/model/task';
 
@@ -10,12 +10,11 @@ import { Task } from '../../shared/model/task';
 export class TaskListComponent implements OnInit {
 
   taskList: Task[] = [];
-  username: string;
+  @Input() username = '';
 
   constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {
-    this.username = 'unfl3xible'; 
     this.taskService.getTasksForUser(this.username, 0).subscribe(
       (res: Task[]) => {
         this.taskList = res;

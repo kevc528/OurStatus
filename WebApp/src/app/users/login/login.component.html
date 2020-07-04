@@ -9,7 +9,7 @@
             <form #form="ngForm" (ngSubmit)="onSubmit(form)">
               <div class="form-group">
                 <label for="username">Username</label>
-                <input id="username" name="username" class="form-control" placeholder="username" 
+                <input id="username" name="username" class="form-control" placeholder="Username" 
                         [(ngModel)]="username" required #usernameField="ngModel"
                         [ngClass]="{'error': form.submitted && !usernameField.valid && submitUsernameError}"
                         [class.field_error]="form.submitted && usernameField.invalid"/>
@@ -18,13 +18,13 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" class="form-control" 
                         [ngClass]="{'error': form.submitted && !passwordField.valid && submitPasswordError}"
-                        placeholder="password" [(ngModel)]="password" required #passwordField="ngModel"
+                        placeholder="Password" [(ngModel)]="password" required #passwordField="ngModel"
                         [class.field_error]="form.submitted && passwordField.invalid"/>
               </div>
               <button class="btn-lg btn-primary btn-block">Sign in</button>
               <br>
               <div [hidden]="!loginError" class="alert alert-danger">{{ errorMessage }}</div>
-              <a href="create-account">Create Account</a>
+              <a [routerLink]="['/create-account']">Create Account</a>
             </form>
           </div>
         </div>

@@ -12,14 +12,16 @@ import {FormsModule} from '@angular/forms';
 import { CreateAccountComponent } from './users/create-account/create-account.component';
 import { TaskListComponent } from './tasks/task-list/task-list.component';
 
-import { AccountService } from './users/account.service'; 
+import { AccountService } from './users/account.service';
+import { MainComponent } from './homepage/main/main.component'; 
  
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     CreateAccountComponent,
-    TaskListComponent
+    TaskListComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
