@@ -6,7 +6,7 @@
     <hr>
     <div class="card">
       <div class="card-body">
-        <app-task *ngFor="let task of taskList" [task]='task'></app-task>
+        <app-task *ngFor="let task of taskList | async" [task]='task'></app-task>
       </div>
     </div>
   </div>

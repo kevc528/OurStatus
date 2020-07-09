@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { TaskService } from '../task.service';
 import { Task } from '../../shared/model/task';
+import { Observable } from 'rxjs'; 
 
 @Component({
   selector: 'app-task-list',
@@ -9,17 +10,13 @@ import { Task } from '../../shared/model/task';
 })
 export class TaskListComponent implements OnInit {
 
-  taskList: Task[] = [];
+  taskList: Observable<any[]>;
   @Input() username = '';
 
   constructor(private taskService: TaskService) { }
 
   ngOnInit(): void {
-    this.taskService.getTasksForUser(this.username, 0).subscribe(
-      (res: Task[]) => {
-        this.taskList = res;
-      }
-    )
+    this.taskList = this.taskService.getTasksForUser(this.username, 0);
 
     // CODE TO ADD A NEW TASK
     // var newTask = {

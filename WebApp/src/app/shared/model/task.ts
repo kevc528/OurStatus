@@ -10,5 +10,6 @@ export interface Task {
     dateCompleted: Date;
     targetDate: Date;
     remind: boolean;
+    // 0 for personal, 1 for group
     level: number;
 }

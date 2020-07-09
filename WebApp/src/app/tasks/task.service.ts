@@ -16,6 +16,10 @@ export class TaskService {
       .where('level', '==', level)).valueChanges();
   }
 
+  getAssignedTasksForUser(username: string): Observable<any[]> {
+    return this.firestore.collection('tasks', ref => ref.where('assignees', "array-contains", username)).valueChanges();
+  }
+
   // likely need the account service to get the account for the user and then add the id to the list
   // tasks need to store their id so we can distinguish between them
   addTask(task): Promise<void> {
@@ -38,6 +42,10 @@ export class TaskService {
 
   resolveTask(taskId: string) {
     this.editTask(taskId, {'dateCompleted': new Date()})
+  }
+
+  unresolveTask(taskId: string) {
+    this.editTask(taskId, {'dateCompleted': null})
   }
 
 }

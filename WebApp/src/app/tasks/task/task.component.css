@@ -1,7 +1,25 @@
 .card {
-    margin-top: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     column-count: 2;
     border: 0;
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.task {
+    cursor: pointer;
+}
+
+.task:hover {
+    -webkit-filter: brightness(80%);
+}
+
+.task-resolved {
+    text-decoration: line-through;
+    color: #589E9B;
+}
+
+.task-title {
+    margin-left: 3rem;
 }
