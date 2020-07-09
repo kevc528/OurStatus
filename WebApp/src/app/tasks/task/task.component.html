@@ -1,8 +1,18 @@
-<div class="container">
-  <div class="card task" (click)="onClick()" [class.task-resolved]="task.dateCompleted">
-      <div class="card-body">
-        <div style="float: left;"><img [src]="path"></div>
-        <div class="task-title">{{ task.title }}</div>
+<div class="card task" [class.task-resolved]="task.dateCompleted">
+    <div class="card-body">
+      <div style="float: right; opacity: 0.5;" (click)="onInfoClick()"><img src="assets/images/info-24px.svg"></div>
+      <div style="float: left;" (click)="onTaskClick()" ><img [src]="path"></div>
+      <div class="task-title" (click)="onTaskClick()" >{{ task.title }}</div>
+      <div class="task-details" [hidden]="hideDetail">
+        <hr>
+        <p>Title: <input [(ngModel)]="editForm.title"></p>
+        <p>Target Date: <input type="date" [(ngModel)]="editForm.targetDate"></p>
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="customSwitch1" [(ngModel)]="editForm.remind">
+          <label class="custom-control-label" for="customSwitch1">Remind me</label>
+        </div>
+        <br>
+        <button class="btn btn-primary" type="submit" (click)="onSubmitEdits()">Submit changes</button>
       </div>
-  </div>
+    </div>
 </div>

@@ -6,9 +6,9 @@ export interface Task {
     creatorUsername: string;
     assignees: string[];
     title: string;
-    dateCreated: Date;
-    dateCompleted: Date;
-    targetDate: Date;
+    dateCreated: any;
+    dateCompleted: any;
+    targetDate: any;
     remind: boolean;
     // 0 for personal, 1 for group
     level: number;
