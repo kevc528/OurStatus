@@ -1,5 +1,5 @@
 package com.example.ourstatus;
-
+//Home Page
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
