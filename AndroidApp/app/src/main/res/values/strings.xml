@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">OurStatus</string>
+    <string name="create_new_"> What do you want to accomplish?</string>
+    <string name="what_do_you_want_to_accomplish">What do you want to accomplish?</string>
+    <string name="task_name">Task Name</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="account_login">Account login</string>
+    <string name="ourstatus">OurStatus</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="create_account">Create Account</string>
+    <string name="last_name">Last Name</string>
+    <string name="e_mail">E-Mail</string>
+    <string name="retype_password">Retype Password</string>
+</resources>

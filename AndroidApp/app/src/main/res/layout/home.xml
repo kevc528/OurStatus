@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F7FB">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/what_do_you_want_to_accomplish"
+        android:textAppearance="@style/greeting"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/task_creator"
+        app:layout_constraintEnd_toStartOf="@+id/text_v2"
+        app:layout_constraintStart_toStartOf="@+id/text_v1"
+        app:layout_constraintTop_toTopOf="@+id/text_h"
+        app:layout_constraintVertical_bias="0.11" />
+
+    <LinearLayout
+        android:id="@+id/task_creator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/task_creator"
+        android:orientation="horizontal"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_creator_b"
+        app:layout_constraintVertical_bias="0.48000002" />
+
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/task_name"
+        android:fontFamily="@font/roboto"
+        android:textColor="#A9BBC9"
+        android:autofillHints="True"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/task_creator_large_v"
+        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintStart_toStartOf="@id/task_creator_info_v1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.31" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="Personal"
+        android:textAppearance="@style/edit_text"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creator"
+        app:layout_constraintStart_toStartOf="@id/task_creator_text_v"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias="0.22" />
+
+    <View
+        android:id="@+id/personalIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/personal_icon"
+        android:onClick="onClick"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creator"
+        app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
+        app:layout_constraintStart_toStartOf="@id/task_creator_circle_v1"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias=".22" />
+
+    <Button
+        android:id="@+id/dateButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/date_button"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creator"
+        app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
+        app:layout_constraintStart_toStartOf="@id/task_creator_circle_v1"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias=".37" />
+
+    <View
+        android:id="@+id/remindIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/remind_icon"
+        android:onClick="onClick"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creator"
+        app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
+        app:layout_constraintStart_toStartOf="@id/task_creator_circle_v1"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias=".54" />
+
+    <Button
+        android:id="@+id/timeButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/time_button"
+        android:onClick="onClick"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creator"
+        app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
+        app:layout_constraintStart_toStartOf="@id/task_creator_circle_v1"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias=".71" />
+
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="@string/date"
+        android:textAppearance="@style/edit_text"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creator"
+        app:layout_constraintStart_toStartOf="@id/task_creator_text_v"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias="0.38" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="Remind me"
+        android:textAppearance="@style/edit_text"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creator"
+        app:layout_constraintStart_toStartOf="@id/task_creator_text_v"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias="0.54" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:text="@string/time"
+        android:textAppearance="@style/edit_text"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creator"
+        app:layout_constraintStart_toStartOf="@id/task_creator_text_v"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias="0.70" />
+
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/text_v1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/text_v2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/text_h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.065" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.28" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_info_v1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_info_v2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.64" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_circle_v1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.056" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_circle_v2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.216" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_circle_h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.47" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_circle_h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.63" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_text_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.270073" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_large_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/task_creator_switch_h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.66" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/task_creator_large_v"
+        app:layout_constraintTop_toTopOf="@+id/task_creator"
+        app:layout_constraintVertical_bias="0.54" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
