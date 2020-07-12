@@ -48,6 +48,10 @@ export class AccountService {
     return this.firestore.collection('users', ref => ref.where('username', '==', username)).valueChanges();
   }
 
+  getAccountByEmail(email: string) : Observable<any[]> {
+    return this.firestore.collection('users', ref => ref.where('email', '==', email)).valueChanges();
+  }
+
   findAccountKey(username: string) : Observable<any[]> {
     return this.firestore.collection('users', ref => ref.where('username', '==', username)).snapshotChanges()
   }

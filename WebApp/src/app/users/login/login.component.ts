@@ -7,6 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import { session } from '../../session';
 
 @Component({
   selector: 'app-login',
@@ -112,6 +113,7 @@ export class LoginComponent implements OnInit {
           firebase.auth().signInWithEmailAndPassword(account.email, this.password)
             .then((val) => {
               subscription.unsubscribe();
+              session.user = account.username;
               router.navigate(['/app', this.username]);
             })
             .catch(function(error) {

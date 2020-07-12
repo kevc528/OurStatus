@@ -15,7 +15,8 @@ import { TaskListComponent } from './tasks/task-list/task-list.component';
 import { AccountService } from './users/account.service';
 import { MainComponent } from './homepage/main/main.component';
 import { TaskComponent } from './tasks/task/task.component';
-import { StartComponent } from './homepage/start/start.component'; 
+import { StartComponent } from './homepage/start/start.component';
+import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component'; 
  
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { StartComponent } from './homepage/start/start.component';
     TaskListComponent,
     MainComponent,
     TaskComponent,
-    StartComponent
+    StartComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     BrowserModule,
