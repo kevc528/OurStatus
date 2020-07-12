@@ -1,7 +1,7 @@
 let session = {
     user: null,
-    url: 'localhost:42000',
-    emailService: 'localhost:3000'
+    url: 'localhost:4200',
+    emailService: 'http://localhost:3000'
 };
 
 export { session };

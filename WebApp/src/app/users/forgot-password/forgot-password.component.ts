@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import * as nodemailer from 'nodemailer';
 import { AccountService } from '../account.service';
 import { Title } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
+import { session } from '../../session';
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,7 +20,8 @@ export class ForgotPasswordComponent implements OnInit {
   submitUsernameError: boolean = false;
   submitEmailError: boolean = false;
 
-  constructor(private router: Router, private accountService: AccountService, private titleService: Title) { }
+  constructor(private router: Router, private accountService: AccountService, private titleService: Title
+    , private http: HttpClient ) { }
 
   ngOnInit(): void {
     this.titleService.setTitle('Forgot your Password');
@@ -30,28 +33,23 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   sendEmail(): void {
-    // let transporter = nodemailer.createTransport({
-    //   service: 'gmail',
-    //   auth: {
-    //     user: 'OurStatusApp@gmail.com',
-    //     pass: 'gimmethemtoez'
-    //   }
-    // });
-    
-    // let mailOptions = {
-    //   from: 'OurStatusApp@gmail.com',
-    //   to: this.email,
-    //   subject: 'Reset your OurStatus Password',
-    //   text: 'Ooga booga booga'
-    // };
-    
-    // transporter.sendMail(mailOptions, function(error, info){
-    //   if (error) {
-    //     alert(error);
-    //   } else {
-    //     // 
-    //   }
-    // });
+    let sendRoute = session.emailService + '/send-email';
+    let body = {
+      "recipient": this.email,
+      "subject": "Resetting your OurStatus Password",
+      "Text": "Ooga booga"
+    }
+    let subscription = this.http.post(sendRoute, body, {responseType: 'text'}).subscribe(
+      (res) => {
+        if (res == 'success') {
+          subscription.unsubscribe();
+          this.router.navigate(['/login']);
+        } else {
+          subscription.unsubscribe();
+          alert('Error occured, please try again later');
+        }
+      }
+    );
   }
 
   onSubmit(form): void {
@@ -77,10 +75,15 @@ export class ForgotPasswordComponent implements OnInit {
               )
             } else {
               this.submitError = true;
-              this.errorMessage = "Username doesn't exist";
+              this.errorMessage = "Email isn't linked with an account";
               this.clearFields()
               subscription.unsubscribe();            
             }
+          } else {
+            this.submitError = true;
+            this.errorMessage = "Username doesn't exist";
+            this.clearFields()
+            subscription.unsubscribe();  
           }
         }
       )

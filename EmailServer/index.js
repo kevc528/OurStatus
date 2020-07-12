@@ -1,16 +1,19 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.listen(3000, () => {
-  console.log('Listening on port 3000');
+  console.log('Email server listening on port 3000');
 })
 
 app.post('/send-email', (req, res) => {
+  console.log('send email request');
   let recipient = req.body.recipient;
   let subject = req.body.subject;
   let text = req.body.text;
@@ -32,9 +35,11 @@ app.post('/send-email', (req, res) => {
   
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
-      res.send('success');
-    } else {
+      console.log(error);
       res.send('failure');
+    } else {
+      console.log("Email has been sent");
+      res.send('success');    
     }
   });
 });

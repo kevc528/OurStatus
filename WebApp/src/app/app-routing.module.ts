@@ -4,6 +4,7 @@ import { LoginComponent } from './users/login/login.component';
 import { CreateAccountComponent } from './users/create-account/create-account.component';
 import { MainComponent } from './homepage/main/main.component';
 import { StartComponent } from './homepage/start/start.component';
+import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'app', pathMatch: 'prefix', children: [
     { path:'**', component: MainComponent }
   ]},
+  { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: '', component: StartComponent }
 ];
 
