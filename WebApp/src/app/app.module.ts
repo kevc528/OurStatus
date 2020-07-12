@@ -14,7 +14,8 @@ import { TaskListComponent } from './tasks/task-list/task-list.component';
 
 import { AccountService } from './users/account.service';
 import { MainComponent } from './homepage/main/main.component';
-import { TaskComponent } from './tasks/task/task.component'; 
+import { TaskComponent } from './tasks/task/task.component';
+import { StartComponent } from './homepage/start/start.component'; 
  
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { TaskComponent } from './tasks/task/task.component';
     CreateAccountComponent,
     TaskListComponent,
     MainComponent,
-    TaskComponent
+    TaskComponent,
+    StartComponent
   ],
   imports: [
     BrowserModule,
