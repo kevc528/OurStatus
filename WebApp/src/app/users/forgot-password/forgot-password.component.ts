@@ -37,7 +37,7 @@ export class ForgotPasswordComponent implements OnInit {
     let body = {
       "recipient": this.email,
       "subject": "Resetting your OurStatus Password",
-      "Text": "Ooga booga"
+      "text": "Ooga booga"
     }
     let subscription = this.http.post(sendRoute, body, {responseType: 'text'}).subscribe(
       (res) => {
