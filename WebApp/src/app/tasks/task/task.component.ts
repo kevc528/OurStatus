@@ -25,6 +25,7 @@ export class TaskComponent implements OnInit {
         day = '' + d.getDate(),
         year = d.getFullYear();
 
+    
     if (month.length < 2) 
         month = '0' + month;
     if (day.length < 2) 
@@ -54,14 +55,22 @@ export class TaskComponent implements OnInit {
   
   onInfoClick(): void {
     this.hideDetail = !this.hideDetail;
+    if (this.hideDetail) {
+      this.editForm = {
+        title: this.task.title,
+        targetDate: this.formatDate(new Date(this.task.targetDate.seconds * 1000)),
+        remind: this.task.remind
+      };
+    }
   }
 
   onSubmitEdits(): void {
     let temp = this.editForm.targetDate;
-    console.log(temp);
-    this.editForm.targetDate = new Date(this.editForm.targetDate);
+    var currTime = new Date(this.editForm.targetDate);
+    this.editForm.targetDate = new Date(currTime.getTime() + currTime.getTimezoneOffset() * 60000);
     this.taskService.editTask(this.task.id, this.editForm);
     this.editForm.targetDate = temp;
+    this.hideDetail = true;
   }
 
 }

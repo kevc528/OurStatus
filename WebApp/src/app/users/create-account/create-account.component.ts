@@ -34,6 +34,7 @@ export class CreateAccountComponent implements OnInit {
   }
 
   onSubmit(form: NgForm): void {
+    let error = this.error;
     var router = this.router;
     if (form.valid) {
       if (this.newAccount.password == this.confirmPassword) {
@@ -43,6 +44,7 @@ export class CreateAccountComponent implements OnInit {
               subscription.unsubscribe();
               this.accountService.createAccount(this.newAccount)
                 .then(function(ref) {
+                  error = false;
                   router.navigate(['/login']);
                 }, function() {
                   this.error = true;

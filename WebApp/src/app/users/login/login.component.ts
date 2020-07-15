@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 import { NgForm, NgModel } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import { session } from '../../session';
 
 @Component({
   selector: 'app-login',
@@ -101,20 +104,30 @@ export class LoginComponent implements OnInit {
 
   onSubmit(form: NgForm): void {
     var router = this.router;
+    let obj = this;
     if (form.valid) {
       let subscription = this.accountService.getAccount(this.username).subscribe(
       (res) => {
         if (res.length >= 1) {
           let account = res[0];
-          if (account.password == this.password) {
-            subscription.unsubscribe();
-            router.navigate(['/app', this.username]);
-          } else {
-            this.loginError = true;
-            this.errorMessage = "Password doesn't match username";
-            this.clearFields();
-            subscription.unsubscribe();
-            }
+          firebase.auth().signInWithEmailAndPassword(account.email, this.password)
+            .then((val) => {
+              subscription.unsubscribe();
+              session.user = account.username;
+              router.navigate(['/app', this.username]);
+            })
+            .catch(function(error) {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              if (errorCode === 'auth/wrong-password') {
+                obj.loginError = true;
+                obj.errorMessage = "Password doesn't match username";
+                obj.clearFields();
+                subscription.unsubscribe();
+              } else {
+                alert(errorMessage);
+              }
+            });
         } else {
           this.loginError = true;
           this.errorMessage = 'No username found!';
