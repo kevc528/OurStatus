@@ -1,15 +1,18 @@
 package com.example.ourstatus;
 
 public class User {
-    private String firstName, lastName, eMail, username, password;
+    private String firstName, lastName, eMail, username;
+    private String[] friends, groupIds;
 
-    User(String firstName, String lastName, String eMail, String username, String password) {
+    public User(String firstName, String lastName, String eMail, String username, String[] friends, String[] groupIds) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.eMail = eMail;
         this.username = username;
-        this.password = password;
+        this.friends = friends;
+        this.groupIds = groupIds;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -43,11 +46,19 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String[] getFriends() {
+        return friends;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setFriends(String[] friends) {
+        this.friends = friends;
+    }
+
+    public String[] getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(String[] groupIds) {
+        this.groupIds = groupIds;
     }
 }

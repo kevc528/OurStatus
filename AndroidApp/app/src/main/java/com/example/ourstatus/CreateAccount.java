@@ -52,7 +52,7 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        //addAccount(new User(firstName, lastName, email, username, password));
+        addAccount(new User(firstName, lastName, email, username, new String[]{}, new String[]{}));
 
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
