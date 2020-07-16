@@ -8,20 +8,20 @@
 
     <TextView
         android:id="@+id/ourstatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/roboto_bold"
-        android:gravity="top"
+        android:textAlignment="center"
         android:lineSpacingExtra="0sp"
         android:text="@string/ourstatus"
         android:textAppearance="@style/ourstatus"
-        app:layout_constraintBottom_toTopOf="@+id/username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/screen_title_h2"
+        app:layout_constraintEnd_toEndOf="@id/screen_title_v2"
+        app:layout_constraintStart_toStartOf="@id/screen_title_v1"
+        app:layout_constraintTop_toTopOf="@id/screen_title_h1" />
 
     <TextView
         android:id="@+id/login_title"
@@ -32,13 +32,12 @@
         android:layout_alignParentRight="true"
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/poppins_bold"
-        android:lineSpacingExtra="0sp"
         android:text="@string/account_login"
         android:textAppearance="@style/title"
         app:layout_constraintBottom_toBottomOf="@id/new_account_title_h2"
-        app:layout_constraintStart_toStartOf="@+id/login_title_v1"
+        app:layout_constraintStart_toStartOf="@+id/create_title_v1"
         app:layout_constraintTop_toTopOf="@id/new_account_title_h1"
-        app:layout_constraintEnd_toEndOf="@id/login_title_v2"
+        app:layout_constraintEnd_toEndOf="@id/create_title_v2"
         app:layout_constraintVertical_bias=".36" />
 
     <EditText
@@ -52,8 +51,7 @@
         app:layout_constraintBottom_toBottomOf="@id/user_h2"
         app:layout_constraintEnd_toEndOf="@id/input_v2"
         app:layout_constraintStart_toStartOf="@id/input_v1"
-        app:layout_constraintTop_toTopOf="@id/user_h1"
-        app:layout_constraintVertical_bias="0.40" />
+        app:layout_constraintTop_toTopOf="@id/user_h1" />
 
     <EditText
         android:id="@+id/password"
@@ -67,32 +65,57 @@
         app:layout_constraintBottom_toBottomOf="@id/password_h2"
         app:layout_constraintEnd_toEndOf="@id/input_v2"
         app:layout_constraintStart_toStartOf="@id/input_v1"
-        app:layout_constraintTop_toTopOf="@id/password_h1"
-        app:layout_constraintVertical_bias="0.49" />
+        app:layout_constraintTop_toTopOf="@id/password_h1"/>
 
     <Button
         android:id="@+id/signInButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_in"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/sign_in_button"
         android:onClick="onClick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.76"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7" />
-
+        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintBottom_toBottomOf="@id/login_button_h2"
+        app:layout_constraintEnd_toEndOf="@id/login_button_v2"
+        app:layout_constraintStart_toStartOf="@id/login_button_v1"
+        app:layout_constraintTop_toBottomOf="@+id/login_button_h1" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/login_title_v1"
+        android:id="@+id/screen_title_v1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/screen_title_v2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/screen_title_h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/screen_title_h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/create_title_v1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.096" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/login_title_v2"
+        android:id="@+id/create_title_v2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -153,6 +176,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.63" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/login_button_v1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.09" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/login_button_v2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.91" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/login_button_h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.675" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/login_button_h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
 
 
 

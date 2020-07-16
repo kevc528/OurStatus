@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ourstatus.databinding.CreateAccountBinding;
-import com.example.ourstatus.databinding.SignInBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 public class CreateAccount  extends AppCompatActivity implements View.OnClickListener{
     private FirebaseAuth mAuth;
@@ -52,7 +53,7 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        addAccount(new User(firstName, lastName, email, username, new String[]{}, new String[]{}));
+        addAccount(new User(firstName, lastName, email, username, new ArrayList<String>(), new ArrayList<String>()));
 
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -67,7 +68,7 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(CreateAccount.this, "Authentication failed.",
+                            Toast.makeText(CreateAccount.this, "creation Failed",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }

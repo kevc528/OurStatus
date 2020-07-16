@@ -8,21 +8,18 @@
 
     <TextView
         android:id="@+id/ourstatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:autoSizeTextType="uniform"
         android:fontFamily="@font/roboto_bold"
-        android:gravity="top"
         android:lineSpacingExtra="0sp"
         android:text="@string/ourstatus"
         android:textAppearance="@style/ourstatus"
-        app:layout_constraintBottom_toTopOf="@+id/username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.050000012" />
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@+id/screen_title_h2"
+        app:layout_constraintEnd_toEndOf="@id/screen_title_v2"
+        app:layout_constraintStart_toStartOf="@id/screen_title_v1"
+        app:layout_constraintTop_toTopOf="@id/screen_title_h1" />
 
     <TextView
         android:id="@+id/login_title"
@@ -37,9 +34,9 @@
         android:text="@string/create_account"
         android:textAppearance="@style/title"
         app:layout_constraintBottom_toBottomOf="@id/new_account_title_h2"
-        app:layout_constraintStart_toStartOf="@+id/login_title_v1"
+        app:layout_constraintStart_toStartOf="@+id/create_title_v1"
         app:layout_constraintTop_toTopOf="@id/new_account_title_h1"
-        app:layout_constraintEnd_toEndOf="@id/login_title_v2"
+        app:layout_constraintEnd_toEndOf="@id/create_title_v2"
         app:layout_constraintVertical_bias=".36" />
 
     <EditText
@@ -128,26 +125,56 @@
 
     <Button
         android:id="@+id/createAccountButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="onClick"
         android:hint="@string/create_account"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/create_account"
+        app:layout_constraintDimensionRatio="5:1"
+        app:layout_constraintBottom_toBottomOf="@id/create_account_h2"
+        app:layout_constraintEnd_toEndOf="@id/create_account_v2"
+        app:layout_constraintStart_toStartOf="@id/create_account_v1"
+        app:layout_constraintTop_toTopOf="@id/create_account_h1"
         app:layout_constraintVertical_bias="0.96" />
 
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/login_title_v1"
+        android:id="@+id/screen_title_v1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/screen_title_v2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/screen_title_h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/screen_title_h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.125" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/create_title_v1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.096" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/login_title_v2"
+        android:id="@+id/create_title_v2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -264,6 +291,34 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.87" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/create_account_v1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.175" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/create_account_v2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.825" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/create_account_h1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.90" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/create_account_h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.975" />
 
 
 

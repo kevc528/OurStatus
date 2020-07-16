@@ -8,17 +8,17 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fontFamily="@font/roboto_bold"
         android:text="@string/what_do_you_want_to_accomplish"
         android:textAppearance="@style/greeting"
+        android:autoSizeTextType="uniform"
         app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toTopOf="@id/task_creator"
+        app:layout_constraintBottom_toTopOf="@id/text_h2"
         app:layout_constraintEnd_toStartOf="@+id/text_v2"
         app:layout_constraintStart_toStartOf="@+id/text_v1"
-        app:layout_constraintTop_toTopOf="@+id/text_h"
-        app:layout_constraintVertical_bias="0.11" />
+        app:layout_constraintTop_toTopOf="@+id/text_h1"/>
 
     <LinearLayout
         android:id="@+id/task_creator"
@@ -35,12 +35,11 @@
 
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/taskName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="text"
-        android:text="@string/task_name"
+        android:hint="@string/task_name"
         android:fontFamily="@font/roboto"
         android:textColor="#A9BBC9"
         android:autofillHints="True"
@@ -57,7 +56,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/personal_icon"
-        android:onClick="onClick"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toBottomOf="@+id/task_personal_icon_h2"
         app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
@@ -82,7 +80,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/remind_icon"
-        android:onClick="onClick"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toBottomOf="@+id/task_remind_icon_h2"
         app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
@@ -142,8 +139,8 @@
 
     <Switch
         android:id="@+id/switch1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/task_remind_text_h2"
         app:layout_constraintEnd_toStartOf="@+id/task_creator_large_v"
         app:layout_constraintStart_toStartOf="@+id/create_task_v2"
@@ -163,9 +160,11 @@
         app:layout_constraintEnd_toEndOf="@id/task_creator_info_v2"/>
 
     <Button
+        android:id="@+id/createTask"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/create_task"
+        android:onClick="onClick"
         app:layout_constraintDimensionRatio="3:1"
         app:layout_constraintBottom_toBottomOf="@+id/create_task_h2"
         app:layout_constraintEnd_toEndOf="@id/create_task_v2"
@@ -189,11 +188,18 @@
         app:layout_constraintGuide_percent="0.95" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/text_h"
+        android:id="@+id/text_h1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.065" />
+        app:layout_constraintGuide_percent="0.116" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/text_h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.25" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/task_creator_b"

@@ -35,11 +35,11 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    /*public void onStart() {
+    public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-    }*/
+    }
 
 
     private void signIn(String email, String password) {
@@ -102,9 +102,6 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                         }
                     }
                 });
-        Log.w(TAG, "email: Not found");
-        Toast.makeText(SignIn.this, "Authentication failed.",
-                Toast.LENGTH_SHORT).show();
     }
 
     private boolean validateForm() {
