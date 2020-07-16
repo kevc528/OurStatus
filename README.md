@@ -7,4 +7,4 @@ gimmeThemtoez
 
 ## Amazon Web Services
 ourstatusapp@gmail.com
-gimmeThemtoez
+gimmeThemtoez!
