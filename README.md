@@ -5,6 +5,6 @@ Social media platform to encourage productivity
 OurStatusApp
 gimmeThemtoez
 
-##Amazon Web Services
+## Amazon Web Services
 ourstatusapp@gmail.com
 gimmeThemtoez
