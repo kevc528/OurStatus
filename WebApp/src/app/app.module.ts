@@ -17,7 +17,8 @@ import { AccountService } from './users/account.service';
 import { MainComponent } from './homepage/main/main.component';
 import { TaskComponent } from './tasks/task/task.component';
 import { StartComponent } from './homepage/start/start.component';
-import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component'; 
+import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './users/reset-password/reset-password.component'; 
  
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ForgotPasswordComponent } from './users/forgot-password/forgot-password
     MainComponent,
     TaskComponent,
     StartComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,

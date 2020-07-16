@@ -32,12 +32,12 @@ export class ForgotPasswordComponent implements OnInit {
     this.email = '';
   }
 
-  sendEmail(): void {
+  sendEmail(pin: number): void {
     let sendRoute = session.emailService + '/send-email';
     let body = {
       "recipient": this.email,
       "subject": "Resetting your OurStatus Password",
-      "text": "Ooga booga"
+      "text": `The pin for you to reset your password is ${pin}.`
     }
     let subscription = this.http.post(sendRoute, body, {responseType: 'text'}).subscribe(
       (res) => {
@@ -60,19 +60,20 @@ export class ForgotPasswordComponent implements OnInit {
             let account = res[0];
             if (account.email == this.email) {
               subscription.unsubscribe();
-              let emailSubscription = this.accountService.getAccountByEmail(this.email).subscribe(
+              let pin: number = Math.floor(100000 + Math.random() * 900000);
+              let accountKeySubscription = this.accountService.findAccountKey(this.username).subscribe(
                 (res) => {
                   if (res.length >= 1) {
-                    emailSubscription.unsubscribe()
-                    this.sendEmail();
-                  } else {
-                    this.submitError = true;
-                    this.errorMessage = "Email isn't linked with an account";
-                    this.clearFields();
-                    emailSubscription.unsubscribe();    
+                    accountKeySubscription.unsubscribe();
+                    let accountKey = res[0].payload.doc.id;
+                    this.accountService.updateAccount(accountKey, {'passwordResetKey': pin}).then(
+                      (res) => {
+                        this.sendEmail(pin);
+                      }
+                    );
                   }
                 }
-              )
+              );
             } else {
               this.submitError = true;
               this.errorMessage = "Email isn't linked with an account";

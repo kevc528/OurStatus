@@ -52,6 +52,10 @@ export class AccountService {
     return this.firestore.collection('users', ref => ref.where('email', '==', email)).valueChanges();
   }
 
+  getAccountByPin(pin: number) : Observable<any[]> {
+    return this.firestore.collection('users', ref => ref.where('passwordResetKey', '==', pin)).valueChanges();
+  }
+
   findAccountKey(username: string) : Observable<any[]> {
     return this.firestore.collection('users', ref => ref.where('username', '==', username)).snapshotChanges()
   }
@@ -83,6 +87,11 @@ export class AccountService {
   updateAccount(accountKey: string, newData): Promise<void> {
     let accountDoc = this.firestore.collection('users').doc(accountKey);
     return accountDoc.update(newData);
+  }
+
+  overwriteAccount(accountKey: string, newData): Promise<void> {
+    let accountDoc = this.firestore.collection('users').doc(accountKey);
+    return accountDoc.set(newData);
   }
 
   // deleteAccount(username: string) {
