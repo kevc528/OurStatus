@@ -19,6 +19,7 @@ import { TaskComponent } from './tasks/task/task.component';
 import { StartComponent } from './mainapp/start/start.component';
 import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
 import { CookieService } from 'ngx-cookie-service';
+import { SideBarComponent } from './mainapp/side-bar/side-bar.component';
  
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CookieService } from 'ngx-cookie-service';
     TaskComponent,
     StartComponent,
     ForgotPasswordComponent,
+    SideBarComponent,
   ],
   imports: [
     BrowserModule,

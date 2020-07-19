@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-main',
@@ -11,9 +12,10 @@ export class MainComponent implements OnInit {
 
   username: string;
 
-  constructor(private router: Router, private cookieService: CookieService) { }
+  constructor(private router: Router, private cookieService: CookieService, private titleService: Title) { }
 
   ngOnInit(): void {
+    this.titleService.setTitle('OurStatus');
     this.username = this.cookieService.get('user');
     console.log(this.username);
     if (!this.username) {
