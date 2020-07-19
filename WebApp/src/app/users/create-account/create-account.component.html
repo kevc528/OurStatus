@@ -39,8 +39,8 @@
                 <div class="form-group col-md-6 col-left">
                   <label for="password">Password</label>
                   <input type="password" id="password" name="password" class="form-control" 
-                          [ngClass]="{'error': form.submitted && !passwordField.valid && error}"
-                          placeholder="Password" [(ngModel)]="newAccount.password" required #passwordField="ngModel"/>
+                          placeholder="Password" [(ngModel)]="newAccount.password" required #passwordField="ngModel"
+                          [ngClass]="{'error': form.submitted && !passwordField.valid && error}"/>
                 </div>
                 <div class="form-group col-md-6 col-right">
                   <label for="confirm-password">Confirm Password</label>

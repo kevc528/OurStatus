@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { session } from '../../session';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-main',
@@ -11,11 +11,12 @@ export class MainComponent implements OnInit {
 
   username: string;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private cookieService: CookieService) { }
 
   ngOnInit(): void {
-    this.username = window.location.pathname.split('/')[2];
-    if (session.user != this.username) {
+    this.username = this.cookieService.get('user');
+    console.log(this.username);
+    if (!this.username) {
       this.router.navigate(['/login']);
     }
   }
