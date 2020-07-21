@@ -7,7 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import { session } from '../../session';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +23,11 @@ export class LoginComponent implements OnInit {
   submitUsernameError: boolean = false;
   submitPasswordError: boolean = false;
 
-  constructor(private accountService: AccountService, private titleService: Title, private router: Router) { 
+  constructor(private accountService: AccountService, private titleService: Title, private router: Router,
+    private cookieService: CookieService) { 
+      if (this.cookieService.get('user')) {
+        this.router.navigate(['/app']);
+      }
   }
 
   ngOnInit(): void {
@@ -113,8 +117,8 @@ export class LoginComponent implements OnInit {
           firebase.auth().signInWithEmailAndPassword(account.email, this.password)
             .then((val) => {
               subscription.unsubscribe();
-              session.user = account.username;
-              router.navigate(['/app', this.username]);
+              this.cookieService.set('user', this.username);
+              router.navigate(['/app']);
             })
             .catch(function(error) {
               var errorCode = error.code;

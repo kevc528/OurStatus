@@ -52,10 +52,6 @@ export class AccountService {
     return this.firestore.collection('users', ref => ref.where('email', '==', email)).valueChanges();
   }
 
-  getAccountByPin(pin: number) : Observable<any[]> {
-    return this.firestore.collection('users', ref => ref.where('passwordResetKey', '==', pin)).valueChanges();
-  }
-
   findAccountKey(username: string) : Observable<any[]> {
     return this.firestore.collection('users', ref => ref.where('username', '==', username)).snapshotChanges()
   }
@@ -94,6 +90,12 @@ export class AccountService {
     return accountDoc.set(newData);
   }
 
+  sendUpdatePasswordEmail(email: string) {
+    var auth = firebase.auth();
+    var emailAddress = email;
+    return auth.sendPasswordResetEmail(emailAddress);
+  }
+
   // deleteAccount(username: string) {
   //   var success: boolean;
   //   var accountId: string;
@@ -125,7 +127,13 @@ export class AccountService {
 
   deleteAccount(accountKey: string): Promise<void> {
     let accountDoc = this.firestore.collection('users').doc(accountKey);
-    return accountDoc.delete();
+    let promise = accountDoc.delete().then(
+      (res) => {
+        var user = firebase.auth().currentUser;
+        user.delete();
+      }
+    );
+    return promise;
   }
 
 }

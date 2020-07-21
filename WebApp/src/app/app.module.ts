@@ -14,11 +14,12 @@ import { CreateAccountComponent } from './users/create-account/create-account.co
 import { TaskListComponent } from './tasks/task-list/task-list.component';
 
 import { AccountService } from './users/account.service';
-import { MainComponent } from './homepage/main/main.component';
+import { MainComponent } from './mainapp/main/main.component';
 import { TaskComponent } from './tasks/task/task.component';
-import { StartComponent } from './homepage/start/start.component';
+import { StartComponent } from './mainapp/start/start.component';
 import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './users/reset-password/reset-password.component'; 
+import { CookieService } from 'ngx-cookie-service';
+import { SideBarComponent } from './mainapp/side-bar/side-bar.component';
  
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { ResetPasswordComponent } from './users/reset-password/reset-password.co
     TaskComponent,
     StartComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent
+    SideBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,7 +41,7 @@ import { ResetPasswordComponent } from './users/reset-password/reset-password.co
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

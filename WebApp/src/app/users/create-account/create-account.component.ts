@@ -42,14 +42,25 @@ export class CreateAccountComponent implements OnInit {
           (res) => {
             if (res.length == 0) {
               subscription.unsubscribe();
-              this.accountService.createAccount(this.newAccount)
-                .then(function(ref) {
-                  error = false;
-                  router.navigate(['/login']);
-                }, function() {
-                  this.error = true;
-                  this.errorMessage = "Account couldn't be created, try again later";
-                });
+              let emailSubscription = this.accountService.getAccountByEmail(this.newAccount.email).subscribe(
+                (res) => {
+                  emailSubscription.unsubscribe();
+                  if (res.length == 0) {
+                    this.accountService.createAccount(this.newAccount)
+                      .then(function(ref) {
+                        error = false;
+                        router.navigate(['/login']);
+                      }, function() {
+                        this.error = true;
+                        this.errorMessage = "Account couldn't be created, try again later";
+                      });
+                  } else {
+                    this.error = true;
+                    this.newAccount.email = '';
+                    this.errorMessage = "Email already exists";
+                  }
+                }
+              )           
             } else {
               subscription.unsubscribe();
               this.error = true;

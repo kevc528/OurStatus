@@ -4,7 +4,6 @@ import * as nodemailer from 'nodemailer';
 import { AccountService } from '../account.service';
 import { Title } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
-import { session } from '../../session';
 
 @Component({
   selector: 'app-forgot-password',
@@ -32,25 +31,25 @@ export class ForgotPasswordComponent implements OnInit {
     this.email = '';
   }
 
-  sendEmail(pin: number): void {
-    let sendRoute = session.emailService + '/send-email';
-    let body = {
-      "recipient": this.email,
-      "subject": "Resetting your OurStatus Password",
-      "text": `The pin for you to reset your password is ${pin}.`
-    }
-    let subscription = this.http.post(sendRoute, body, {responseType: 'text'}).subscribe(
-      (res) => {
-        if (res == 'success') {
-          subscription.unsubscribe();
-          this.router.navigate(['/login']);
-        } else {
-          subscription.unsubscribe();
-          alert('Error occured, please try again later');
-        }
-      }
-    );
-  }
+  // sendEmail(pin: number): void {
+  //   let sendRoute = session.emailService + '/send-email';
+  //   let body = {
+  //     "recipient": this.email,
+  //     "subject": "Resetting your OurStatus Password",
+  //     "text": `The pin for you to reset your password is ${pin}.`
+  //   }
+  //   let subscription = this.http.post(sendRoute, body, {responseType: 'text'}).subscribe(
+  //     (res) => {
+  //       if (res == 'success') {
+  //         subscription.unsubscribe();
+  //         this.router.navigate(['/reset-password'], {queryParams: { user: this.username }});
+  //       } else {
+  //         subscription.unsubscribe();
+  //         alert('Error occured, please try again later');
+  //       }
+  //     }
+  //   );
+  // }
 
   onSubmit(form): void {
     if (form.valid) {
@@ -60,20 +59,26 @@ export class ForgotPasswordComponent implements OnInit {
             let account = res[0];
             if (account.email == this.email) {
               subscription.unsubscribe();
-              let pin: number = Math.floor(100000 + Math.random() * 900000);
-              let accountKeySubscription = this.accountService.findAccountKey(this.username).subscribe(
-                (res) => {
-                  if (res.length >= 1) {
-                    accountKeySubscription.unsubscribe();
-                    let accountKey = res[0].payload.doc.id;
-                    this.accountService.updateAccount(accountKey, {'passwordResetKey': pin}).then(
-                      (res) => {
-                        this.sendEmail(pin);
-                      }
-                    );
-                  }
+              // let pin: number = Math.floor(100000 + Math.random() * 900000);
+              // let accountKeySubscription = this.accountService.findAccountKey(this.username).subscribe(
+              //   (res) => {
+              //     if (res.length >= 1) {
+              //       accountKeySubscription.unsubscribe();
+              //       let accountKey = res[0].payload.doc.id;
+              //       this.accountService.updateAccount(accountKey, {'passwordResetKey': pin}).then(
+              //         (res) => {
+              //           this.sendEmail(pin);
+              //         }
+              //       );
+              //     }
+              //   }
+              // );
+              this.accountService.sendUpdatePasswordEmail(account.email).then(
+                (val) => {
+                  alert('Email for resetting your password was sent!');
+                  this.router.navigate(['/login']);
                 }
-              );
+              )
             } else {
               this.submitError = true;
               this.errorMessage = "Email isn't linked with an account";

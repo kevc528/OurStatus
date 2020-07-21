@@ -1,0 +1,10 @@
+.content {
+  margin-left: 10%;
+}
+
+app-side-bar {
+  width: 10%;
+  float: left;
+  margin-left: 2%;
+  margin-top: 5%;
+}
