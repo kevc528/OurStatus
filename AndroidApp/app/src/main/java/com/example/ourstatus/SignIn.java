@@ -13,9 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -103,8 +101,12 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                     }
                 });
     }
+    public void resetPassword(){
 
-    private boolean validateForm() {
+    }
+
+
+    private boolean validateForm(){
         boolean valid = true;
 
         String username = mBinding.username.getText().toString();
@@ -137,12 +139,8 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
         int i = v.getId();
         if (i == R.id.signInButton) {
             signInButton();
-        } /*else if (i == R.id.signOutButton) {
-            signOut();
-        } else if (i == R.id.verifyEmailButton) {
-            sendEmailVerification();
-        } else if (i == R.id.reloadButton) {
-            reload();
-        }*/
+        } else{
+            resetPassword();
+        }
     }
 }
