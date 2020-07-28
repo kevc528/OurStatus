@@ -74,6 +74,7 @@ public class UserProfile extends AppCompatActivity{
     public void setTasks(List<Tasks> tasks){
         Collections.sort(tasks);
         mBinding.task1.setText((tasks.get(0)).getTitle());
+
     }
 
     public void getTasks(String username){
