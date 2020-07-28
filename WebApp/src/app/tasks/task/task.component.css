@@ -15,7 +15,7 @@
     -webkit-filter: brightness(80%);
 }
 
-.task-resolved {
+.task-resolved .card-body .task-title {
     text-decoration: line-through;
     color: #589E9B;
 }

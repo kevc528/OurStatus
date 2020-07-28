@@ -1,22 +1,35 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { TaskService } from '../task.service';
 import { Task } from '../../shared/model/task';
-import { Observable } from 'rxjs'; 
+import { Observable, Subscription } from 'rxjs'; 
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent implements OnInit, OnDestroy {
 
-  taskList: Observable<any[]>;
-  @Input() username = '';
+  taskList = [];
+  username;
+  subscription: Subscription;
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: TaskService, private cookieService: CookieService) { }
 
   ngOnInit(): void {
-    this.taskList = this.taskService.getTasksForUser(this.username, 0);
+    this.username = this.cookieService.get('user');
+    this.subscription = this.taskService.getTasksForUser(this.username, 0).subscribe(
+      val => {
+        this.taskList = val.sort(
+          (a,b) => {
+            let a_date = new Date(a.targetDate.seconds * 1000);
+            let b_date = new Date(b.targetDate.seconds * 1000);
+            return a_date.valueOf() - b_date.valueOf();
+          }
+        );
+      }
+    );
 
     // CODE TO ADD A NEW TASK
     // var newTask = {
@@ -39,4 +52,7 @@ export class TaskListComponent implements OnInit {
     // this.taskService.resolveTask("Rx9MHagavTC1dhQ58lcG");
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
