@@ -3,8 +3,9 @@
 }
 
 app-side-bar {
-  width: 10%;
-  float: left;
-  margin-left: 2%;
-  margin-top: 5%;
+  margin-left: 1%;
+  margin-top: 3%;
+  float:left;
+  padding:10px;
+  width:215px;
 }

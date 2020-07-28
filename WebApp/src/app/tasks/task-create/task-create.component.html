@@ -1,0 +1,38 @@
+<div class="card">
+  <br>
+  <div class="card-body">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+      <input id="title" name="title" type="text" class="form-control" placeholder="Task name" 
+            [(ngModel)]="task.title" required #titleField="ngModel"
+            [ngClass]="{'error': form.submitted && !titleField.valid && !reset}"/>
+      <br>
+      <br>
+      <br>
+      <div>
+        <span>
+          <img src="assets/images/personal.png" class="center">
+          Personal
+        </span>
+        <br>
+        <br>
+        <br>
+        <span>
+          <img src="assets/images/calendar.png" class="center">
+          <input name="date" type="date" [(ngModel)]="task.targetDate">
+        </span>
+        <br>
+        <br>
+        <br>
+        <img src="assets/images/remind.png" class="center" style="vertical-align:middle;">
+        Remind
+        <input name="remind" id="remind" type="checkbox" [(ngModel)]="task.remind" style="margin-left: 20px;">
+      </div>
+      <br>
+      <br>
+      <br>
+      <div class="text-center">
+        <button class="btn-lg btn-primary">Create Task</button>
+      </div>
+    </form>
+  </div>
+</div>

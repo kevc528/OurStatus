@@ -9,9 +9,13 @@ import { Router } from '@angular/router';
 })
 export class SideBarComponent implements OnInit {
 
-  constructor(private cookieService: CookieService, private router: Router) { }
+  username: string;
+
+  constructor(private cookieService: CookieService, private router: Router) { 
+  }
 
   ngOnInit(): void {
+    this.username = this.cookieService.get('user');
   }
 
   onLogOut(): void {
