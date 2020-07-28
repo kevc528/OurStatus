@@ -15,4 +15,5 @@
     <string name="e_mail">E-Mail</string>
     <string name="retype_password">Retype Password</string>
     <string name="reset">Reset</string>
+    <string name="task_name1">task_name1</string>
 </resources>

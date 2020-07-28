@@ -174,13 +174,17 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
+    public void goToProfile(View v){
+        setContentView(R.layout.user_profile);
+    }
+
     public void onClick(View v) {
         int i = v.getId();
 
         if(i == R.id.createTask){
             createTaskButton();
         }else{
-            createTaskButton();
+            goToProfile(v);
         }
     }
 

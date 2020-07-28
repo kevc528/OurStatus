@@ -60,8 +60,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/task_personal_icon_h2"
         app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
         app:layout_constraintStart_toStartOf="@id/task_creator_circle_v1"
-        app:layout_constraintTop_toTopOf="@+id/task_personal_icon_h1"
-        app:layout_constraintVertical_bias=".22" />
+        app:layout_constraintTop_toTopOf="@+id/task_personal_icon_h1" />
 
     <Button
         android:id="@+id/dateButton"
@@ -72,20 +71,19 @@
         app:layout_constraintBottom_toBottomOf="@+id/task_date_icon_h2"
         app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
         app:layout_constraintStart_toStartOf="@id/task_creator_circle_v1"
-        app:layout_constraintTop_toTopOf="@+id/task_date_icon_h1"
-        app:layout_constraintVertical_bias=".37" />
+        app:layout_constraintTop_toTopOf="@+id/task_date_icon_h1" />
 
     <View
         android:id="@+id/remindIcon"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/remind_icon"
+        android:onClick="goToProfile"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toBottomOf="@+id/task_remind_icon_h2"
         app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
         app:layout_constraintStart_toStartOf="@id/task_creator_circle_v1"
-        app:layout_constraintTop_toTopOf="@+id/task_remind_icon_h1"
-        app:layout_constraintVertical_bias=".54" />
+        app:layout_constraintTop_toTopOf="@+id/task_remind_icon_h1" />
 
     <Button
         android:id="@+id/timeButton"
@@ -97,8 +95,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/task_time_icon_h2"
         app:layout_constraintEnd_toEndOf="@id/task_creator_circle_v2"
         app:layout_constraintStart_toStartOf="@id/task_creator_circle_v1"
-        app:layout_constraintTop_toTopOf="@+id/task_time_icon_h1"
-        app:layout_constraintVertical_bias=".71" />
+        app:layout_constraintTop_toTopOf="@+id/task_time_icon_h1" />
 
     <TextView
         android:layout_width="0dp"

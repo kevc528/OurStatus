@@ -101,6 +101,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                     }
                 });
     }
+
     public void resetPassword(){
 
     }
