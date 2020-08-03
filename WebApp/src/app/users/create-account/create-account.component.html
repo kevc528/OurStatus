@@ -12,13 +12,13 @@
                   <label for="first-name">First Name</label>
                   <input id="first-name" name="first-name" class="form-control" placeholder="First Name" 
                         [(ngModel)]="newAccount.firstName" required #firstNameField="ngModel"
-                        [ngClass]="{'error': form.submitted && !firstNameField.valid}"/>
+                        [ngClass]="{'error': form.submitted && !firstNameField.valid && error}"/>
                 </div>
                 <div class="form-group col-md-6 col-right">
                   <label for="last-name">Last Name</label>
                   <input id="last-name" name="last-name" class="form-control" placeholder="Last Name" 
                         [(ngModel)]="newAccount.lastName" required #lastNameField="ngModel"
-                        [ngClass]="{'error': form.submitted && !lastNameField.valid}"/>
+                        [ngClass]="{'error': form.submitted && !lastNameField.valid && error}"/>
                 </div>
               </div>
               <div class="row">
@@ -26,26 +26,26 @@
                   <label for="last-name">Email</label>
                   <input type="email" id="email" name="email" class="form-control" placeholder="Email" 
                         [(ngModel)]="newAccount.email" required #emailField="ngModel"
-                        [ngClass]="{'error': form.submitted && !emailField.valid}"/>
+                        [ngClass]="{'error': form.submitted && !emailField.valid && error}"/>
                 </div>
                 <div class="form-group col-md-6 col-right">
                   <label for="username">Username</label>
                   <input id="username" name="username" class="form-control" placeholder="Username" 
                           [(ngModel)]="newAccount.username" required #usernameField="ngModel"
-                          [ngClass]="{'error': form.submitted && !usernameField.valid}"/>
+                          [ngClass]="{'error': form.submitted && !usernameField.valid && error}"/>
                 </div>
               </div>
               <div class="row">
                 <div class="form-group col-md-6 col-left">
                   <label for="password">Password</label>
                   <input type="password" id="password" name="password" class="form-control" 
-                          [ngClass]="{'error': form.submitted && !passwordField.valid}"
+                          [ngClass]="{'error': form.submitted && !passwordField.valid && error}"
                           placeholder="Password" [(ngModel)]="newAccount.password" required #passwordField="ngModel"/>
                 </div>
                 <div class="form-group col-md-6 col-right">
                   <label for="confirm-password">Confirm Password</label>
                   <input type="password" id="confirm-password" name="confirm-password" class="form-control" 
-                          [ngClass]="{'error': form.submitted && !confirmPasswordField.valid}"
+                          [ngClass]="{'error': form.submitted && !confirmPasswordField.valid && error}"
                           placeholder="Confirm Password" [(ngModel)]="confirmPassword" required #confirmPasswordField="ngModel"/>
                 </div>
               </div>
