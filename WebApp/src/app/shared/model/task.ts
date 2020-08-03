@@ -12,4 +12,7 @@ export interface Task {
     remind: boolean;
     // 0 for personal, 1 for group
     level: number;
+    likes: number;
+    likedUsers: string[];
+    comments: string[];
 }

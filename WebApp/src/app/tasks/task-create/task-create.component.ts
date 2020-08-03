@@ -14,6 +14,8 @@ export class TaskCreateComponent implements OnInit {
   task;
   username;
   reset = true;
+  dateString;
+  timeString;
 
   constructor(private cookieService: CookieService, private taskService: TaskService) { 
     this.username = cookieService.get('user');
@@ -41,10 +43,15 @@ export class TaskCreateComponent implements OnInit {
       title: null,
       dateCreated: new Date(),
       dateCompleted: null,
-      targetDate: this.formatDate(new Date()),
+      targetDate: new Date(),
       remind: false,
-      level: 0
+      level: 0,
+      likes: 0,
+      comments: [],
+      likedUsers: []
     }
+    this.dateString = this.formatDate(new Date());
+    this.timeString = (this.task.targetDate.getHours() > 9 ? this.task.targetDate.getHours() : '0' + this.task.targetDate.getHours()) + ':' + (this.task.targetDate.getMinutes() > 9 ? this.task.targetDate.getMinutes() : '0' + this.task.targetDate.getMinutes());
   }
 
   clearForm() {
@@ -55,8 +62,7 @@ export class TaskCreateComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     if (form.valid) {
-      this.task.targetDate = new Date(this.task.targetDate);
-      console.log(this.task.targetDate);
+      this.task.targetDate = new Date(this.dateString + ' ' + this.timeString);
       this.taskService.addTask(this.task).then(
         val => {this.clearForm();},
         err => {console.log(err)}

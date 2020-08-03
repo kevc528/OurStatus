@@ -16,9 +16,18 @@ export class TaskService {
       .where('level', '==', level)).valueChanges();
   }
 
-  getAssignedTasksForUser(username: string): Observable<any[]> {
-    return this.firestore.collection('tasks', ref => ref.where('assignees', "array-contains", username)).valueChanges();
+  /**
+   * getFeedTasks will get the completed tasks of the usernames array
+   * @param usernames the list of friends
+   */
+  getFeedTasks(usernames: string[]): Observable<any[]> {
+    return this.firestore.collection('tasks', ref => ref.where('creatorUsername', 'in', usernames)
+      .where('level', '==', 0).where('dateCompleted', '<', new Date())).valueChanges();
   }
+
+  // getAssignedTasksForUser(username: string): Observable<any[]> {
+  //   return this.firestore.collection('tasks', ref => ref.where('assignees', "array-contains", username)).valueChanges();
+  // }
 
   // likely need the account service to get the account for the user and then add the id to the list
   // tasks need to store their id so we can distinguish between them

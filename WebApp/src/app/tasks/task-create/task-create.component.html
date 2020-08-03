@@ -18,7 +18,7 @@
         <br>
         <span>
           <img src="assets/images/calendar.png" class="center">
-          <input name="date" type="date" [(ngModel)]="task.targetDate">
+          <input name="date" type="date" [(ngModel)]="dateString">
         </span>
         <br>
         <br>
@@ -26,6 +26,13 @@
         <img src="assets/images/remind.png" class="center" style="vertical-align:middle;">
         Remind
         <input name="remind" id="remind" type="checkbox" [(ngModel)]="task.remind" style="margin-left: 20px;">
+        <br>
+        <br>
+        <br>
+        <span>
+          <img src="assets/images/time.png" class="center">
+          <input name="time" type="time" [(ngModel)]="timeString">
+        </span>
       </div>
       <br>
       <br>

@@ -21,6 +21,9 @@ import { ForgotPasswordComponent } from './users/forgot-password/forgot-password
 import { CookieService } from 'ngx-cookie-service';
 import { SideBarComponent } from './mainapp/side-bar/side-bar.component';
 import { TaskCreateComponent } from './tasks/task-create/task-create.component';
+import { TaskPageComponent } from './mainapp/task-page/task-page.component';
+import { FeedComponent } from './social/feed/feed.component';
+import { FeedListingComponent } from './social/feed-listing/feed-listing.component';
  
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { TaskCreateComponent } from './tasks/task-create/task-create.component';
     ForgotPasswordComponent,
     SideBarComponent,
     TaskCreateComponent,
+    TaskPageComponent,
+    FeedComponent,
+    FeedListingComponent,
   ],
   imports: [
     BrowserModule,

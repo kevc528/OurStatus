@@ -7,9 +7,10 @@
         <hr>
         <p>Title: <input [(ngModel)]="editForm.title"></p>
         <p>Target Date: <input type="date" [(ngModel)]="editForm.targetDate"></p>
+        <p>Target Time: <input type="time" [(ngModel)]="editForm.targetTime"></p>
         <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="customSwitch1" [(ngModel)]="editForm.remind">
-          <label class="custom-control-label" for="customSwitch1">Remind me</label>
+          <input type="checkbox" class="custom-control-input" id="customSwitch1{{task.id}}" [(ngModel)]="editForm.remind">
+          <label class="custom-control-label" for="customSwitch1{{task.id}}">Remind me</label>
         </div>
         <br>
         <button class="btn btn-primary" type="submit" (click)="onSubmitEdits()">Submit changes</button>
