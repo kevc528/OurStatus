@@ -62,7 +62,7 @@ class SignUpViewController: UIViewController {
         
         if error != nil {
             //Show error message
-            //Todo: Determine how to shoq the error message
+            self.showAlert(title: error, message: "Please try again")
         }
         else {
             //Create cleaned versions of the text fields
@@ -76,7 +76,7 @@ class SignUpViewController: UIViewController {
                 //Check for errors
                 if err != nil {
                     //There was an error creating the user
-                    self.showError("Error creating user")
+                    self.showAlert(title: "Could not create user", message: "Please try again")
                 }
                 else {
                     //Store first name and last name
@@ -87,7 +87,7 @@ class SignUpViewController: UIViewController {
                     
                     db.collection("users").addDocument(data: ["email": email, "firstName": firstName, "lastName": lastName, "username": username, "friends": friends, "groupIds": groupIds]) { (error) in
                         if error != nil {
-                            self.showError("Could not initialize user data")
+                            self.showAlert(title: "Could not initialize user data", message: "Please try again")
                         }
                     }
                 }
@@ -114,6 +114,15 @@ class SignUpViewController: UIViewController {
         view.window?.rootViewController = homeViewController
         view.window?.makeKeyAndVisible()
     }
+    
+    func showAlert(title: String?, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Try Again", style: .cancel, handler: {
+            action in print("tapped Try Again")
+        }))
+        present(alert, animated: true)
+    }
+    
     @IBAction func signInButton(_ sender: Any) {
         
     }
