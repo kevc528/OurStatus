@@ -2,9 +2,9 @@ package com.example.ourstatus;
 //Home Page
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity{
             remind = false;
         }
 
-        task = new NewTask(new ArrayList<String>(), creatorUsername, id, title, null, dateCreated, targetDate, 0, remind);
+        task = new NewTask(new ArrayList<String>(), creatorUsername, id, title, null, dateCreated, targetDate, 0, remind, new ArrayList<String>(), new ArrayList<String>(), 0);
         ref.set(task);
         Log.w(TAG, "userInfo: search failed");
     }
@@ -173,18 +173,16 @@ public class MainActivity extends AppCompatActivity{
                 });
     }
 
-
-    public void goToProfile(View v){
-        setContentView(R.layout.user_profile);
+    public void onRemindClick(View v){
+        startActivity(new Intent(this, UserProfile.class));
     }
-
     public void onClick(View v) {
         int i = v.getId();
 
         if(i == R.id.createTask){
             createTaskButton();
         }else{
-            goToProfile(v);
+            createTaskButton();
         }
     }
 

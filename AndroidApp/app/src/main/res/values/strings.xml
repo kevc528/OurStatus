@@ -16,4 +16,7 @@
     <string name="retype_password">Retype Password</string>
     <string name="reset">Reset</string>
     <string name="task_name1">task_name1</string>
+    <string name="task_name2">task_name2</string>
+    <string name="task_name3">task_name3</string>
+    <string name="reset_password">Reset Password</string>
 </resources>

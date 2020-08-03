@@ -5,6 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.viewpager2.widget.ViewPager2
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
         android:layout_width="0dp"
@@ -71,6 +77,7 @@
     </HorizontalScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/task_1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/task_display"
@@ -80,35 +87,39 @@
         app:layout_constraintTop_toTopOf="@id/task1_h1">
 
         <ImageView
+            android:id="@+id/task_1_check"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/check_icon"
+            android:onClick="checkTask"
             app:layout_constraintBottom_toBottomOf="@id/task1_check_h2"
-            app:layout_constraintEnd_toStartOf="@+id/task_check_v2"
-            app:layout_constraintStart_toStartOf="@+id/task_check_v1"
+            app:layout_constraintEnd_toStartOf="@+id/task1_check_v2"
+            app:layout_constraintStart_toStartOf="@+id/task1_check_v1"
             app:layout_constraintTop_toTopOf="@+id/task1_check_h1" />
 
         <TextView
-            android:id="@+id/task_1"
+            android:id="@+id/task_1_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:paddingStart="14dp"
             android:text="@string/task_name1"
+            android:textAppearance="@style/normal_text"
+            android:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/task_check_v2"
+            app:layout_constraintStart_toStartOf="@+id/task1_check_v2"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/task_check_v1"
+            android:id="@+id/task1_check_v1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/task_check_v2"
+            android:id="@+id/task1_check_v2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -130,6 +141,135 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/task_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/task_display"
+        app:layout_constraintBottom_toTopOf="@+id/task2_h2"
+        app:layout_constraintEnd_toEndOf="@id/tasks_v2"
+        app:layout_constraintStart_toStartOf="@id/tasks_v1"
+        app:layout_constraintTop_toTopOf="@id/task2_h1">
+
+        <ImageView
+            android:id="@+id/task_2_check"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/check_icon"
+            android:onClick="checkTask"
+            app:layout_constraintBottom_toBottomOf="@id/task2_check_h2"
+            app:layout_constraintEnd_toStartOf="@+id/task2_check_v2"
+            app:layout_constraintStart_toStartOf="@+id/task2_check_v1"
+            app:layout_constraintTop_toTopOf="@+id/task2_check_h1" />
+
+        <TextView
+            android:id="@+id/task_2_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:paddingStart="14dp"
+            android:text="@string/task_name2"
+            android:textAppearance="@style/normal_text"
+            android:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/task2_check_v2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/task2_check_v1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/task2_check_v2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.17" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/task2_check_h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".30"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/task2_check_h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.70" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/task_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/task_display"
+        app:layout_constraintBottom_toTopOf="@+id/task3_h2"
+        app:layout_constraintEnd_toEndOf="@id/tasks_v2"
+        app:layout_constraintStart_toStartOf="@id/tasks_v1"
+        app:layout_constraintTop_toTopOf="@id/task3_h1">
+
+        <ImageView
+            android:id="@+id/task_3_check"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/check_icon"
+            android:onClick="checkTask"
+            app:layout_constraintBottom_toBottomOf="@id/task3_check_h2"
+            app:layout_constraintEnd_toStartOf="@+id/task3_check_v2"
+            app:layout_constraintStart_toStartOf="@+id/task3_check_v1"
+            app:layout_constraintTop_toTopOf="@+id/task3_check_h1" />
+
+        <TextView
+            android:id="@+id/task_3_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:paddingStart="14dp"
+            android:text="@string/task_name3"
+            android:textAppearance="@style/normal_text"
+            android:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/task3_check_v2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/task3_check_v1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/task3_check_v2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.17" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/task3_check_h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".30"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/task3_check_h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.70" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/profile_pic_v1"

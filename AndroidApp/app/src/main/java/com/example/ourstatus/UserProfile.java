@@ -1,18 +1,31 @@
 package com.example.ourstatus;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BlendModeColorFilter;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.ImageViewCompat;
+
 import com.example.ourstatus.databinding.UserProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -51,6 +64,37 @@ public class UserProfile extends AppCompatActivity{
         });
     }
 
+    public void checkTask(View v){
+        TextView tv = null;
+        ImageView i = (ImageView) v;
+        ViewGroup row = (ViewGroup) v.getParent();
+
+        if(i.getColorFilter() == null){
+            i.setColorFilter(R.color.purple);
+
+            for (int itemPos = 0; itemPos < row.getChildCount(); itemPos++) {
+                View view = row.getChildAt(itemPos);
+                if (view instanceof TextView) {
+                    tv = (TextView) view;
+                    tv.setTextColor(ContextCompat.getColor(this, R.color.purple));
+                    tv.setPaintFlags(tv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                    break;
+                }
+            }
+        } else{
+            i.clearColorFilter();
+
+            for (int itemPos = 0; itemPos < row.getChildCount(); itemPos++) {
+                View view = row.getChildAt(itemPos);
+                if (view instanceof TextView) {
+                    tv = (TextView) view;
+                    tv.setTextColor(ContextCompat.getColor(this, R.color.normal_text));
+                    tv.setPaintFlags(tv.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+                    break;
+                }
+            }
+        }
+    }
 
 
     public void sizeIcons(){
@@ -73,12 +117,34 @@ public class UserProfile extends AppCompatActivity{
 
     public void setTasks(List<Tasks> tasks){
         Collections.sort(tasks);
-        mBinding.task1.setText((tasks.get(0)).getTitle());
+
+        mBinding.task1.setVisibility(View.VISIBLE);
+        mBinding.task2.setVisibility(View.VISIBLE);
+        mBinding.task3.setVisibility(View.VISIBLE);
+
+        switch(tasks.size()){
+            case 1:
+                mBinding.task1Text.setText((tasks.get(0)).getTitle());
+                mBinding.task2.setVisibility(View.INVISIBLE);
+                mBinding.task3.setVisibility(View.INVISIBLE);
+                break;
+            case 2:
+                mBinding.task1Text.setText((tasks.get(0)).getTitle());
+                mBinding.task2Text.setText((tasks.get(1)).getTitle());
+                mBinding.task3.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                mBinding.task1Text.setText((tasks.get(0)).getTitle());
+                mBinding.task2Text.setText((tasks.get(1)).getTitle());
+                mBinding.task3Text.setText((tasks.get(2)).getTitle());
+                break;
+        }
+
     }
 
     public void getTasks(String username){
         db.collection("tasks")
-                .whereEqualTo("username", username)
+                .whereEqualTo("creatorUsername", username)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

@@ -1,5 +1,6 @@
 package com.example.ourstatus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,11 +34,13 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void onStart() {
+    /*public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
+
+     */
 
 
     private void signIn(String email, String password) {
@@ -103,7 +106,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void resetPassword(){
-
+        startActivity(new Intent(this, ResetPassword.class));
     }
 
 
@@ -131,7 +134,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            setContentView(R.layout.home);
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
