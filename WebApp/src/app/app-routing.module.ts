@@ -5,12 +5,14 @@ import { CreateAccountComponent } from './users/create-account/create-account.co
 import { MainComponent } from './mainapp/main/main.component';
 import { StartComponent } from './mainapp/start/start.component';
 import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
+import { TaskPageComponent } from './mainapp/task-page/task-page.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'app', pathMatch: 'prefix', children: [
+    { path: 'tasks', component: TaskPageComponent},
     { path:'', component: MainComponent }
   ]},
   { path: 'forgot-password', component: ForgotPasswordComponent},
