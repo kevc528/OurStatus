@@ -1,15 +1,20 @@
 package com.example.ourstatus;
 
-public class User {
-    private String firstName, lastName, eMail, username, password;
+import java.util.List;
 
-    User(String firstName, String lastName, String eMail, String username, String password) {
+public class User {
+    private String firstName, lastName, eMail, username;
+    private List<String> friends, groupIds;
+
+    public User(String firstName, String lastName, String eMail, String username, List<String> friends, List<String> groupIds) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.eMail = eMail;
         this.username = username;
-        this.password = password;
+        this.friends = friends;
+        this.groupIds = groupIds;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -43,11 +48,19 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public List<String> getFriends() {
+        return friends;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setFriends(List<String> friends) {
+        this.friends = friends;
+    }
+
+    public List<String> getGroupIds() {
+        return groupIds;
+    }
+
+    public void setGroupIds(List<String> groupIds) {
+        this.groupIds = groupIds;
     }
 }

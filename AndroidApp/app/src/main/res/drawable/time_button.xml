@@ -1,13 +1,18 @@
 <?xml version = "1.0" encoding = "utf-8"?>
-<selector xmlns:android = "http://schemas.android.com/apk/res/android">
-    <item android:state_pressed = "false">
-        <shape android:shape = "oval">
-            <solid android:color = "#336FD43F"/>
-        </shape>
-    </item>
-    <item android:state_pressed = "true">
-        <shape android:shape = "oval">
-            <solid android:color = "#336FD43F"/>
-        </shape>
-    </item>
-</selector>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="60dp"
+    android:height="60dp"
+    android:viewportWidth="60"
+    android:viewportHeight="60">
+    <path
+        android:fillColor="#6FD53F"
+        android:fillAlpha="0.2"
+        android:pathData="M0 30c0-16.57 13.43-30 30-30h0c16.57 0 30 13.43 30 30v0c0 16.57-13.43 30-30 30h0c-16.57 0-30-13.43-30-30z"/>
+    <path
+        android:fillColor="#39827E"
+        android:fillType="evenOdd"
+        android:pathData="M18 30c0-6.63 5.37-12 12-12s12 5.37 12 12s-5.37 12-12 12s-12-5.37-12-12zm22.11 0c0-5.58-4.53-10.11-10.11-10.11c-5.58 0-10.11 4.53-10.11 10.11c0 5.58 4.53 10.11 10.11 10.11c5.58 0 10.11-4.53 10.11-10.11z"/>
+    <path
+        android:fillColor="#39827E"
+        android:pathData="M30 21.69c0.51 0 0.93 0.4 0.94 0.92v0.02v7.35h4.59c0.51 0 0.93 0.41 0.94 0.92v0.02c0 0.52-0.41 0.93-0.92 0.94h-0.02H30c-0.51 0-0.93-0.4-0.94-0.92v-0.02v-8.3c0-0.51 0.42-0.93 0.94-0.93z"/>
+</vector>

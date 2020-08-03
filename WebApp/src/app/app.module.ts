@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,9 +14,13 @@ import { CreateAccountComponent } from './users/create-account/create-account.co
 import { TaskListComponent } from './tasks/task-list/task-list.component';
 
 import { AccountService } from './users/account.service';
-import { MainComponent } from './homepage/main/main.component';
+import { MainComponent } from './mainapp/main/main.component';
 import { TaskComponent } from './tasks/task/task.component';
-import { StartComponent } from './homepage/start/start.component'; 
+import { StartComponent } from './mainapp/start/start.component';
+import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
+import { CookieService } from 'ngx-cookie-service';
+import { SideBarComponent } from './mainapp/side-bar/side-bar.component';
+import { TaskCreateComponent } from './tasks/task-create/task-create.component';
  
 @NgModule({
   declarations: [
@@ -25,16 +30,20 @@ import { StartComponent } from './homepage/start/start.component';
     TaskListComponent,
     MainComponent,
     TaskComponent,
-    StartComponent
+    StartComponent,
+    ForgotPasswordComponent,
+    SideBarComponent,
+    TaskCreateComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
