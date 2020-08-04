@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TaskService } from 'src/app/tasks/task.service';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -11,6 +11,7 @@ export class FeedListingComponent implements OnInit {
 
   @Input() task;
   username;
+  @Output() comments = new EventEmitter<string>();
 
   constructor(private taskService: TaskService, private cookieService: CookieService) { }
 
@@ -28,6 +29,10 @@ export class FeedListingComponent implements OnInit {
       this.task.likedUsers.splice(this.task.likedUsers.indexOf(this.username), 1);
       this.taskService.editTask(this.task.id, this.task);
     }
+  }
+  
+  commentClicked(): void {
+    this.comments.emit(this.task.id);
   }
 
 }

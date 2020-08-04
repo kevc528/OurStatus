@@ -18,7 +18,7 @@ export class TaskCreateComponent implements OnInit {
   timeString;
 
   constructor(private cookieService: CookieService, private taskService: TaskService) { 
-    this.username = cookieService.get('user');
+    this.username = this.cookieService.get('user');
   }
 
   formatDate(date) {

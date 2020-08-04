@@ -6,6 +6,7 @@ import { MainComponent } from './mainapp/main/main.component';
 import { StartComponent } from './mainapp/start/start.component';
 import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
 import { TaskPageComponent } from './mainapp/task-page/task-page.component';
+import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
 
 
 const routes: Routes = [
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'app', pathMatch: 'prefix', children: [
     { path: 'tasks', component: TaskPageComponent},
-    { path:'', component: MainComponent }
+    { path:'', component: MainComponent },
+    { path:  'feed', component: FeedPageComponent}
   ]},
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: '', component: StartComponent }

@@ -2,13 +2,23 @@
 <body>
   <div class="container">
     <div class="card">
-      <div *ngIf="!noFriends" class="card-body">
-        <h2>Feed</h2>
-        <app-feed-listing *ngFor="let task of feedTasks" [task]="task"></app-feed-listing>
+      <div [hidden]="showComment">
+        <div *ngIf="!noFriends" class="card-body">
+          <h2>Recent</h2>
+          <app-feed-listing *ngFor="let task of feedTasks" [task]="task" (comments)="onCommentSection($event)"></app-feed-listing>
+        </div>
+        <div *ngIf="noFriends" class="card-body">
+          <h1>You have no friends!</h1>
+        </div>
       </div>
-      <div *ngIf="noFriends" class="card-body">
-        <h1>You have no friends!</h1>
+      <div *ngIf="showComment">
+        <div class="card-body">
+          <h2>Comments</h2>
+          <app-comment-section [taskId]="commentTaskId" (backToFeed)="onBackFeed()"></app-comment-section>
+        </div>
       </div>
     </div>
   </div>
+  <br>
+  <br>
 </body>

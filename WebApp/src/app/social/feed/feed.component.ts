@@ -15,6 +15,8 @@ export class FeedComponent implements OnInit, OnDestroy {
   feedSubscription;
   noFriends = false;
   feedTasks = [];
+  showComment = false;
+  commentTaskId = '';
 
   constructor(private taskService: TaskService, private accountService: AccountService, 
     private cookieService: CookieService) { 
@@ -29,7 +31,13 @@ export class FeedComponent implements OnInit, OnDestroy {
           if (account.friends.length > 0) {
             this.feedSubscription = this.taskService.getFeedTasks(account.friends).subscribe(
               (val) => {
-                this.feedTasks = val;
+                this.feedTasks = val.sort(
+                  (a,b) => {
+                    let a_date = new Date(a.dateCompleted.seconds * 1000);
+                    let b_date = new Date(b.dateCompleted.seconds * 1000);
+                    return b_date.valueOf() - a_date.valueOf();
+                  }
+                );
               }
             );
           } else {
@@ -43,6 +51,16 @@ export class FeedComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.accountSubscription.unsubscribe();
     this.feedSubscription.unsubscribe();
+  }
+
+  onCommentSection(taskId: string):void {
+    this.showComment = true;
+    this.commentTaskId = taskId;
+  }
+
+  onBackFeed():void {
+    this.showComment = false;
+    this.commentTaskId = '';
   }
 
 }

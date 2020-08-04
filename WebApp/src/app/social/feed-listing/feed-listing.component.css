@@ -1,6 +1,11 @@
-.fa-heart {
-  font-size: 16px;
+i {
+  font-size: 20px;
   cursor: pointer;
   color: white;
   text-shadow: 0 0 1.5px #000;
+  margin-left: 20px;
+}
+
+.fa-comment:hover {
+  color: lightblue;
 }

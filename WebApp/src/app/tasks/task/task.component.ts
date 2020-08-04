@@ -68,6 +68,14 @@ export class TaskComponent implements OnInit {
     }
   }
 
+  onDeleteClick(): void {
+    this.taskService.deleteTask(this.task.id).then(
+      (val) => {
+        this.hideDetail = true;
+      }
+    )
+  }
+
   onSubmitEdits(): void {
     let temp = this.editForm.targetDate;
     var currTime = new Date(this.editForm.targetDate);

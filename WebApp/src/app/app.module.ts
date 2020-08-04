@@ -24,6 +24,8 @@ import { TaskCreateComponent } from './tasks/task-create/task-create.component';
 import { TaskPageComponent } from './mainapp/task-page/task-page.component';
 import { FeedComponent } from './social/feed/feed.component';
 import { FeedListingComponent } from './social/feed-listing/feed-listing.component';
+import { CommentSectionComponent } from './social/comment-section/comment-section.component';
+import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
  
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { FeedListingComponent } from './social/feed-listing/feed-listing.compone
     TaskPageComponent,
     FeedComponent,
     FeedListingComponent,
+    CommentSectionComponent,
+    FeedPageComponent,
   ],
   imports: [
     BrowserModule,
