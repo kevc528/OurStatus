@@ -19,4 +19,6 @@
     <string name="task_name2">task_name2</string>
     <string name="task_name3">task_name3</string>
     <string name="reset_password">Reset Password</string>
+    <string name="username_completed_task">Username completed task:</string>
+
 </resources>

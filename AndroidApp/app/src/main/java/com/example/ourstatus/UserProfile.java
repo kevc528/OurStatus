@@ -103,7 +103,6 @@ public class UserProfile extends AppCompatActivity{
             @Override
             public void onGlobalLayout() {
                 content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                Log.d(TAG, "signIn:");
                 int height = mBinding.group1.getHeight();
                 int width = height * 13 / 18;
                 LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(width, height);

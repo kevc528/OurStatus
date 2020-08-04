@@ -1,14 +1,15 @@
 package com.example.ourstatus;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.ourstatus.databinding.FeedBinding;
-import com.example.ourstatus.databinding.HomeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,6 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +64,20 @@ public class Feed extends AppCompatActivity {
                 });
     }
 
+    public void createFeed(List<Tasks> feed){
+        final ListView listview = (ListView) findViewById(R.id.listview);
+        DisplayMetrics dm = new DisplayMetrics();
+        Collections.sort(feed);
+        WindowManager windowManager = (WindowManager) this.getSystemService(WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        int height = dm.heightPixels;
+        int width = dm.widthPixels;
+
+        Log.d(TAG, "height: " + height);
+        final FeedAdapter adapter = new FeedAdapter(Feed.this, feed, height, width);
+        listview.setAdapter(adapter);
+    }
+
     public void retrieveFeed(String username){
         db.collection("tasks")
                 .whereEqualTo("creatorUsername", username)
@@ -70,21 +86,18 @@ public class Feed extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            //List<Tasks> feed = new ArrayList<>();
-                            List<String> feed = new ArrayList<>();
+                            List<Tasks> feed = new ArrayList<>();
+                            //List<String> feed = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
                                 Log.d(TAG, "tasks: Found");
-                                //feed.add(document.toObject(Tasks.class));
-                                feed.add(document.getString("title"));
+                                feed.add(document.toObject(Tasks.class));
+                                //feed.add(document.getString("title"));
                             }
 
                             if(feed.size() == 0){//runs when no tasks found
                                 Log.w(TAG, "tasks: Not found", task.getException());
                             } else{
-                                final ListView listview = (ListView) findViewById(R.id.listview);
-                                final StableArrayAdapter adapter = new StableArrayAdapter(Feed.this,
-                                        android.R.layout.simple_list_item_1, feed);
-                                listview.setAdapter(adapter);
+                                createFeed(feed);
                             }
                         } else {
                             Log.w(TAG, "tasks: Not found", task.getException());
@@ -93,11 +106,12 @@ public class Feed extends AppCompatActivity {
                     }
                 });
     }
-    private class StableArrayAdapter extends ArrayAdapter<String> {
 
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+    private class StableArrayAdapter extends ArrayAdapter<Tasks> {
 
-        public StableArrayAdapter(Context context, int textViewResourceId, List<String> objects){
+        HashMap<Tasks, Integer> mIdMap = new HashMap<Tasks, Integer>();
+
+        public StableArrayAdapter(Context context, int textViewResourceId, List<Tasks> objects){
             super(context, textViewResourceId, objects);
             for (int i = 0; i < objects.size(); ++i){
                 mIdMap.put(objects.get(i), i);
@@ -106,7 +120,7 @@ public class Feed extends AppCompatActivity {
 
         @Override
         public long getItemId(int position){
-            String item = getItem(position);
+            Tasks item = getItem(position);
             return mIdMap.get(item);
         }
 
