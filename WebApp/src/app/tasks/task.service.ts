@@ -11,17 +11,17 @@ export class TaskService {
 
   constructor(private firestore: AngularFirestore, private accountService: AccountService) {}
 
-  getTasksForUser(username: string, level: number): Observable<any[]> {
-    return this.firestore.collection('tasks', ref => ref.where('creatorUsername', '==', username)
+  getTasksForUser(creatorId: string, level: number): Observable<any[]> {
+    return this.firestore.collection('tasks', ref => ref.where('creatorId', '==', creatorId)
       .where('level', '==', level)).valueChanges();
   }
 
   /**
-   * getFeedTasks will get the completed tasks of the usernames array
-   * @param usernames the list of friends
+   * getFeedTasks will get the completed tasks of the user id array
+   * @param userIds the list of friends
    */
-  getFeedTasks(usernames: string[]): Observable<any[]> {
-    return this.firestore.collection('tasks', ref => ref.where('creatorUsername', 'in', usernames)
+  getFeedTasks(userIds: string[]): Observable<any[]> {
+    return this.firestore.collection('tasks', ref => ref.where('creatorId', 'in', userIds)
       .where('level', '==', 0).where('dateCompleted', '<', new Date())).valueChanges();
   }
 

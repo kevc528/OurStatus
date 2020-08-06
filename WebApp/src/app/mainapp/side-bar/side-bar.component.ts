@@ -19,7 +19,7 @@ export class SideBarComponent implements OnInit {
   }
 
   onLogOut(): void {
-    this.cookieService.delete('user');
+    this.cookieService.deleteAll('/');
     this.router.navigate(['/login']);
   }
 

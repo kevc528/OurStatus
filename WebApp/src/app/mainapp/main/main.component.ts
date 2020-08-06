@@ -17,7 +17,6 @@ export class MainComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle('OurStatus');
     this.username = this.cookieService.get('user');
-    console.log(this.username);
     if (!this.username) {
       this.router.navigate(['/login']);
     }

@@ -16,9 +16,11 @@ export class TaskCreateComponent implements OnInit {
   reset = true;
   dateString;
   timeString;
+  userId;
 
   constructor(private cookieService: CookieService, private taskService: TaskService) { 
     this.username = this.cookieService.get('user');
+    this.userId = this.cookieService.get('id');
   }
 
   formatDate(date) {
@@ -27,7 +29,6 @@ export class TaskCreateComponent implements OnInit {
         day = '' + d.getDate(),
         year = d.getFullYear();
 
-    
     if (month.length < 2) 
         month = '0' + month;
     if (day.length < 2) 
@@ -38,8 +39,8 @@ export class TaskCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.task = {
-      creatorUsername: this.username,
-      assignees: [this.username],
+      creatorId: this.userId,
+      assignees: [this.userId],
       title: null,
       dateCreated: new Date(),
       dateCompleted: null,
@@ -58,6 +59,8 @@ export class TaskCreateComponent implements OnInit {
     this.reset = true;
     this.task.title = ''
     this.task.remind = false;
+    this.dateString = this.formatDate(new Date());
+    this.timeString = (this.task.targetDate.getHours() > 9 ? this.task.targetDate.getHours() : '0' + this.task.targetDate.getHours()) + ':' + (this.task.targetDate.getMinutes() > 9 ? this.task.targetDate.getMinutes() : '0' + this.task.targetDate.getMinutes());
   }
 
   onSubmit(form: NgForm) {

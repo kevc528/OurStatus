@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, ElementRef, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { CommentService } from '../comment.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AccountService } from 'src/app/users/account.service';
 
 @Component({
   selector: 'app-comment-section',
@@ -14,13 +15,30 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
   commentList;
   commentSubscription;
   username;
+  userId;
   commentText = '';
+  authorIdMap = {};
 
-  constructor(private commentService: CommentService, private cookieService: CookieService) { }
+  constructor(private commentService: CommentService, private cookieService: CookieService, private accountService: AccountService) { }
 
   ngOnInit(): void {
     this.commentSubscription = this.commentService.getCommentsForTask(this.taskId).subscribe(
       (val) => {
+        val.forEach(
+          comment => {
+            if (this.authorIdMap.hasOwnProperty(comment.authorId)) {
+              comment['author'] = this.authorIdMap[comment.authorId];
+            } else {
+              let subscription = this.accountService.getAccountFromId(comment.authorId).subscribe(
+                (res) => {
+                  comment['author'] = res.username;
+                  this.authorIdMap[comment.authorId] = res.username;
+                  subscription.unsubscribe();
+                }
+              )
+            }
+          }
+        )
         this.commentList = val.sort(
           (a,b) => {
             let a_date = new Date(a.date.seconds * 1000);
@@ -31,6 +49,7 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
       }
     )
     this.username = this.cookieService.get('user');
+    this.userId = this.cookieService.get('id');
   }
 
   ngOnDestroy(): void {
@@ -40,7 +59,7 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
   postComment(): void {
     if (this.commentText) {
       let comment = {
-        author: this.username,
+        authorId: this.userId,
         content: this.commentText,
         date: new Date(),
         taskId: this.taskId

@@ -36,7 +36,6 @@ export class TaskComponent implements OnInit {
 
   ngOnInit(): void {
     let date = new Date(this.task.targetDate.seconds * 1000);
-    console.log(date.getHours());
     this.path = this.task.dateCompleted ? "assets/images/checked-checkbox.png" : "assets/images/unchecked-checkbox.png";
     this.editForm = {
       title: this.task.title,
@@ -44,7 +43,6 @@ export class TaskComponent implements OnInit {
       targetTime: (date.getHours() > 9 ? date.getHours() : '0' + date.getHours()) + ':' + (date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()),
       remind: this.task.remind
     };
-    console.log(this.editForm.targetTime);
   }
 
   onTaskClick(): void {

@@ -118,6 +118,7 @@ export class LoginComponent implements OnInit {
             .then((val) => {
               subscription.unsubscribe();
               this.cookieService.set('user', this.username);
+              this.cookieService.set('id', account.id);
               router.navigate(['/app']);
             })
             .catch(function(error) {
@@ -129,6 +130,7 @@ export class LoginComponent implements OnInit {
                 obj.clearFields();
                 subscription.unsubscribe();
               } else {
+                console.log(error);
                 alert(errorMessage);
               }
             });

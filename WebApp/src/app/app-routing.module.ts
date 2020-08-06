@@ -7,6 +7,7 @@ import { StartComponent } from './mainapp/start/start.component';
 import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
 import { TaskPageComponent } from './mainapp/task-page/task-page.component';
 import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
+import { ProfilePageComponent } from './mainapp/profile-page/profile-page.component';
 
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'app', pathMatch: 'prefix', children: [
     { path: 'tasks', component: TaskPageComponent},
     { path:'', component: MainComponent },
-    { path:  'feed', component: FeedPageComponent}
+    { path: 'feed', component: FeedPageComponent},
+    { path: 'profile', component: ProfilePageComponent}
   ]},
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: '', component: StartComponent }

@@ -12,15 +12,19 @@ import { CookieService } from 'ngx-cookie-service';
 export class TaskListComponent implements OnInit, OnDestroy {
 
   taskList = [];
-  username;
+  userId;
   subscription: Subscription;
+  noTasks: boolean;
 
   constructor(private taskService: TaskService, private cookieService: CookieService) { }
 
   ngOnInit(): void {
-    this.username = this.cookieService.get('user');
-    this.subscription = this.taskService.getTasksForUser(this.username, 0).subscribe(
+    this.userId = this.cookieService.get('id');
+    this.subscription = this.taskService.getTasksForUser(this.userId, 0).subscribe(
       val => {
+        if (val.length == 0) {
+          this.noTasks = true;
+        }
         this.taskList = val.sort(
           (a,b) => {
             let a_date = new Date(a.targetDate.seconds * 1000);

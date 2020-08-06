@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-body">
     <ul>
-      <li style="font-size:0.95rem; font-weight: 400;">{{username}}</li>
+      <li style="font-size:0.95rem; font-weight: 400;" [routerLink]="['/app/profile']">{{username}}</li>
       <li [routerLink]="['/login']">Home</li>
       <li [routerLink]="['/app/tasks']">Tasks</li>
       <li [routerLink]="['/app/feed']">Feed</li>

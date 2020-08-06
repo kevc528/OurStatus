@@ -16,6 +16,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   noFriends = false;
   feedTasks = [];
   showComment = false;
+  friendIdMap = {};
   commentTaskId = '';
 
   constructor(private taskService: TaskService, private accountService: AccountService, 
@@ -31,6 +32,21 @@ export class FeedComponent implements OnInit, OnDestroy {
           if (account.friends.length > 0) {
             this.feedSubscription = this.taskService.getFeedTasks(account.friends).subscribe(
               (val) => {
+                val.forEach(
+                  task => {
+                    if (this.friendIdMap.hasOwnProperty(task.creatorId)) {
+                      task['creatorUsername'] = this.friendIdMap[task.creatorId];
+                    } else {
+                      let subscription = this.accountService.getAccountFromId(task.creatorId).subscribe(
+                        (res) => {
+                          task['creatorUsername'] = res.username;
+                          this.friendIdMap[task.creatorId] = res.username;
+                          subscription.unsubscribe();
+                        }
+                      )
+                    }
+                  }
+                )
                 this.feedTasks = val.sort(
                   (a,b) => {
                     let a_date = new Date(a.dateCompleted.seconds * 1000);
@@ -49,8 +65,12 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.accountSubscription.unsubscribe();
-    this.feedSubscription.unsubscribe();
+    if (this.accountSubscription) {
+      this.accountSubscription.unsubscribe();
+    }
+    if (this.feedSubscription) {
+      this.feedSubscription.unsubscribe();
+    }
   }
 
   onCommentSection(taskId: string):void {

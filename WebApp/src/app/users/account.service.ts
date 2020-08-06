@@ -30,8 +30,10 @@ export class AccountService {
   createAccount(account: Account): Promise<any> {
     let password = account["password"];
     delete account["password"];
+    var firestore = this.firestore
     return this.firestore.collection('users').add(account)
-      .then((value) => {
+      .then((doc) => {
+        firestore.collection('users').doc(doc.id).update({'id': doc.id});
         firebase.auth().createUserWithEmailAndPassword(account.email, password).catch(function(error) {
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -94,6 +96,10 @@ export class AccountService {
     var auth = firebase.auth();
     var emailAddress = email;
     return auth.sendPasswordResetEmail(emailAddress);
+  }
+
+  getAccountFromId(id: string): Observable<any> {
+    return this.firestore.collection('users').doc(id).valueChanges();
   }
 
   // deleteAccount(username: string) {
