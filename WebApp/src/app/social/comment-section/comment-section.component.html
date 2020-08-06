@@ -1,7 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<div #commentContainer [scrollTop]="scrollDown">
-  <i (click)="onBackClick()" class="fa fa-arrow-left"></i>
-  <br>
+<div>
   <div class="comment" *ngFor="let comment of commentList">
     <hr>
     <b>{{comment.author}}</b>  {{comment.content}}

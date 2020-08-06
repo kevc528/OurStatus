@@ -7,23 +7,16 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './comment-section.component.html',
   styleUrls: ['./comment-section.component.css']
 })
-export class CommentSectionComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CommentSectionComponent implements OnInit, OnDestroy {
 
   @Input() taskId;
-  @Output() backToFeed = new EventEmitter<any>();
   @ViewChild('commentContainer') commentContainer: ElementRef;
   commentList;
   commentSubscription;
   username;
-  scrollDown=0;
   commentText = '';
 
   constructor(private commentService: CommentService, private cookieService: CookieService) { }
-
-  scrollBottom() {
-    this.scrollDown = this.commentContainer.nativeElement.scrollHeight;
-    console.log(this.scrollDown);
-  }
 
   ngOnInit(): void {
     this.commentSubscription = this.commentService.getCommentsForTask(this.taskId).subscribe(
@@ -35,18 +28,9 @@ export class CommentSectionComponent implements OnInit, OnDestroy, AfterViewInit
             return a_date.valueOf() - b_date.valueOf();
           }
         );
-        this.scrollBottom();
       }
     )
     this.username = this.cookieService.get('user');
-  }
-
-  ngAfterViewInit(): void {
-    this.scrollBottom();
-  }
-
-  onBackClick(): void {
-    this.backToFeed.emit();
   }
 
   ngOnDestroy(): void {
@@ -64,7 +48,6 @@ export class CommentSectionComponent implements OnInit, OnDestroy, AfterViewInit
       this.commentService.addComment(comment).then(
         (val) => {
           this.commentText = '';
-          this.scrollBottom();
         }
       );
     }

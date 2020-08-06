@@ -1,5 +1,10 @@
 h2 {
-  color: #486379
+  color: #486379;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding-bottom: 15px;
+  background-color: white;
 }
 
 .card {
@@ -7,5 +12,25 @@ h2 {
   border-radius: 1rem;
   box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
   overflow:hidden; overflow-y:scroll;
-  height:400px;
+  height:500px;
+}
+
+i {
+  font-size: 20px;
+  cursor: pointer;
+  text-shadow: 0 0 1.5px #000;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.fa-arrow-left {
+  color:#5E64A0;
+}
+
+.comment-section {
+  flex: 5;
+  height: 500px;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow:auto;
 }

@@ -2,9 +2,9 @@
   <div class="card-body">
     <ul>
       <li style="font-size:0.95rem; font-weight: 400;">{{username}}</li>
-      <li><a href="/app">Home</a></li>
-      <li><a href="/app/tasks">Tasks</a></li>
-      <li><a href="/app/feed">Feed</a></li>
+      <li [routerLink]="['/login']">Home</li>
+      <li [routerLink]="['/app/tasks']">Tasks</li>
+      <li [routerLink]="['/app/feed']">Feed</li>
       <li>Groups</li>
       <li>Settings</li>
       <li (click)="onLogOut()">Log out</li>

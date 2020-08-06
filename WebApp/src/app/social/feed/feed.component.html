@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <body>
   <div class="container">
-    <div class="card">
+    <div class="card" [class.comment-section]="showComment">
       <div [hidden]="showComment">
         <div *ngIf="!noFriends" class="card-body">
-          <h2>Recent</h2>
+          <h2>
+            <hr style="height:0px; margin-top: 0; visibility:hidden;" />
+            Recent
+          </h2>
           <app-feed-listing *ngFor="let task of feedTasks" [task]="task" (comments)="onCommentSection($event)"></app-feed-listing>
         </div>
         <div *ngIf="noFriends" class="card-body">
@@ -13,7 +16,11 @@
       </div>
       <div *ngIf="showComment">
         <div class="card-body">
-          <h2>Comments</h2>
+          <h2>
+            <hr style="height:0px; margin-top: 0; visibility:hidden;" />
+            <i (click)="onBackFeed()" class="fa fa-arrow-left"></i>
+            Comments
+          </h2>
           <app-comment-section [taskId]="commentTaskId" (backToFeed)="onBackFeed()"></app-comment-section>
         </div>
       </div>
