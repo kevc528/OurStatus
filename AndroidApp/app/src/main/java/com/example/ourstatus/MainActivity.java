@@ -13,6 +13,8 @@ import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
 import com.example.ourstatus.databinding.HomeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -114,8 +116,17 @@ public class MainActivity extends AppCompatActivity{
                                     am_pm = "PM";
 
                                 String strHrsToShow = (c.get(Calendar.HOUR) == 0) ?"12":c.get(Calendar.HOUR)+"";
+                                String strMinToShow;
+                                int intMinToShow = c.get(Calendar.MINUTE);
 
-                                timeText.setText(strHrsToShow+":"+ c.get(Calendar.MINUTE)+" "+am_pm);
+                                if(intMinToShow < 10){
+                                    strMinToShow = "0" + intMinToShow;
+                                } else{
+                                    strMinToShow = "" + intMinToShow;
+                                }
+
+
+                                timeText.setText(strHrsToShow+":" + strMinToShow + " "+am_pm);
                             }
                         }, hour, minute, false);
                 timePickerDialog.show();
@@ -124,9 +135,23 @@ public class MainActivity extends AppCompatActivity{
 
 
     }
-
+    public boolean validFields(){
+        if(mBinding.taskName.getText().toString().equals("")
+        || mBinding.dateText.getText().toString().equals("Date")
+                || mBinding.timeText.getText().toString().equals("Time")){
+            return false;
+        } else{
+            return true;
+        }
+    }
 
     public void createTask(String creatorUsername){
+        if(!validFields()){
+            Toast.makeText(MainActivity.this, "Empty field",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         boolean remind;
         NewTask task;
         Timestamp targetDate = new Timestamp(taskTarget.getTime());
@@ -144,7 +169,13 @@ public class MainActivity extends AppCompatActivity{
 
         task = new NewTask(new ArrayList<String>(), creatorUsername, id, title, null, dateCreated, targetDate, 0, remind, new ArrayList<String>(), new ArrayList<String>(), 0);
         ref.set(task);
-        Log.w(TAG, "userInfo: search failed");
+        mBinding.taskName.setText("");
+        mBinding.dateText.setText("Date");
+        mBinding.switch1.setChecked(false);
+        mBinding.timeText.setText("Time");
+        Toast.makeText(MainActivity.this, "Task created",
+                Toast.LENGTH_SHORT).show();
+        Log.w(TAG, "Task created");
     }
 
 

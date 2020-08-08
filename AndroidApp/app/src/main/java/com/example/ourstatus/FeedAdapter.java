@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,22 +41,32 @@ public class FeedAdapter extends ArrayAdapter<Tasks> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.test, parent, false);
+        View rowView = inflater.inflate(R.layout.feed_task, parent, false);
         Tasks task = feed.get(position);
+        String taskId = task.getId();
         String taskTitle = task.getTitle();
         String username = task.getCreatorUsername();
+        String likes = Integer.toString(task.getLikes());
         int usernameLength = username.length();
+
+        if(taskTitle.length() > 20){
+            taskTitle = taskTitle.substring(0,20) + "...";
+        }
 
         rowView.setLayoutParams(param);
 
         SpannableStringBuilder str = new SpannableStringBuilder(username + " Completed Task:");
         str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, usernameLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
+        TextView likeCount = (TextView) rowView.findViewById(R.id.like_count);
         TextView completedUser= (TextView) rowView.findViewById(R.id.completed_user);
         TextView taskName = (TextView) rowView.findViewById(R.id.task_name);
+        TextView taskIdView = (TextView) rowView.findViewById(R.id.task_id);
+
+
         completedUser.setText(str);
         taskName.setText(taskTitle);
-
+        likeCount.setText(likes);
+        taskIdView.setText(taskId);
 
         return rowView;
     }

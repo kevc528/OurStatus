@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/profile_picture"
+            app:layout_constraintTop_toTopOf="@id/profile_image_h1"
+            app:layout_constraintBottom_toBottomOf="@id/profile_image_h2"
+            app:layout_constraintStart_toStartOf="@id/profile_image_v1"
+            app:layout_constraintEnd_toEndOf="@id/profile_image_v2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/scale_text"
+            android:fontFamily="@font/roboto_light"
+            android:visibility="invisible"
+            android:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@id/scale_text_h2"
+            app:layout_constraintStart_toStartOf="@id/scale_text_v1"
+            app:layout_constraintTop_toTopOf="@id/scale_text_h1"
+            app:layout_constraintEnd_toEndOf="@id/scale_text_v2"/>
+
+        <TextView
+            android:id="@+id/comment_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fontFamily="@font/roboto_light"
+            android:orientation="horizontal"
+            android:text="@string/comment_text"
+            android:textAppearance="@style/normal_text"
+            app:layout_constraintBottom_toBottomOf="@id/comment_text_h2"
+            app:layout_constraintStart_toStartOf="@id/comment_text_v1"
+            app:layout_constraintTop_toTopOf="@id/comment_text_h1"
+            app:layout_constraintEnd_toEndOf="@id/comment_text_v2"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profile_image_v1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".03" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profile_image_v2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".10" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profile_image_h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profile_image_h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".40" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/comment_text_v1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".12" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/comment_text_v2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".90" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/comment_text_h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".09" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/comment_text_h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".94" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/scale_text_v1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".12" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/scale_text_v2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".90" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/scale_text_h1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".09" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/scale_text_h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".34" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>
