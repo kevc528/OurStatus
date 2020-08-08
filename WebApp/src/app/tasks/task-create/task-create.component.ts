@@ -48,7 +48,6 @@ export class TaskCreateComponent implements OnInit {
       remind: false,
       level: 0,
       likes: 0,
-      comments: [],
       likedUsers: []
     }
     this.dateString = this.formatDate(new Date());

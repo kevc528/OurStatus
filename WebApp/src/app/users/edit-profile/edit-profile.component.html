@@ -5,8 +5,12 @@
   </button>
 </div>
 <div class="modal-body">
-  <h3>Edit Username</h3>
-  <p>Your current username is</p>
+  <form #editForm="ngForm">
+    <h3>Edit Username</h3>
+    <input text="text" [(ngModel)]="username" name="username">
+    <h3>Edit Profile Picture</h3>
+    <button class="btn btn-primary" type="submit" [disabled]="!editForm.dirty" (click)="onSubmitEdits()">Submit changes</button>
+  </form>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>

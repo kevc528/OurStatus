@@ -2,3 +2,15 @@
 h1 {
   color:#5E64A0;
 }
+
+.content {
+  margin-left: 210px;
+}
+  
+app-side-bar {
+  margin-left: 1%;
+  margin-top: 3%;
+  float:left;
+  padding:10px;
+  width:210px;
+}

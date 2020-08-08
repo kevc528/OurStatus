@@ -1,6 +1,6 @@
 .card {
-  width: 7rem;
-  height: 90%;
+  width: 130px;
+  height: 80%;
   background-color: #DDE7F2;
   border-radius: 1.5rem;
   border: 0;
@@ -21,7 +21,20 @@ li {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+.logout {
+  margin-bottom: 40%;
+}
+
 a {
   color: black;
   text-decoration:none;
+}
+
+.avatar {
+  vertical-align: middle;
+  margin-left: 18px;
+  margin-bottom: 2px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }

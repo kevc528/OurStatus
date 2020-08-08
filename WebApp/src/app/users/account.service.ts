@@ -5,13 +5,14 @@ import { Account } from '../shared/model/account';
 import { AngularFireModule } from '@angular/fire';
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  constructor(private firestore: AngularFirestore) { 
+  constructor(private firestore: AngularFirestore, private storage: AngularFireStorage) { 
     if (!firebase.apps.length){
       var firebaseConfig = {
         apiKey: "AIzaSyB-CuxGBSwGbgsM88C97F4pU7jLSMBVavw",
@@ -87,6 +88,10 @@ export class AccountService {
     return accountDoc.update(newData);
   }
 
+  getAccountsByIds(userIds: string[]): Observable<any> {
+    return this.firestore.collection('users', ref => ref.where('id', 'in', userIds)).valueChanges();
+  }
+
   overwriteAccount(accountKey: string, newData): Promise<void> {
     let accountDoc = this.firestore.collection('users').doc(accountKey);
     return accountDoc.set(newData);
@@ -100,6 +105,10 @@ export class AccountService {
 
   getAccountFromId(id: string): Observable<any> {
     return this.firestore.collection('users').doc(id).valueChanges();
+  }
+
+  getPicDownload(path: string): Observable<any> {
+    return this.storage.ref(path).getDownloadURL();
   }
 
   // deleteAccount(username: string) {

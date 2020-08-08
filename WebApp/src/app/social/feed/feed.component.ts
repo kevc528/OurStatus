@@ -16,6 +16,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   noFriends = false;
   feedTasks = [];
   showComment = false;
+  mappingSubscription;
   friendIdMap = {};
   commentTaskId = '';
 
@@ -32,28 +33,30 @@ export class FeedComponent implements OnInit, OnDestroy {
           if (account.friends.length > 0) {
             this.feedSubscription = this.taskService.getFeedTasks(account.friends).subscribe(
               (val) => {
+                let tasks = val;
+                let userList = [];
                 val.forEach(
                   task => {
-                    if (this.friendIdMap.hasOwnProperty(task.creatorId)) {
-                      task['creatorUsername'] = this.friendIdMap[task.creatorId];
-                    } else {
-                      let subscription = this.accountService.getAccountFromId(task.creatorId).subscribe(
-                        (res) => {
-                          task['creatorUsername'] = res.username;
-                          this.friendIdMap[task.creatorId] = res.username;
-                          subscription.unsubscribe();
-                        }
-                      )
-                    }
+                    userList.push(task.creatorId);
                   }
                 )
-                this.feedTasks = val.sort(
-                  (a,b) => {
-                    let a_date = new Date(a.dateCompleted.seconds * 1000);
-                    let b_date = new Date(b.dateCompleted.seconds * 1000);
-                    return b_date.valueOf() - a_date.valueOf();
+                this.mappingSubscription = this.accountService.getAccountsByIds(userList).subscribe(
+                  (val) => {
+                    val.forEach(account => {
+                      this.friendIdMap[account.id] = account.username;
+                    });
+                    tasks.forEach(task => {
+                      task['creatorUsername'] = this.friendIdMap[task.creatorId];
+                    });
+                    this.feedTasks = tasks.sort(
+                      (a,b) => {
+                        let a_date = new Date(a.dateCompleted.seconds * 1000);
+                        let b_date = new Date(b.dateCompleted.seconds * 1000);
+                        return b_date.valueOf() - a_date.valueOf();
+                      }
+                    );
                   }
-                );
+                )
               }
             );
           } else {
@@ -70,6 +73,9 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
     if (this.feedSubscription) {
       this.feedSubscription.unsubscribe();
+    }
+    if (this.mappingSubscription) {
+      this.mappingSubscription.unsubscribe();
     }
   }
 

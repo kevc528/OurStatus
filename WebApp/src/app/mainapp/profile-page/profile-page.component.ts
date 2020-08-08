@@ -14,15 +14,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   username: string;
   account;
   accountSubscription;
+  profilePic;
+  userId;
 
   constructor(private cookieService: CookieService, private accountService: AccountService,
     private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.username = this.cookieService.get('user');
-    this.accountSubscription = this.accountService.getAccount(this.username).subscribe(
+    this.userId = this.cookieService.get('id');
+    this.accountSubscription = this.accountService.getAccountFromId(this.userId).subscribe(
       (val) => {
         this.account = val;
+        this.profilePic = this.accountService.getPicDownload(this.account.picture);
+        this.username = this.account.username;
+        console.log(this.username);
       }
     )
   }

@@ -1,6 +1,10 @@
 <app-side-bar></app-side-bar>
 <div class="content">
   <br>
-  <h1>{{username}}</h1>
+  <h1>My Profile</h1>
+  <h2>{{username}}</h2>
+  <img [src]="profilePic | async">
+  <br>
+  <br>
   <button class="btn btn-large btn-outline-primary" (click)="openEditModal()">Edit Profile</button>
 </div>

@@ -58,9 +58,11 @@ export class TaskComponent implements OnInit {
   onInfoClick(): void {
     this.hideDetail = !this.hideDetail;
     if (this.hideDetail) {
+      let date = new Date(this.task.targetDate.seconds * 1000);
       this.editForm = {
         title: this.task.title,
         targetDate: this.formatDate(new Date(this.task.targetDate.seconds * 1000)),
+        targetTime: (date.getHours() > 9 ? date.getHours() : '0' + date.getHours()) + ':' + (date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()),
         remind: this.task.remind
       };
     }
@@ -78,6 +80,7 @@ export class TaskComponent implements OnInit {
     let temp = this.editForm.targetDate;
     var currTime = new Date(this.editForm.targetDate);
     this.editForm.targetDate = new Date(this.editForm.targetDate + ' ' + this.editForm.targetTime);
+    delete this.editForm['targetTime'];
     this.taskService.editTask(this.task.id, this.editForm);
     this.editForm.targetDate = temp;
     this.hideDetail = true;

@@ -10,4 +10,5 @@ export interface Account {
     email: string;
     friends: string[];
     groupIds: number[];
+    picture: string;
 }

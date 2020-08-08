@@ -12,8 +12,9 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
 
   @Input() taskId;
   @ViewChild('commentContainer') commentContainer: ElementRef;
-  commentList;
+  commentList = [];
   commentSubscription;
+  accountSubscription;
   username;
   userId;
   commentText = '';
@@ -24,28 +25,27 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.commentSubscription = this.commentService.getCommentsForTask(this.taskId).subscribe(
       (val) => {
-        val.forEach(
-          comment => {
-            if (this.authorIdMap.hasOwnProperty(comment.authorId)) {
-              comment['author'] = this.authorIdMap[comment.authorId];
-            } else {
-              let subscription = this.accountService.getAccountFromId(comment.authorId).subscribe(
-                (res) => {
-                  comment['author'] = res.username;
-                  this.authorIdMap[comment.authorId] = res.username;
-                  subscription.unsubscribe();
+        if (val.length > 0) {
+          let userList = [];
+          let comments = val;
+          val.forEach(comment => {
+            userList.push(comment.authorId);
+          })
+          this.accountSubscription = this.accountService.getAccountsByIds(userList).subscribe(
+            (val) => {
+              val.forEach(account => {
+                this.authorIdMap[account.id] = account.username;
+              });
+              this.commentList = comments.sort(
+                (a,b) => {
+                  let a_date = new Date(a.date.seconds * 1000);
+                  let b_date = new Date(b.date.seconds * 1000);
+                  return a_date.valueOf() - b_date.valueOf();
                 }
-              )
+              );
             }
-          }
-        )
-        this.commentList = val.sort(
-          (a,b) => {
-            let a_date = new Date(a.date.seconds * 1000);
-            let b_date = new Date(b.date.seconds * 1000);
-            return a_date.valueOf() - b_date.valueOf();
-          }
-        );
+          )
+        }
       }
     )
     this.username = this.cookieService.get('user');
@@ -54,6 +54,10 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.commentSubscription.unsubscribe();
+
+    if (this.accountSubscription) {
+      this.accountSubscription.unsubscribe();
+    }
   }
 
   postComment(): void {
