@@ -1,16 +1,9 @@
 package com.example.ourstatus;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BlendModeColorFilter;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.widget.ImageViewCompat;
 
 import com.example.ourstatus.databinding.UserProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,7 +28,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -59,12 +49,12 @@ public class UserProfile extends AppCompatActivity{
             public void onGlobalLayout() {
                 content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 sizeIcons();
-                getUsername();
+                getUserId();
             }
         });
     }
 
-    public void checkTask(View v){
+    public void completeTask(View v){
         TextView tv = null;
         ImageView i = (ImageView) v;
         ViewGroup row = (ViewGroup) v.getParent();
@@ -141,9 +131,9 @@ public class UserProfile extends AppCompatActivity{
 
     }
 
-    public void getTasks(String username){
+    public void getTasks(String creatorId){
         db.collection("tasks")
-                .whereEqualTo("creatorUsername", username)
+                .whereEqualTo("id", creatorId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -168,7 +158,7 @@ public class UserProfile extends AppCompatActivity{
                     }
                 });
     }
-    public void getUsername(){
+    public void getUserId(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String email = currentUser.getEmail();
 
@@ -179,11 +169,11 @@ public class UserProfile extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            String username;
+                            String id;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, "username: Found");
-                                username = document.getString("username");
-                                getTasks(username);
+                                id = document.getString("id");
+                                getTasks(id);
                                 return;
                             }
 
@@ -215,8 +205,6 @@ public class UserProfile extends AppCompatActivity{
         int i = v.getId();
         if(i == R.id.profile_image){
             chooseProfile();
-        } else{
-
         }
     }
 }

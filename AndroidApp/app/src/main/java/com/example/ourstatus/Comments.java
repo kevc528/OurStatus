@@ -3,25 +3,25 @@ package com.example.ourstatus;
 import com.google.firebase.Timestamp;
 
 public class Comments{
-    String author, content, taskId;
+    String authorId, content, taskId;
     Timestamp date;
 
     public Comments() {
     }
 
-    public Comments(String author, String content, String taskId, Timestamp date) {
-        this.author = author;
+    public Comments(String authorId, String content, String taskId, Timestamp date) {
+        this.authorId = authorId;
         this.content = content;
         this.taskId = taskId;
         this.date = date;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 
     public String getContent() {

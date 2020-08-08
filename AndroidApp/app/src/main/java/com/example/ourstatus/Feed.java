@@ -1,20 +1,13 @@
 package com.example.ourstatus;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,7 +19,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -48,21 +40,26 @@ public class Feed extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "GetUsername";
     private List<Tasks> feed;
+    private List<Comments> comments;
 
     public void onStart(){
+        super.onStart();
+        mBinding = FeedBinding.inflate(getLayoutInflater());
+        setContentView(mBinding.getRoot());
+
+        feed = new ArrayList<>();
+        comments = new ArrayList<>();
         dm = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) this.getSystemService(WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(dm);
         height = dm.heightPixels;
         width = dm.widthPixels;
-        super.onStart();
-        mBinding = FeedBinding.inflate(getLayoutInflater());
-        setContentView(mBinding.getRoot());
+
         mAuth = FirebaseAuth.getInstance();
-        getUsername();
+        getFriendIds();
     }
 
-    public void getUsername(){
+    public void getFriendIds(){
         FirebaseUser currentUser = mAuth.getCurrentUser();
         String email = currentUser.getEmail();
 
@@ -73,45 +70,39 @@ public class Feed extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            String username;
+                            List<String> friends;
+                            User u;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "username: Found");
-                                username = document.getString("username");
-                                retrieveFeed(username);
+                                Log.d(TAG, "id: Found");
+                                u = document.toObject(User.class);
+                                friends = u.getFriends();
+                                retrieveFeed(friends);
                                 return;
                             }
 
-                            Log.w(TAG, "username: Not found", task.getException());
+                            Log.w(TAG, "id: Not found", task.getException());
                         } else {
-                            Log.w(TAG, "username: Not found", task.getException());
+                            Log.w(TAG, "id: Not found", task.getException());
                         }
                     }
                 });
     }
 
-    public void createFeed(List<Tasks> feed){
-        this.feed = feed;
-        final ListView listview = (ListView) findViewById(R.id.listview);
-        Collections.sort(feed);
-        Log.d(TAG, "height: " + height);
-        final FeedAdapter adapter = new FeedAdapter(Feed.this, feed, height, width);
-        listview.setAdapter(adapter);
-    }
-
-    public void retrieveFeed(String username){
+    public void retrieveFeed(List<String> friends){
         db.collection("tasks")
-                .whereEqualTo("creatorUsername", username)
+                .whereIn("creatorId", friends)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            List<Tasks> feed = new ArrayList<>();
+                            List<String> creatorIds = new ArrayList<>();
                             Tasks t;
                             for (QueryDocumentSnapshot document : task.getResult()) {//runs completed tasks found
                                 t = document.toObject(Tasks.class);
                                 if(t.getDateCompleted() != null){
-                                    feed.add(document.toObject(Tasks.class));
+                                    feed.add(t);
+                                    creatorIds.add(t.getCreatorId());
                                 }
                             }
 
@@ -119,31 +110,54 @@ public class Feed extends AppCompatActivity {
                                 Log.w(TAG, "tasks: Not found", task.getException());
                             } else{
                                 Log.d(TAG, "tasks: Found");
-                                createFeed(feed);
+                                getFeedUsernames(creatorIds);
                             }
                         } else {
-                            Log.w(TAG, "tasks: Not found", task.getException());
+                            Log.w(TAG, "tasks: error finding", task.getException());
 
                         }
                     }
                 });
     }
 
-    public void commentWindow(List<Comments> comments){
-        Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.comment_section);
-        ListView commentList = (ListView) dialog.findViewById(R.id.comments_list);
-        CommentAdapter adapter = new CommentAdapter(Feed.this, comments, height, width);
-        commentList.setAdapter(adapter);
+    public void getFeedUsernames(List<String> creatorIds){
+        db.collection("users")
+                .whereIn("id", creatorIds)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            HashMap<String, String> uMap = new HashMap<>();
+                            String username;
+                            String id;
+                            for (QueryDocumentSnapshot document : task.getResult()) {//runs completed tasks found
+                                username = document.getString("username");
+                                id = document.getString("id");
+                                uMap.put(id, username);
+                            }
 
-        //CommentDialog dialog = new CommentDialog(Feed.this);
-        //dialog.setContentView(R.layout.comment_section);
-        //dialog.setTitle("Comments");
-        dialog.show();
-        Window window = dialog.getWindow();
-        window.setLayout(width, height);
+                            if(uMap.size() == 0){//runs when no tasks found
+                                Log.w(TAG, "users: Not found", task.getException());
+                            } else{
+                                createFeed(uMap);
+                                Log.d(TAG, "users: Found");
+                            }
+                        } else {
+                            Log.w(TAG, "users: error finding", task.getException());
+
+                        }
+                    }
+                });
     }
 
+    public void createFeed(HashMap<String, String> map){
+        final ListView listview = (ListView) findViewById(R.id.listview);
+        Collections.sort(feed);
+        Log.d(TAG, "height: " + height);
+        final FeedAdapter adapter = new FeedAdapter(Feed.this, feed, map ,height, width);
+        listview.setAdapter(adapter);
+    }
 
     public void comment(View v){
         ListView lv = (ListView) v.getParent().getParent().getParent();
@@ -156,12 +170,12 @@ public class Feed extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            List<Comments> comments = new ArrayList<>();
                             Comments c;
+                            List<String> authorIds = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {//runs completed tasks found
-
                                 c = document.toObject(Comments.class);
                                 comments.add(c);
+                                authorIds.add(c.getAuthorId());
                             }
 
                             if(comments.size() == 0){//runs when no tasks found
@@ -169,7 +183,7 @@ public class Feed extends AppCompatActivity {
                             } else{
                                 Log.d(TAG, "comments: Found");
                                 Log.d(TAG, "" + comments.size());
-                                commentWindow(comments);
+                                getCommentIds(authorIds);
                             }
                         } else {
                             Log.w(TAG, "comments: Not found", task.getException());
@@ -177,6 +191,49 @@ public class Feed extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void getCommentIds(List<String> authorIds){
+        db.collection("users")
+                .whereIn("id", authorIds)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            HashMap<String, String> uMap = new HashMap<>();
+                            String username;
+                            String id;
+                            for (QueryDocumentSnapshot document : task.getResult()) {//runs completed tasks found
+                                username = document.getString("username");
+                                id = document.getString("id");
+                                uMap.put(id, username);
+                            }
+
+                            if(uMap.size() == 0){//runs when no tasks found
+                                Log.w(TAG, "users: Not found", task.getException());
+                            } else{
+                                displayComments(uMap);
+                                Log.d(TAG, "users: Found");
+                            }
+                        } else {
+                            Log.w(TAG, "users: error finding", task.getException());
+
+                        }
+                    }
+                });
+    }
+
+    public void displayComments(HashMap<String, String> uMap){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.comment_section);
+        ListView commentList = (ListView) dialog.findViewById(R.id.comments_list);
+        CommentAdapter adapter = new CommentAdapter(Feed.this, comments, uMap, height, width);
+        commentList.setAdapter(adapter);
+
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(width, height);
     }
 
     public void like(View v) {

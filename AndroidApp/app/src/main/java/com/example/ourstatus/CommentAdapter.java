@@ -12,19 +12,26 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 import java.util.List;
 
 public class CommentAdapter extends ArrayAdapter<Comments> {
+    private HashMap<String, String> uMap;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private List<Comments> comments;
     private final Context context;
     private ConstraintLayout.LayoutParams param;
     private static final String TAG = "GetUsername";
 
-    public CommentAdapter(Context context, List<Comments> comments, int height, int width) {
+    public CommentAdapter(Context context, List<Comments> comments, HashMap<String, String> uMap, int height, int width) {
         super(context, -1, comments);
         this.context = context;
         this.comments= comments;
-
+        this.uMap = uMap;
         param = new ConstraintLayout.LayoutParams(width, (int) ((int) height * .11));
     }
 
@@ -34,7 +41,9 @@ public class CommentAdapter extends ArrayAdapter<Comments> {
         View rowView = inflater.inflate(R.layout.comment, parent, false);
         Comments comment = comments.get(position);
         String commentString = comment.getContent();
-        String username = comment.getAuthor();
+        String creatorId = comment.getAuthorId();
+        String username = uMap.get(creatorId);
+
         int usernameLength = username.length();
 
         rowView.setLayoutParams(param);

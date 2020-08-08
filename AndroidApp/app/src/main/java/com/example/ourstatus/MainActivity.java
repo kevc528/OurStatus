@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public void createTask(String creatorUsername){
+    public void createTask(String creatorId){
         if(!validFields()){
             Toast.makeText(MainActivity.this, "Empty field",
                     Toast.LENGTH_SHORT).show();
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
         boolean remind;
-        NewTask task;
+        Tasks task;
         Timestamp targetDate = new Timestamp(taskTarget.getTime());
         Timestamp dateCreated = new Timestamp(new Date());
         String title = mBinding.taskName.getText().toString();
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity{
             remind = false;
         }
 
-        task = new NewTask(new ArrayList<String>(), creatorUsername, id, title, null, dateCreated, targetDate, 0, remind, new ArrayList<String>(), new ArrayList<String>(), 0);
+        task = new Tasks(new ArrayList<String>(), creatorId, id, title, null, dateCreated, targetDate, 0, remind, new ArrayList<String>(), new ArrayList<String>(), 0);
         ref.set(task);
         mBinding.taskName.setText("");
         mBinding.dateText.setText("Date");
@@ -190,11 +190,11 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            String username;
+                            String userId;
                             for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
                                 Log.d(TAG, "userInfo: Found");
-                                username = document.getString("username");
-                                createTask(username);
+                                userId = document.getString("id");
+                                createTask(userId);
                                 return;
                             }
                         } else {

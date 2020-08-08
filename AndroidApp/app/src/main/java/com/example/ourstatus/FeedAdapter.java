@@ -8,32 +8,36 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import org.w3c.dom.Text;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class FeedAdapter extends ArrayAdapter<Tasks> {
     private List<Tasks> feed;
+    private HashMap<String, String> uMap;
     private final Context context;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ConstraintLayout.LayoutParams param;
     private static final String TAG = "GetUsername";
-    private int width;
 
 
-    public FeedAdapter(Context context, List<Tasks> feed, int height, int width) {
+    public FeedAdapter(Context context, List<Tasks> feed, HashMap<String, String> uMap, int height, int width) {
         super(context, -1, feed);
         this.context = context;
         this.feed = feed;
+        this.uMap = uMap;
 
         param = new ConstraintLayout.LayoutParams(width, (int) ((int) height * .15));
     }
@@ -43,15 +47,13 @@ public class FeedAdapter extends ArrayAdapter<Tasks> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.feed_task, parent, false);
         Tasks task = feed.get(position);
-        String taskId = task.getId();
         String taskTitle = task.getTitle();
-        String username = task.getCreatorUsername();
+        String creatorId = task.getCreatorId();
         String likes = Integer.toString(task.getLikes());
-        int usernameLength = username.length();
+        String username = uMap.get(creatorId);
 
-        if(taskTitle.length() > 20){
-            taskTitle = taskTitle.substring(0,20) + "...";
-        }
+
+        int usernameLength = username.length();
 
         rowView.setLayoutParams(param);
 
@@ -60,13 +62,11 @@ public class FeedAdapter extends ArrayAdapter<Tasks> {
         TextView likeCount = (TextView) rowView.findViewById(R.id.like_count);
         TextView completedUser= (TextView) rowView.findViewById(R.id.completed_user);
         TextView taskName = (TextView) rowView.findViewById(R.id.task_name);
-        TextView taskIdView = (TextView) rowView.findViewById(R.id.task_id);
 
 
         completedUser.setText(str);
         taskName.setText(taskTitle);
         likeCount.setText(likes);
-        taskIdView.setText(taskId);
 
         return rowView;
     }

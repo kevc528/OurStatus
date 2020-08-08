@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Tasks implements Comparable<Tasks> {
     private List<String> assignees, comments, likedUsers;
-    private String creatorUsername, id, title;
+    private String creatorId, id, title;
     private Timestamp dateCompleted, dateCreated, targetDate;
     private int level, likes;
     private boolean remind;
@@ -16,9 +16,9 @@ public class Tasks implements Comparable<Tasks> {
     public Tasks() {
     }
 
-    public Tasks(List<String> assignees, String creatorUsername, String id, String title, Timestamp dateCompleted, Timestamp dateCreated, Timestamp targetDate, int level, boolean remind, List<String> comments, List<String> likedUsers, int likes) {
+    public Tasks(List<String> assignees, String creatorId, String id, String title, Timestamp dateCompleted, Timestamp dateCreated, Timestamp targetDate, int level, boolean remind, List<String> comments, List<String> likedUsers, int likes) {
         this.assignees = assignees;
-        this.creatorUsername = creatorUsername;
+        this.creatorId = creatorId;
         this.id = id;
         this.title = title;
         this.dateCompleted = dateCompleted;
@@ -36,12 +36,12 @@ public class Tasks implements Comparable<Tasks> {
         this.assignees = assignees;
     }
 
-    public String getCreatorUsername() {
-        return creatorUsername;
+    public String getCreatorId() {
+        return creatorId;
     }
 
-    public void setCreatorUsername(String creatorUsername) {
-        this.creatorUsername = creatorUsername;
+    public void setCreatorId(String creatorId) {
+        this.creatorId = creatorId;
     }
 
     public String getId() {

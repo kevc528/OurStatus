@@ -1,5 +1,6 @@
 package com.example.ourstatus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -49,11 +50,8 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
         updateUI(currentUser);*/
     }
 
-    private void createAccount(String email, String username, String password, String firstName, String lastName) {
-        Log.d(TAG, "createAccount:" + email);
-        if (!validateForm()) {
-            return;
-        }
+    public void checkUsername(){
+        String username = mBinding.username.getText().toString();
 
         db.collection("users")
                 .whereEqualTo("username", username)
@@ -62,16 +60,29 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.w(TAG, "username: already used", task.getException());
-                            Toast.makeText(CreateAccount.this, "Username taken",
-                                    Toast.LENGTH_SHORT).show();
-                            return;
-                        } else {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.w(TAG, "username: already used", task.getException());
+                                Toast.makeText(CreateAccount.this, "Username taken" ,
+                                        Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            checkEmail();
                             Log.w(TAG, "username: not used", task.getException());
+
+
+
+                        } else {
+
+                            Log.w(TAG, "username: error in query", task.getException());
                         }
                     }
                 });
 
+
+    }
+
+    private void checkEmail(){
+        String email = mBinding.eMail.getText().toString();
         db.collection("users")
                 .whereEqualTo("email", email)
                 .get()
@@ -79,17 +90,29 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            Log.w(TAG, "email: already used", task.getException());
-                            Toast.makeText(CreateAccount.this, "Email taken",
-                                    Toast.LENGTH_SHORT).show();
-                            return;
-                        } else {
+                            QuerySnapshot  q = task.getResult();
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.w(TAG, "email: already used", task.getException());
+                                Toast.makeText(CreateAccount.this, "Email taken",
+                                        Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            createAccount(mBinding.eMail.getText().toString(), mBinding.username.getText().toString(), mBinding.password.getText().toString(),
+                                        mBinding.firstName.getText().toString(), mBinding.lastName.getText().toString());
                             Log.w(TAG, "email: not used", task.getException());
+
+                        } else {
+                            Log.w(TAG, "email: error in query", task.getException());
                         }
                     }
                 });
 
-        addAccount(new User(firstName, lastName, email, username, new ArrayList<String>(), new ArrayList<String>()));
+    }
+
+    private void createAccount(String email, String username, String password, String firstName, String lastName) {
+        Log.d(TAG, "createAccount:" + email);
+
+        addAccount(new User(firstName, lastName, email, username, new ArrayList<String>(), new ArrayList<String>(), null));
 
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -115,27 +138,40 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
     }
 
     private void addAccount(User newUser){
-        db.collection("users")
-                .add(newUser)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
+        DocumentReference ref = db.collection("users").document();
+        String id = ref.getId();
+        newUser.setId(id);
+        ref.set(newUser);
     }
 
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = mBinding.username.getText().toString();
+        String firstName = mBinding.firstName.getText().toString();
+        if (TextUtils.isEmpty(firstName)) {
+            mBinding.firstName.setError("Required.");
+            valid = false;
+        } else {
+            mBinding.firstName.setError(null);
+        }
+
+        String lastName = mBinding.lastName.getText().toString();
+        if (TextUtils.isEmpty(lastName)) {
+            mBinding.lastName.setError("Required.");
+            valid = false;
+        } else {
+            mBinding.lastName.setError(null);
+        }
+        String email = mBinding.eMail.getText().toString();
         if (TextUtils.isEmpty(email)) {
+            mBinding.eMail.setError("Required.");
+            valid = false;
+        } else {
+            mBinding.eMail.setError(null);
+        }
+
+        String username = mBinding.username.getText().toString();
+        if (TextUtils.isEmpty(username)) {
             mBinding.username.setError("Required.");
             valid = false;
         } else {
@@ -150,12 +186,26 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
             mBinding.password.setError(null);
         }
 
+        String passwordConfirm = mBinding.password.getText().toString();
+        if (TextUtils.isEmpty(password)) {
+            mBinding.confirmPassword.setError("Required.");
+            valid = false;
+            return valid;
+        } else {
+            mBinding.confirmPassword.setError(null);
+        }
+
+        if (!passwordConfirm.equals(password)) {
+            mBinding.confirmPassword.setError("Passwords do not match");
+            valid = false;
+        }
+
         return valid;
     }
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            setContentView(R.layout.home);
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
@@ -164,10 +214,11 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.createAccountButton) {
-            createAccount(mBinding.eMail.getText().toString(), mBinding.username.getText().toString(), mBinding.password.getText().toString(),
-                    mBinding.firstName.getText().toString(), mBinding.lastName.getText().toString());
-            /*addAccount(mBinding.eMail.getText().toString(), mBinding.username.getText().toString(), mBinding.password.getText().toString(),
-                    mBinding.firstName.getText().toString(), mBinding.lastName.getText().toString());*/
+            if (!validateForm()) {
+                return;
+            } else{
+                checkUsername();
+            }
         }
     }
 }

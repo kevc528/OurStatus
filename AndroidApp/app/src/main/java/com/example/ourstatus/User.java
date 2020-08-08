@@ -3,16 +3,20 @@ package com.example.ourstatus;
 import java.util.List;
 
 public class User {
-    private String firstName, lastName, eMail, username, id;
+    private String firstName, lastName, email, username, id;
     private List<String> friends, groupIds;
 
-    public User(String firstName, String lastName, String eMail, String username, List<String> friends, List<String> groupIds, String id) {
+    public User() {
+    }
+
+    public User(String firstName, String lastName, String email, String username, List<String> friends, List<String> groupIds, String id) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.eMail = eMail;
+        this.email = email;
         this.username = username;
         this.friends = friends;
         this.groupIds = groupIds;
+        this.id = id;
     }
 
 
@@ -32,12 +36,12 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String geteMail() {
-        return eMail;
+    public String getemail() {
+        return email;
     }
 
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
+    public void setemail(String eMail) {
+        this.email = email;
     }
 
     public String getUsername() {
