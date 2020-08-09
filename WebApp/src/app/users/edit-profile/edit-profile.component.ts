@@ -66,7 +66,9 @@ export class EditProfileComponent implements OnInit {
           (val) => {
             this.picture = '';
             this.file = null;
-            this.storage.ref(this.picPath).delete();
+            if (this.picPath != 'profile-pics/default.jpg') {
+              this.storage.ref(this.picPath).delete();
+            }
           }
         );
       }
