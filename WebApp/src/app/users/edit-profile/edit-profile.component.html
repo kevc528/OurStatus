@@ -9,6 +9,8 @@
     <h3>Edit Username</h3>
     <input text="text" [(ngModel)]="username" name="username">
     <h3>Edit Profile Picture</h3>
+    <input type="file" [(ngModel)]="picture" (change)="onPicChange($event)" accept=".png,.jpg" name="picture">
+    <br>
     <button class="btn btn-primary" type="submit" [disabled]="!editForm.dirty" (click)="onSubmitEdits()">Submit changes</button>
   </form>
 </div>

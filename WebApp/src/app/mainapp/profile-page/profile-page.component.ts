@@ -16,6 +16,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   accountSubscription;
   profilePic;
   userId;
+  picPath;
 
   constructor(private cookieService: CookieService, private accountService: AccountService,
     private modalService: NgbModal) { }
@@ -25,6 +26,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.accountSubscription = this.accountService.getAccountFromId(this.userId).subscribe(
       (val) => {
         this.account = val;
+        this.picPath = this.account.picture;
         this.profilePic = this.accountService.getPicDownload(this.account.picture);
         this.username = this.account.username;
         console.log(this.username);
@@ -39,6 +41,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   openEditModal() {
     const modalRef = this.modalService.open(EditProfileComponent, { size: 'lg'});
     modalRef.componentInstance.name = 'Edit Profile';
+    modalRef.componentInstance.picPath = this.picPath;
   }
 
 }

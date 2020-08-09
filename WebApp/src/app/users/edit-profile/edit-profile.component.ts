@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../account.service';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 @Component({
   selector: 'app-edit-profile',
@@ -13,8 +14,12 @@ export class EditProfileComponent implements OnInit {
 
   username;
   userId;
+  picture;
+  file;
+  @Input() picPath;
 
-  constructor(public activeModal: NgbActiveModal, public cookieService: CookieService, private accountService: AccountService) { }
+  constructor(public activeModal: NgbActiveModal, public cookieService: CookieService, private accountService: AccountService,
+    private storage: AngularFireStorage) { }
 
   ngOnInit(): void {
     this.username = this.cookieService.get('user');
@@ -33,10 +38,39 @@ export class EditProfileComponent implements OnInit {
         val => {
           this.cookieService.delete('user');
           this.cookieService.set('user', this.username);
-          // location.reload();
         }
       );
     }
+    if (this.picture) {
+      this.uploadPicture();
+    }
+    this.activeModal.close();
+  }
+
+  onPicChange(event) {
+    this.file = event.target.files[0];
+  }
+
+  uploadPicture() {
+    let midPath = this.userId + Date.now();
+    let filePath;
+    if (this.file.type.split('/')[1] == 'png') {
+      filePath = 'profile-pics/' + midPath + '.png';
+    } 
+    if (this.file.type.split('/')[1] == 'jpeg') {
+      filePath = 'profile-pics/' + midPath + '.jpg';
+    }
+    this.storage.upload(filePath, this.file).then(
+      (val) => {
+        this.accountService.updateAccount(this.userId, {'picture' : filePath}).then(
+          (val) => {
+            this.picture = '';
+            this.file = null;
+            this.storage.ref(this.picPath).delete();
+          }
+        );
+      }
+    )
   }
 
 }
