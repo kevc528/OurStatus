@@ -1,12 +1,13 @@
 package com.example.ourstatus;
 //Home Page
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,17 +15,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.example.ourstatus.databinding.HomeBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,12 +35,11 @@ public class MainActivity extends AppCompatActivity{
     private HomeBinding mBinding;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Calendar taskTarget = Calendar.getInstance();
-    FirebaseUser currentUser;
-    private int month;
-    private int date;
-    private int year;
-    private int hour;
-    private int minute;
+    private FirebaseUser currentUser;
+    private String userId;
+    private int month, date, year, hour, minute;
+    private float x1, y1, x2, y2;
+
 
 
 
@@ -56,7 +51,7 @@ public class MainActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         dateText = findViewById(R.id.dateText);
         timeText = findViewById(R.id.timeText);
-
+        this.userId = getIntent().getStringExtra("userId");
         Button selectDate = findViewById(R.id.dateButton);
         Button selectTime = findViewById(R.id.timeButton);
         currentUser = mAuth.getCurrentUser();
@@ -132,23 +127,59 @@ public class MainActivity extends AppCompatActivity{
                 timePickerDialog.show();
             }
         });
-
-
     }
+
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        switch(touchEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+                if(x1 < x2){
+                Intent i = new Intent(MainActivity.this, UserProfile.class);
+                i.putExtra("userId", userId);
+                startActivity(i);
+                } else if(x1 > x2){
+                Intent i = new Intent(MainActivity.this, Feed.class);
+                i.putExtra("userId", userId);
+                startActivity(i);
+                }
+                break;
+        }
+        return false;
+    }
+
     public boolean validFields(){
-        if(mBinding.taskName.getText().toString().equals("")
-        || mBinding.dateText.getText().toString().equals("Date")
-                || mBinding.timeText.getText().toString().equals("Time")){
-            return false;
+        boolean valid = true ;
+        String taskName = mBinding.taskName.getText().toString();
+        if (TextUtils.isEmpty(taskName)) {
+            mBinding.taskName.setError("Required.");
+            valid = false;
+        } else {
+            mBinding.taskName.setError(null);
+        }
+
+        if(mBinding.dateText.getText().toString().equals("Date")){
+            mBinding.dateText.setError("Required.");
+            valid = false;
         } else{
             return true;
         }
+
+        if(mBinding.timeText.getText().toString().equals("Time")){
+            mBinding.timeText.setError("Required.");
+            valid = false;
+        }else {
+            mBinding.timeText.setError(null);
+        }
+        return valid;
     }
 
     public void createTask(String creatorId){
         if(!validFields()){
-            Toast.makeText(MainActivity.this, "Empty field",
-                    Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -179,30 +210,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    public void createTaskButton(){
-        Log.d(TAG, "userInfo: search begins");
-        String email = currentUser.getEmail();
-
-        db.collection("users")
-                .whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String userId;
-                            for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
-                                Log.d(TAG, "userInfo: Found");
-                                userId = document.getString("id");
-                                createTask(userId);
-                                return;
-                            }
-                        } else {
-                            Log.w(TAG, "userInfo: search failed", task.getException());
-                        }
-                    }
-                });
-    }
 
     public void onRemindClick(View v){
         startActivity(new Intent(this, UserProfile.class));
@@ -211,9 +218,9 @@ public class MainActivity extends AppCompatActivity{
         int i = v.getId();
 
         if(i == R.id.createTask){
-            createTaskButton();
+            createTask(userId);
         }else{
-            createTaskButton();
+            createTask(userId);
         }
     }
 

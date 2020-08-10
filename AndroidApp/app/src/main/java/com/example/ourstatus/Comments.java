@@ -2,7 +2,7 @@ package com.example.ourstatus;
 
 import com.google.firebase.Timestamp;
 
-public class Comments{
+public class Comments implements Comparable<Comments>{
     String authorId, content, taskId;
     Timestamp date;
 
@@ -48,4 +48,9 @@ public class Comments{
         this.date = date;
     }
 
+    @Override
+    public int compareTo(Comments c) {
+        Timestamp timeCreated = c.getDate();
+        return this.getDate().compareTo(timeCreated);
+    }
 }

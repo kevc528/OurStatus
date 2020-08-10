@@ -43,7 +43,6 @@ public class CommentAdapter extends ArrayAdapter<Comments> {
         String commentString = comment.getContent();
         String creatorId = comment.getAuthorId();
         String username = uMap.get(creatorId);
-
         int usernameLength = username.length();
 
         rowView.setLayoutParams(param);

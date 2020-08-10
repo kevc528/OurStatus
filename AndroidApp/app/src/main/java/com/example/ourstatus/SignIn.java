@@ -23,6 +23,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "EmailPassword";
     private SignInBinding mBinding;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String userId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,14 +34,16 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
         mBinding.signInButton.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
     }
-
-    /*public void onStart() {
+/*
+    public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
 
-     */
+ */
+
+
 
 
     private void signIn(String email, String password) {
@@ -89,6 +92,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                             for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
                                 Log.d(TAG, "email: Found");
                                 email = document.getString("email");
+                                userId = document.getString("id");
                                 signIn(email, password);
                                 return;
                             }
@@ -134,7 +138,9 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            startActivity(new Intent(this, MainActivity.class));
+            Intent i = new Intent(this, MainActivity.class);
+            i.putExtra("userId", userId);
+            startActivity(i);
         }
     }
 

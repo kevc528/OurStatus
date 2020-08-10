@@ -48,12 +48,11 @@
         <TextView
             android:id="@+id/task_name"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_light"
             android:orientation="horizontal"
             android:text="Do homework"
             android:textAppearance="@style/normal_text"
-            android:autoSizeTextType="uniform"
             app:layout_constraintTop_toTopOf="@id/task_name_h1"
             app:layout_constraintBottom_toBottomOf="@id/task_name_h2"
             app:layout_constraintStart_toStartOf="@id/text_v1"

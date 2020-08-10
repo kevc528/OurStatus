@@ -51,10 +51,11 @@ public class FeedAdapter extends ArrayAdapter<Tasks> {
         String creatorId = task.getCreatorId();
         String likes = Integer.toString(task.getLikes());
         String username = uMap.get(creatorId);
-
-
         int usernameLength = username.length();
 
+        if(taskTitle.length() > 55){
+            taskTitle = taskTitle.substring(0, 55) + "...";
+        }
         rowView.setLayoutParams(param);
 
         SpannableStringBuilder str = new SpannableStringBuilder(username + " Completed Task:");

@@ -1,11 +1,14 @@
 package com.example.ourstatus;
 
 import android.app.Dialog;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -33,6 +37,7 @@ import java.util.List;
 
 public class Feed extends AppCompatActivity {
     private FeedBinding mBinding;
+    CommentAdapter commentAdapter;
     private int height;
     private int width;
     private DisplayMetrics dm;
@@ -41,14 +46,19 @@ public class Feed extends AppCompatActivity {
     private static final String TAG = "GetUsername";
     private List<Tasks> feed;
     private List<Comments> comments;
+    private String userId, taskId;
 
-    public void onStart(){
-        super.onStart();
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mBinding = FeedBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
+        this.userId = getIntent().getStringExtra("userId");
+        Log.w(TAG, userId);
+    }
+    public void onStart(){
+        super.onStart();
 
         feed = new ArrayList<>();
-        comments = new ArrayList<>();
         dm = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) this.getSystemService(WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(dm);
@@ -110,6 +120,7 @@ public class Feed extends AppCompatActivity {
                                 Log.w(TAG, "tasks: Not found", task.getException());
                             } else{
                                 Log.d(TAG, "tasks: Found");
+                                creatorIds.add(userId);
                                 getFeedUsernames(creatorIds);
                             }
                         } else {
@@ -137,7 +148,7 @@ public class Feed extends AppCompatActivity {
                                 uMap.put(id, username);
                             }
 
-                            if(uMap.size() == 0){//runs when no tasks found
+                            if(uMap.size() == 1){//runs when no tasks found
                                 Log.w(TAG, "users: Not found", task.getException());
                             } else{
                                 createFeed(uMap);
@@ -160,6 +171,7 @@ public class Feed extends AppCompatActivity {
     }
 
     public void comment(View v){
+        comments = new ArrayList<>();
         ListView lv = (ListView) v.getParent().getParent().getParent();
         int position = lv.getPositionForView(v);
         String taskId = feed.get(position).getId();
@@ -179,7 +191,8 @@ public class Feed extends AppCompatActivity {
                             }
 
                             if(comments.size() == 0){//runs when no tasks found
-                                Log.w(TAG, "comments: Not found", task.getException());
+                                Log.w(TAG, "comments: No comments", task.getException());
+                                displayComments(null);
                             } else{
                                 Log.d(TAG, "comments: Found");
                                 Log.d(TAG, "" + comments.size());
@@ -228,12 +241,18 @@ public class Feed extends AppCompatActivity {
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.comment_section);
         ListView commentList = (ListView) dialog.findViewById(R.id.comments_list);
-        CommentAdapter adapter = new CommentAdapter(Feed.this, comments, uMap, height, width);
-        commentList.setAdapter(adapter);
+
+        if(uMap != null){
+            Collections.sort(comments);
+            commentAdapter = new CommentAdapter(Feed.this, comments, uMap, height, width);
+            commentList.setAdapter(commentAdapter);
+        }
+
 
         dialog.show();
         Window window = dialog.getWindow();
-        window.setLayout(width, height);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        window.setLayout(width, (int) (height * .9));
     }
 
     public void like(View v) {
@@ -241,7 +260,7 @@ public class Feed extends AppCompatActivity {
         ConstraintLayout parentRow = (ConstraintLayout) v.getParent();
         ListView lv = (ListView) parentRow.getParent().getParent();
         int position = lv.getPositionForView(v);
-        String taskId = feed.get(position).getId();
+        taskId = feed.get(position).getId();
         DocumentReference taskRef = db.collection("tasks").document(taskId);
         ImageView i = (ImageView) v;
         TextView likeCount = (TextView) parentRow.findViewById(R.id.like_count);
@@ -275,4 +294,18 @@ public class Feed extends AppCompatActivity {
 
     }
 
+    public void submitComment(View v) {
+        ConstraintLayout parentRow = (ConstraintLayout) v.getParent();
+        EditText commentText = (EditText) parentRow.getViewById(R.id.comment_input);
+        String strComment = commentText.getText().toString();
+        if(TextUtils.isEmpty(strComment)){
+            return;
+        }
+        Comments comment = new Comments(userId,commentText.getText().toString(), taskId, Timestamp.now());
+        comments.add(comment);
+        commentAdapter.notifyDataSetChanged();
+        commentText.setText("");
+        DocumentReference ref = db.collection("comments").document();
+        ref.set(comment);
+    }
 }

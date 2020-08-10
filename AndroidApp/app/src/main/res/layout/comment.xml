@@ -21,17 +21,6 @@
             app:layout_constraintStart_toStartOf="@id/profile_image_v1"
             app:layout_constraintEnd_toEndOf="@id/profile_image_v2" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/scale_text"
-            android:fontFamily="@font/roboto_light"
-            android:visibility="invisible"
-            android:autoSizeTextType="uniform"
-            app:layout_constraintBottom_toBottomOf="@id/scale_text_h2"
-            app:layout_constraintStart_toStartOf="@id/scale_text_v1"
-            app:layout_constraintTop_toTopOf="@id/scale_text_h1"
-            app:layout_constraintEnd_toEndOf="@id/scale_text_v2"/>
 
         <TextView
             android:id="@+id/comment_text"
