@@ -11,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class TaskListComponent implements OnInit, OnDestroy {
 
-  taskList = [];
+  taskList: Task[] = [];
   userId;
   subscription: Subscription;
   noTasks: boolean;

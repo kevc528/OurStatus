@@ -42,17 +42,17 @@ export class AccountService {
   }
 
   // returns observable for the entire account list
-  getAllAccounts() : Observable<any[]> {
-    return this.firestore.collection('users').valueChanges();
+  getAllAccounts() : Observable<Account[]> {
+    return this.firestore.collection<Account>('users').valueChanges();
   }
 
   // returns an account observable filtered by username
-  getAccount(username: string) : Observable<any[]> {
-    return this.firestore.collection('users', ref => ref.where('username', '==', username)).valueChanges();
+  getAccount(username: string) : Observable<Account[]> {
+    return this.firestore.collection<Account>('users', ref => ref.where('username', '==', username)).valueChanges();
   }
 
-  getAccountByEmail(email: string) : Observable<any[]> {
-    return this.firestore.collection('users', ref => ref.where('email', '==', email)).valueChanges();
+  getAccountByEmail(email: string) : Observable<Account[]> {
+    return this.firestore.collection<Account>('users', ref => ref.where('email', '==', email)).valueChanges();
   }
 
   findAccountKey(username: string) : Observable<any[]> {
@@ -88,8 +88,8 @@ export class AccountService {
     return accountDoc.update(newData);
   }
 
-  getAccountsByIds(userIds: string[]): Observable<any> {
-    return this.firestore.collection('users', ref => ref.where('id', 'in', userIds)).valueChanges();
+  getAccountsByIds(userIds: string[]): Observable<Account[]> {
+    return this.firestore.collection<Account>('users', ref => ref.where('id', 'in', userIds)).valueChanges();
   }
 
   overwriteAccount(accountKey: string, newData): Promise<void> {

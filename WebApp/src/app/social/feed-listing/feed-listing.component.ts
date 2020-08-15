@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { TaskService } from 'src/app/tasks/task.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AccountService } from 'src/app/users/account.service';
+import { Task } from 'src/app/shared/model/task';
 
 @Component({
   selector: 'app-feed-listing',
@@ -10,7 +11,7 @@ import { AccountService } from 'src/app/users/account.service';
 })
 export class FeedListingComponent implements OnInit {
 
-  @Input() task;
+  @Input() task: Task;
   userId;
   @Output() comments = new EventEmitter<string>();
 

@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TaskService } from 'src/app/tasks/task.service';
 import { AccountService } from 'src/app/users/account.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Task } from 'src/app/shared/model/task';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-feed',
@@ -14,7 +16,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   accountSubscription;
   feedSubscription;
   noFriends = false;
-  feedTasks = [];
+  feedTasks: Task[] = [];
   showComment = false;
   mappingSubscription;
   friendIdMap = {};

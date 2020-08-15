@@ -11,8 +11,8 @@ export class TaskService {
 
   constructor(private firestore: AngularFirestore, private accountService: AccountService) {}
 
-  getTasksForUser(creatorId: string, level: number): Observable<any[]> {
-    return this.firestore.collection('tasks', ref => ref.where('creatorId', '==', creatorId)
+  getTasksForUser(creatorId: string, level: number): Observable<Task[]> {
+    return this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', '==', creatorId)
       .where('level', '==', level)).valueChanges();
   }
 
@@ -20,8 +20,8 @@ export class TaskService {
    * getFeedTasks will get the completed tasks of the user id array
    * @param userIds the list of friends
    */
-  getFeedTasks(userIds: string[]): Observable<any[]> {
-    return this.firestore.collection('tasks', ref => ref.where('creatorId', 'in', userIds)
+  getFeedTasks(userIds: string[]): Observable<Task[]> {
+    return this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', 'in', userIds)
       .where('level', '==', 0).where('dateCompleted', '<', new Date())).valueChanges();
   }
 
@@ -31,7 +31,7 @@ export class TaskService {
 
   // likely need the account service to get the account for the user and then add the id to the list
   // tasks need to store their id so we can distinguish between them
-  addTask(task): Promise<void> {
+  addTask(task: Task): Promise<void> {
     var firestore = this.firestore;
     return this.firestore.collection('tasks').add(task)
       .then(function(doc) {

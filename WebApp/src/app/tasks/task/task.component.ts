@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class TaskComponent implements OnInit {
 
-  @Input() task: Task = null;
+  @Input() task: Task;
   path: string = ''
   hideDetail: boolean = true;
   

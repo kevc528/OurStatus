@@ -3,6 +3,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { TaskService } from '../task.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
+import { Task } from 'src/app/shared/model/task';
 
 @Component({
   selector: 'app-task-create',
@@ -11,7 +12,7 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 })
 export class TaskCreateComponent implements OnInit {
 
-  task;
+  task: Task;
   username;
   reset = true;
   dateString;
@@ -39,6 +40,7 @@ export class TaskCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.task = {
+      id: null,
       creatorId: this.userId,
       assignees: [this.userId],
       title: null,

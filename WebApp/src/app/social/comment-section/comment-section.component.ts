@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnDestroy, ViewChild, E
 import { CommentService } from '../comment.service';
 import { CookieService } from 'ngx-cookie-service';
 import { AccountService } from 'src/app/users/account.service';
+import { Comment } from 'src/app/shared/model/comment';
 
 @Component({
   selector: 'app-comment-section',
@@ -11,8 +12,7 @@ import { AccountService } from 'src/app/users/account.service';
 export class CommentSectionComponent implements OnInit, OnDestroy {
 
   @Input() taskId;
-  @ViewChild('commentContainer') commentContainer: ElementRef;
-  commentList = [];
+  commentList: Comment[] = [];
   commentSubscription;
   accountSubscription;
   username;
@@ -62,7 +62,7 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
 
   postComment(): void {
     if (this.commentText) {
-      let comment = {
+      let comment: Comment = {
         authorId: this.userId,
         content: this.commentText,
         date: new Date(),

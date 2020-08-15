@@ -14,5 +14,5 @@ export interface Task {
     level: number;
     likes: number;
     likedUsers: string[];
-    comments: string[];
+    creatorUsername?: string;
 }
