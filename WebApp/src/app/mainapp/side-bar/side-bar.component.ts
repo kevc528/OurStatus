@@ -32,7 +32,8 @@ export class SideBarComponent implements OnInit, OnDestroy {
             let sub = this.accountService.getAccountByCookie(cookie).subscribe(
               val => {
                 sub.unsubscribe();
-                if (val.length == 0) {
+                if (val.length != 1) {
+                  this.cookieService.deleteAll('/');
                   this.router.navigate(['/login']);
                 } else {
                   let account = val[0];
