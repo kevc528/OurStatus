@@ -3,6 +3,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { AccountService } from 'src/app/users/account.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditProfileComponent } from 'src/app/users/edit-profile/edit-profile.component';
+import { Store } from '@ngrx/store';
+import { State, getUserId } from 'src/app/users/state/user.reducer';
 
 @Component({
   selector: 'app-profile-page',
@@ -15,27 +17,36 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   account;
   accountSubscription;
   profilePic;
+  userIdSub;
   userId;
   picPath;
 
   constructor(private cookieService: CookieService, private accountService: AccountService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal, private store: Store<State>) { }
 
   ngOnInit(): void {
-    this.userId = this.cookieService.get('id');
-    this.accountSubscription = this.accountService.getAccountFromId(this.userId).subscribe(
-      (val) => {
-        this.account = val;
-        this.picPath = this.account.picture;
-        this.profilePic = this.accountService.getPicDownload(this.account.picture);
-        this.username = this.account.username;
-        console.log(this.username);
+    this.userIdSub = this.store.select(getUserId).subscribe(
+      val => {
+        this.userId = val;
+        if (this.userId != null) {
+          this.accountSubscription = this.accountService.getAccountFromId(this.userId).subscribe(
+            (val) => {
+              this.account = val;
+              this.picPath = this.account.picture;
+              this.profilePic = this.accountService.getPicDownload(this.account.picture);
+              this.username = this.account.username;
+            }
+          )
+        }
       }
-    )
+    );
   }
 
   ngOnDestroy(): void {
-    this.accountSubscription.unsubscribe();
+    if (this.accountSubscription) { 
+      this.accountSubscription.unsubscribe();
+    }
+    this.userIdSub.unsubscribe();
   }
 
   openEditModal() {

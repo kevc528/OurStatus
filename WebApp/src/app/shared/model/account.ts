@@ -12,4 +12,5 @@ export interface Account {
     groupIds: number[];
     picture: string;
     id: string;
+    cookie?: string;
 }

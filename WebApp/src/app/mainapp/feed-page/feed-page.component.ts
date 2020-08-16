@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { State } from 'src/app/users/state/user.reducer';
 
 @Component({
   selector: 'app-feed-page',

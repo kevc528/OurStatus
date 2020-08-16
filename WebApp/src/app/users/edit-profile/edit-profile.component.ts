@@ -1,34 +1,56 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { FormsModule } from '@angular/forms';
 import { AccountService } from '../account.service';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { Store } from '@ngrx/store';
+import { State, getUserId, getUsername, getPicture } from '../state/user.reducer';
+import { Subscription } from 'rxjs';
+import * as UserActions from '../state/user.actions';
 
 @Component({
   selector: 'app-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.css']
 })
-export class EditProfileComponent implements OnInit {
+export class EditProfileComponent implements OnInit, OnDestroy {
 
   username;
+  originalUsername;
   userId;
+  usernameSub: Subscription;
+  userIdSub: Subscription;
   picture;
   file;
   @Input() picPath;
 
-  constructor(public activeModal: NgbActiveModal, public cookieService: CookieService, private accountService: AccountService,
-    private storage: AngularFireStorage) { }
+  constructor(public activeModal: NgbActiveModal, private accountService: AccountService,
+    private storage: AngularFireStorage, private store: Store<State>) { }
 
   ngOnInit(): void {
-    this.username = this.cookieService.get('user');
-    this.userId = this.cookieService.get('id');
+    this.usernameSub = this.store.select(getUsername).subscribe(
+      (val) => {
+        this.originalUsername = val;
+        if (this.username == null) {
+          this.username = val;
+        }
+      }
+    );
+    this.userIdSub = this.store.select(getUserId).subscribe(
+      (val) => {
+        this.userId = val;
+      }
+    )
   }
 
-  // will use NgRX/redux later to make sure the state for the user is correctly changed
+  ngOnDestroy(): void {
+    this.userIdSub.unsubscribe();
+    this.usernameSub.unsubscribe();
+  }
+
   onSubmitEdits() {
-    if (this.username != this.cookieService.get('user')) {
+    if (this.username != this.originalUsername) {
       this.accountService.updateAccount(
         this.userId,
         {
@@ -36,8 +58,7 @@ export class EditProfileComponent implements OnInit {
         }
       ).then(
         val => {
-          this.cookieService.delete('user');
-          this.cookieService.set('user', this.username);
+          this.store.dispatch(UserActions.changeUsername({ username: this.username }))
         }
       );
     }
@@ -69,6 +90,12 @@ export class EditProfileComponent implements OnInit {
             if (this.picPath != 'profile-pics/default.jpg') {
               this.storage.ref(this.picPath).delete();
             }
+            let sub = this.accountService.getPicDownload(filePath).subscribe(
+              val => {
+                sub.unsubscribe();
+                this.store.dispatch(UserActions.changePicture({ picture: val }));
+              }
+            )
           }
         );
       }

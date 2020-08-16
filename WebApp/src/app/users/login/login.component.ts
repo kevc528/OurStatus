@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import { CookieService } from 'ngx-cookie-service';
+import { Store } from '@ngrx/store';
+import { State, UserState } from '../state/user.reducer';
+import * as UserActions from '../state/user.actions'
 
 @Component({
   selector: 'app-login',
@@ -25,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private accountService: AccountService, private titleService: Title, private router: Router,
     private cookieService: CookieService) { 
-      if (this.cookieService.get('user')) {
+      if (this.cookieService.get('sessionId')) {
         this.router.navigate(['/app']);
       }
   }
@@ -117,9 +120,13 @@ export class LoginComponent implements OnInit {
           firebase.auth().signInWithEmailAndPassword(account.email, this.password)
             .then((val) => {
               subscription.unsubscribe();
-              this.cookieService.set('user', this.username);
-              this.cookieService.set('id', account.id);
-              router.navigate(['/app']);
+              let sessionId = this.uuidv4()
+              this.cookieService.set('sessionId', sessionId);
+              this.accountService.updateAccount(account.id, { cookie: sessionId}).then(
+                val => {
+                  router.navigate(['/app']);
+                }
+              );
             })
             .catch(function(error) {
               var errorCode = error.code;
@@ -154,5 +161,12 @@ export class LoginComponent implements OnInit {
       }
       this.errorMessage = "Please fix the above errors";
     }
+  }
+
+  uuidv4(): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 }

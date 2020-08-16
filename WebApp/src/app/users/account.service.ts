@@ -55,6 +55,10 @@ export class AccountService {
     return this.firestore.collection<Account>('users', ref => ref.where('email', '==', email)).valueChanges();
   }
 
+  getAccountByCookie(cookie: string) : Observable<Account[]> {
+    return this.firestore.collection<Account>('users', ref => ref.where('cookie', '==', cookie)).valueChanges();
+  }
+
   findAccountKey(username: string) : Observable<any[]> {
     return this.firestore.collection('users', ref => ref.where('username', '==', username)).snapshotChanges()
   }

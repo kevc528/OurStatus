@@ -30,6 +30,9 @@ import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
 import { ProfilePageComponent } from './mainapp/profile-page/profile-page.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EditProfileComponent } from './users/edit-profile/edit-profile.component';
+import { StoreModule } from '@ngrx/store';
+import { userReducer } from './users/state/user.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
  
 @NgModule({
   declarations: [
@@ -59,7 +62,10 @@ import { EditProfileComponent } from './users/edit-profile/edit-profile.componen
     AngularFireStorageModule,
     FormsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    StoreModule.forRoot({}, {}),
+    StoreModule.forFeature('user', userReducer),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
