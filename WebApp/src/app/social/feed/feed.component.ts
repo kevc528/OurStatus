@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Task } from 'src/app/shared/model/task';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { State, getUsername } from 'src/app/users/state/user.reducer';
+import { State, getUsername, getUserId } from 'src/app/users/state/user.reducer';
 
 @Component({
   selector: 'app-feed',
@@ -14,9 +14,8 @@ import { State, getUsername } from 'src/app/users/state/user.reducer';
 })
 export class FeedComponent implements OnInit, OnDestroy {
 
-  username;
   accountSubscription;
-  usernameSubscription;
+  userIdSubscription;
   feedSubscription;
   noFriends = false;
   feedTasks: Task[] = [];
@@ -29,15 +28,22 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
 
   ngOnInit(): void {
-    this.usernameSubscription = this.store.select(getUsername).subscribe(
-      (val) => {
-        this.username = val;
-        this.accountSubscription = this.accountService.getAccount(this.username).subscribe(
-          (res) => {
-            if (res.length > 0) {
-              let account = res[0];
-              if (account.friends.length > 0) {
-                this.feedSubscription = this.taskService.getFeedTasks(account.friends).subscribe(
+    this.userIdSubscription = this.store.select(getUserId).subscribe(
+      (userId) => {
+        if (userId != null) {
+          let sub = this.accountService.findFriends(userId).subscribe(
+            (friends) => {
+              sub.unsubscribe();
+              if (friends.length > 0) {
+                this.noFriends = false;
+                let friendIds: string[] = friends.map(friendship => {
+                  if (friendship.firstId == userId) {
+                    return friendship.secondId;
+                  } else {
+                    return friendship.firstId;
+                  }
+                })
+                this.feedSubscription = this.taskService.getFeedTasks(friendIds).subscribe(
                   (val) => {
                     let tasks = val;
                     let userList = [];
@@ -69,8 +75,8 @@ export class FeedComponent implements OnInit, OnDestroy {
                 this.noFriends = true;
               }
             }
-          }
-        )
+          )
+        }
       }
     );
   }
@@ -85,8 +91,8 @@ export class FeedComponent implements OnInit, OnDestroy {
     if (this.mappingSubscription) {
       this.mappingSubscription.unsubscribe();
     }
-    if (this.usernameSubscription) {
-      this.usernameSubscription.unsubscribe();
+    if (this.userIdSubscription) {
+      this.userIdSubscription.unsubscribe();
     }
   }
 

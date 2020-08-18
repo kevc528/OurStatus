@@ -8,9 +8,7 @@ export interface Account {
     firstName: string;
     lastName: string;
     email: string;
-    friends: string[];
     groupIds: number[];
     picture: string;
     id: string;
-    cookie?: string;
 }

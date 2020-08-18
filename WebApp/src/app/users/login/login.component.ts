@@ -122,6 +122,7 @@ export class LoginComponent implements OnInit {
               subscription.unsubscribe();
               this.accountService.addCookie(account.id).then(
                 (cookieId) => {
+                  this.cookieService.deleteAll('/');
                   this.cookieService.set('sessionId', cookieId);
                   this.router.navigate(['/app']);
                 }

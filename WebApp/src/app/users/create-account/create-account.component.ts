@@ -18,7 +18,6 @@ export class CreateAccountComponent implements OnInit {
     email: null,
     username: null,
     password: null,
-    friends: [],
     groupIds: [],
     id: null,
     picture: "profile-pics/default.jpg"

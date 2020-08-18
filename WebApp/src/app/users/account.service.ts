@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, merge, zip, concat } from 'rxjs';
 import { Account } from '../shared/model/account';
 import { AngularFireModule } from '@angular/fire';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import { AngularFireStorage } from '@angular/fire/storage';
+import { Friendship } from '../shared/model/friendship';
+import { MinLengthValidator } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +65,24 @@ export class AccountService {
     return this.firestore.collection('users', ref => ref.where('username', '==', username)).snapshotChanges()
   }
 
+  findFriends(userId: string): Observable<Friendship[]> {
+    let resultA = this.firestore.collection<Friendship>('friendship', ref => ref.where('firstId', '==', userId)
+      .where('request', '==', false)).valueChanges();
+    let resultB = this.firestore.collection<Friendship>('friendship', ref => ref.where('secondId', '==', userId)
+      .where('request', '==', false)).valueChanges();
+    let final = merge(resultA, resultB);
+    return final;
+  }
+
+  findFriendship(firstId: string, secondId: string): Observable<Friendship[]> {
+    let resultA = this.firestore.collection<Friendship>('friendship', ref => ref.where('firstId', '==', firstId)
+      .where('secondId', '==', secondId)).valueChanges();
+    let resultB = this.firestore.collection<Friendship>('friendship', ref => ref.where('secondId', '==', firstId)
+      .where('firstId', '==', secondId)).valueChanges();
+    let final = merge(resultA, resultB);
+    return final;
+  }
+
   // finds account doc from username and updates the account w/ new data
   // updateAccount(username: string, newData) {
   //   var success: boolean;
@@ -93,7 +113,16 @@ export class AccountService {
   }
 
   getAccountsByIds(userIds: string[]): Observable<Account[]> {
-    return this.firestore.collection<Account>('users', ref => ref.where('id', 'in', userIds)).valueChanges();
+    let obsList: Observable<Account[]>[] = [];
+    for (let i = 0; i < userIds.length; i += 10) {
+      let ids = [];
+      for (let j = i; j < Math.min(userIds.length, i + 10); j++) {
+        ids.push(userIds[j]);
+      }
+      let obs = this.firestore.collection<Account>('users', ref => ref.where('id', 'in', ids)).valueChanges();
+      obsList.push(obs);
+    }
+    return merge(...obsList);
   }
 
   overwriteAccount(accountKey: string, newData): Promise<void> {
@@ -165,16 +194,4 @@ export class AccountService {
     );
     return promise;
   }
-
-  sendFriendRequest(recieverId, senderId): Promise<void> {
-    let requestObject = {
-      reciever: recieverId,
-      sender: senderId
-    };
-    return this.firestore.collection('friend_request').add(requestObject)
-      .then((doc) => {
-        this.firestore.collection('friend_request').doc(doc.id).update({'id': doc.id});
-      });
-  }
-
 }
