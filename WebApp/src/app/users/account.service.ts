@@ -55,8 +55,8 @@ export class AccountService {
     return this.firestore.collection<Account>('users', ref => ref.where('email', '==', email)).valueChanges();
   }
 
-  getAccountByCookie(cookie: string) : Observable<Account[]> {
-    return this.firestore.collection<Account>('users', ref => ref.where('cookie', '==', cookie)).valueChanges();
+  getUserIdFromCookie(cookie: string): Observable<any> {
+    return this.firestore.collection('cookie').doc(cookie).valueChanges();
   }
 
   findAccountKey(username: string) : Observable<any[]> {
@@ -115,6 +115,17 @@ export class AccountService {
     return this.storage.ref(path).getDownloadURL();
   }
 
+  addCookie(userId: string): Promise<string> {
+    return this.firestore.collection('cookie').add({ userId })
+      .then((doc) => {
+        return doc.id;
+      });
+  }
+
+  deleteCookie(id: string) {
+    this.firestore.collection('cookie').doc(id).delete();
+  }
+
   // deleteAccount(username: string) {
   //   var success: boolean;
   //   var accountId: string;
@@ -153,6 +164,17 @@ export class AccountService {
       }
     );
     return promise;
+  }
+
+  sendFriendRequest(recieverId, senderId): Promise<void> {
+    let requestObject = {
+      reciever: recieverId,
+      sender: senderId
+    };
+    return this.firestore.collection('friend_request').add(requestObject)
+      .then((doc) => {
+        this.firestore.collection('friend_request').doc(doc.id).update({'id': doc.id});
+      });
   }
 
 }

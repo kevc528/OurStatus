@@ -120,13 +120,12 @@ export class LoginComponent implements OnInit {
           firebase.auth().signInWithEmailAndPassword(account.email, this.password)
             .then((val) => {
               subscription.unsubscribe();
-              let sessionId = this.uuidv4()
-              this.cookieService.set('sessionId', sessionId);
-              this.accountService.updateAccount(account.id, { cookie: sessionId}).then(
-                val => {
-                  router.navigate(['/app']);
+              this.accountService.addCookie(account.id).then(
+                (cookieId) => {
+                  this.cookieService.set('sessionId', cookieId);
+                  this.router.navigate(['/app']);
                 }
-              );
+              )
             })
             .catch(function(error) {
               var errorCode = error.code;
@@ -161,12 +160,5 @@ export class LoginComponent implements OnInit {
       }
       this.errorMessage = "Please fix the above errors";
     }
-  }
-
-  uuidv4(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
   }
 }

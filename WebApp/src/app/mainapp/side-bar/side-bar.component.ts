@@ -27,28 +27,35 @@ export class SideBarComponent implements OnInit, OnDestroy {
         if (val == null) {
           let cookie = this.cookieService.get('sessionId');
           if (!cookie) {
+            this.store.dispatch(UserActions.logoutUser());
             this.router.navigate(['/login']);
           } else {
-            let sub = this.accountService.getAccountByCookie(cookie).subscribe(
+            let sub = this.accountService.getUserIdFromCookie(cookie).subscribe(
               val => {
                 sub.unsubscribe();
-                if (val.length != 1) {
+                if (!val) {
                   this.cookieService.deleteAll('/');
+                  this.store.dispatch(UserActions.logoutUser());
                   this.router.navigate(['/login']);
                 } else {
-                  let account = val[0];
-                  let user: UserState = {
-                    username: account.username,
-                    userId: account.id,
-                    picture: null
-                  }
-                  this.store.dispatch(UserActions.signIn({user}));
-                  let pic = this.accountService.getPicDownload(account.picture).subscribe(
-                    (val) => {
-                      pic.unsubscribe();
-                      this.store.dispatch(UserActions.changePicture({picture: val}));
+                  let id = val.userId;
+                  let userSub = this.accountService.getAccountFromId(id).subscribe(
+                    (account) => {
+                      userSub.unsubscribe();
+                      let user: UserState = {
+                        username: account.username,
+                        userId: account.id,
+                        picture: null
+                      }
+                      this.store.dispatch(UserActions.signIn({user}));
+                      let pic = this.accountService.getPicDownload(account.picture).subscribe(
+                        (val) => {
+                          pic.unsubscribe();
+                          this.store.dispatch(UserActions.changePicture({picture: val}));
+                        }
+                      );
                     }
-                  );
+                  )
                 }
               }
             )
@@ -66,6 +73,7 @@ export class SideBarComponent implements OnInit, OnDestroy {
   }
 
   onLogOut(): void {
+    this.accountService.deleteCookie(this.cookieService.get('sessionId'));
     this.cookieService.deleteAll('/');
     this.store.dispatch(UserActions.logoutUser());
     this.router.navigate(['/login']);

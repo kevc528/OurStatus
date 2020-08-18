@@ -33,6 +33,7 @@ import { EditProfileComponent } from './users/edit-profile/edit-profile.componen
 import { StoreModule } from '@ngrx/store';
 import { userReducer } from './users/state/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { FriendProfileComponent } from './users/friend-profile/friend-profile.component';
  
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     FeedPageComponent,
     ProfilePageComponent,
     EditProfileComponent,
+    FriendProfileComponent,
   ],
   imports: [
     BrowserModule,
