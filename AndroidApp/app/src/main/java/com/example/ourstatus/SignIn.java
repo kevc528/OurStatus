@@ -34,17 +34,42 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
         mBinding.signInButton.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
     }
-/*
+
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        if(currentUser != null){
+            getUserId(currentUser);
+        }
     }
 
- */
+    public void getUserId(final FirebaseUser currentUser){
+        String email = currentUser.getEmail();
 
-
-
+        db.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
+                                userId = document.getString("id");
+                                updateUI(currentUser);
+                                return;
+                            }
+                            //runs when no corresponding email found
+                            Log.w(TAG, "email: Not found", task.getException());
+                            Toast.makeText(SignIn.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.w(TAG, "email: Not found", task.getException());
+                            Toast.makeText(SignIn.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);

@@ -113,7 +113,7 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
     private void createAccount(String email, String username, String password, String firstName, String lastName) {
         Log.d(TAG, "createAccount:" + email);
 
-        addAccount(new User(firstName, lastName, email, username, new ArrayList<String>(), new ArrayList<String>(), null));
+        addAccount(new User(firstName, lastName, email, username, new ArrayList<String>(), new ArrayList<String>(), null, "profile-pics/default.jpg"));
 
         // [START create_user_with_email]
         mAuth.createUserWithEmailAndPassword(email, password)

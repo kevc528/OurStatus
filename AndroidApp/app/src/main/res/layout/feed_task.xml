@@ -59,6 +59,7 @@
             app:layout_constraintEnd_toEndOf="@id/text_v2" />
 
         <ImageView
+            android:id="@+id/like"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/like"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -31,13 +32,15 @@ public class FeedAdapter extends ArrayAdapter<Tasks> {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ConstraintLayout.LayoutParams param;
     private static final String TAG = "GetUsername";
+    private String user;
 
 
-    public FeedAdapter(Context context, List<Tasks> feed, HashMap<String, String> uMap, int height, int width) {
+    public FeedAdapter(Context context, List<Tasks> feed, HashMap<String, String> uMap, int height, int width, String user) {
         super(context, -1, feed);
         this.context = context;
         this.feed = feed;
         this.uMap = uMap;
+        this.user = user;
 
         param = new ConstraintLayout.LayoutParams(width, (int) ((int) height * .15));
     }
@@ -51,12 +54,19 @@ public class FeedAdapter extends ArrayAdapter<Tasks> {
         String creatorId = task.getCreatorId();
         String likes = Integer.toString(task.getLikes());
         String username = uMap.get(creatorId);
+        List<String> likedUsers = task.getLikedUsers();
         int usernameLength = username.length();
 
         if(taskTitle.length() > 55){
             taskTitle = taskTitle.substring(0, 55) + "...";
         }
+
         rowView.setLayoutParams(param);
+
+        if(likedUsers.contains(user)){
+            ImageView i = rowView.findViewById(R.id.like);
+            i.setColorFilter(R.color.purple);
+        }
 
         SpannableStringBuilder str = new SpannableStringBuilder(username + " Completed Task:");
         str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), 0, usernameLength, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

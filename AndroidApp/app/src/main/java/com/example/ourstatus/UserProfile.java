@@ -1,9 +1,12 @@
 package com.example.ourstatus;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +20,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
 import com.example.ourstatus.databinding.UserProfileBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Date;
 
 
 public class UserProfile extends AppCompatActivity{
@@ -37,19 +51,30 @@ public class UserProfile extends AppCompatActivity{
     public static final int PICK_IMAGE = 3;
     private static final String TAG = "EmailPassword";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private String userId;
+    private String path;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private StorageReference storageRef;
+    private ImageView profilePicture;
+    private Timestamp timestamp;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = UserProfileBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         mAuth = FirebaseAuth.getInstance();
+        storageRef = storage.getReference();
+        profilePicture = findViewById(R.id.profile_image);
         final View content = findViewById(android.R.id.content);
+        this.userId = getIntent().getStringExtra("userId");
+        getTasks(userId);
+        getPicturePath();
         content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 content.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 sizeIcons();
-                getUserId();
             }
         });
     }
@@ -86,6 +111,42 @@ public class UserProfile extends AppCompatActivity{
         }
     }
 
+    public void getPicturePath(){
+        db.collection("users").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        path = document.getString("picture");
+                        setPicture();
+                        Log.d(TAG, "Picture found");
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
+    public void setPicture(){
+        storageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profilePicture);
+                Log.d(TAG, "Profile picture set");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d(TAG, "Error finding profile pictures");
+            }
+        });
+
+    }
+
 
     public void sizeIcons(){
         final View content = findViewById(android.R.id.content);
@@ -112,6 +173,11 @@ public class UserProfile extends AppCompatActivity{
         mBinding.task3.setVisibility(View.VISIBLE);
 
         switch(tasks.size()){
+            case 0:
+                mBinding.task1.setVisibility(View.INVISIBLE);
+                mBinding.task2.setVisibility(View.INVISIBLE);
+                mBinding.task3.setVisibility(View.INVISIBLE);
+                break;
             case 1:
                 mBinding.task1Text.setText((tasks.get(0)).getTitle());
                 mBinding.task2.setVisibility(View.INVISIBLE);
@@ -148,38 +214,11 @@ public class UserProfile extends AppCompatActivity{
 
                             if(tasks.size() == 0){//runs when no tasks found
                                 Log.w(TAG, "tasks: Not found", task.getException());
-                            } else{
-                                setTasks(tasks);
                             }
+                            setTasks(tasks);
                         } else {
                             Log.w(TAG, "tasks: Not found", task.getException());
 
-                        }
-                    }
-                });
-    }
-    public void getUserId(){
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        String email = currentUser.getEmail();
-
-        db.collection("users")
-                .whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String id;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, "username: Found");
-                                id = document.getString("id");
-                                getTasks(id);
-                                return;
-                            }
-
-                            Log.w(TAG, "username: Not found", task.getException());
-                        } else {
-                            Log.w(TAG, "username: Not found", task.getException());
                         }
                     }
                 });
@@ -197,9 +236,56 @@ public class UserProfile extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
             Uri imageUri = data.getData();
+            timestamp = new Timestamp(new Date());
             mBinding.profileImage.setImageURI(imageUri);
+            final StorageReference profileRef = storageRef.child("profile-pics/" + userId + timestamp.getSeconds());
+            UploadTask uploadTask = profileRef.putFile(imageUri);
+            Log.w(TAG, profileRef.getPath());
+
+            // Register observers to listen for when the download is done or if it fails
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    DocumentReference userRef = db.collection("users").document(userId);
+                    userRef
+                            .update("picture", profileRef.getPath())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    StorageReference oldRef = storageRef.child(path);
+                                    if(!path.equals("profile-pics/default.jpg")){
+                                        oldRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                path = profileRef.getPath();
+                                                Log.w(TAG, "Photo deleted");
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception exception) {
+                                                Log.w(TAG, "Error deleting photo");
+                                            }
+                                        });
+                                    }
+                                    Log.d(TAG, "Photo stored");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error storing photo", e);
+                                }
+                            });
+                }
+            });
         }
     }
+
 
     public void onClick(View v){
         int i = v.getId();

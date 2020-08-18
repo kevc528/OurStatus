@@ -15,7 +15,6 @@
         android:id="@+id/profile_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/profile_picture"
         android:onClick="onClick"
         app:layout_constraintStart_toStartOf="@id/profile_pic_v1"
         app:layout_constraintEnd_toEndOf="@id/profile_pic_v2"

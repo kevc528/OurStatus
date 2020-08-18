@@ -26,6 +26,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -55,6 +56,7 @@ public class Feed extends AppCompatActivity {
         this.userId = getIntent().getStringExtra("userId");
         Log.w(TAG, userId);
     }
+
     public void onStart(){
         super.onStart();
 
@@ -166,7 +168,7 @@ public class Feed extends AppCompatActivity {
         final ListView listview = (ListView) findViewById(R.id.listview);
         Collections.sort(feed);
         Log.d(TAG, "height: " + height);
-        final FeedAdapter adapter = new FeedAdapter(Feed.this, feed, map ,height, width);
+        final FeedAdapter adapter = new FeedAdapter(Feed.this, feed, map ,height, width, userId);
         listview.setAdapter(adapter);
     }
 
@@ -269,9 +271,11 @@ public class Feed extends AppCompatActivity {
         if(i.getColorFilter() == null) {
             i.setColorFilter(R.color.purple);
             likes += 1;
+            taskRef.update("likedUsers", FieldValue.arrayUnion(userId));
         } else{
             i.clearColorFilter();
             likes -= 1;
+            taskRef.update("likedUsers", FieldValue.arrayRemove(userId));
         }
 
         finalLikes = Integer.toString(likes);
