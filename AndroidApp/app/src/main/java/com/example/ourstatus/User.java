@@ -3,13 +3,13 @@ package com.example.ourstatus;
 import java.util.List;
 
 public class User {
-    private String firstName, lastName, email, username, id;
+    private String firstName, lastName, email, username, id, picture;
     private List<String> friends, groupIds;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String username, List<String> friends, List<String> groupIds, String id) {
+    public User(String firstName, String lastName, String email, String username, List<String> friends, List<String> groupIds, String id, String picture) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -17,6 +17,7 @@ public class User {
         this.friends = friends;
         this.groupIds = groupIds;
         this.id = id;
+        this.picture = picture;
     }
 
 
@@ -36,11 +37,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getemail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setemail(String eMail) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -74,5 +75,13 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 }
