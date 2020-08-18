@@ -17,7 +17,7 @@
         android:id="@+id/back_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:onClick="onClick"
+        android:onClick="exit"
         android:background="@drawable/back_button"
         app:layout_constraintDimensionRatio="4:3"
         app:layout_constraintTop_toTopOf="@id/back_button_h1"
@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:divider="@null"
+        android:listSelector="@android:color/transparent"
         app:layout_constraintTop_toTopOf="@id/comment_section_h1"
         app:layout_constraintBottom_toBottomOf="@id/comment_section_h2"/>
 

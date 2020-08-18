@@ -23,15 +23,12 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "EmailPassword";
     private SignInBinding mBinding;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private String userId;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = SignInBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        // Buttons
-        mBinding.signInButton.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -42,6 +39,8 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
             getUserId(currentUser);
         }
     }
+
+
 
     public void getUserId(final FirebaseUser currentUser){
         String email = currentUser.getEmail();
@@ -54,7 +53,8 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
-                                userId = document.getString("id");
+                                StateClass.userId = document.getString("id");
+                                StateClass.profile = document.getString("picture");
                                 updateUI(currentUser);
                                 return;
                             }
@@ -92,6 +92,10 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(SignIn.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+
+                            StateClass.userId = null;
+                            StateClass.profile = null;
+                            StateClass.username = null;
                             updateUI(null);
                         }
                     }
@@ -117,7 +121,9 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                             for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
                                 Log.d(TAG, "email: Found");
                                 email = document.getString("email");
-                                userId = document.getString("id");
+                                StateClass.userId = document.getString("id");
+                                StateClass.profile = document.getString("picture");
+                                StateClass.username = document.getString("username");
                                 signIn(email, password);
                                 return;
                             }
@@ -163,8 +169,8 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("userId", userId);
+            //Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, FragmentTest.class);
             startActivity(i);
         }
     }

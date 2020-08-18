@@ -86,6 +86,7 @@
             app:layout_constraintEnd_toEndOf="@id/like_count_v2" />
 
         <ImageView
+            android:id="@+id/comment_button"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/comment"

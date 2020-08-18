@@ -1,5 +1,6 @@
 package com.example.ourstatus;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -20,8 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.bumptech.glide.Glide;
 import com.example.ourstatus.databinding.UserProfileBinding;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +41,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -51,12 +54,13 @@ public class UserProfile extends AppCompatActivity{
     public static final int PICK_IMAGE = 3;
     private static final String TAG = "EmailPassword";
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private String userId;
     private String path;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef;
+    private StorageReference storageRef = storage.getReference();
     private ImageView profilePicture;
     private Timestamp timestamp;
+    private float x1, y1, x2, y2;
+
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +68,11 @@ public class UserProfile extends AppCompatActivity{
         mBinding = UserProfileBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
         mAuth = FirebaseAuth.getInstance();
-        storageRef = storage.getReference();
         profilePicture = findViewById(R.id.profile_image);
         final View content = findViewById(android.R.id.content);
-        this.userId = getIntent().getStringExtra("userId");
-        getTasks(userId);
+        getTasks();
         getPicturePath();
+        //setPicture();
         content.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -111,15 +114,21 @@ public class UserProfile extends AppCompatActivity{
         }
     }
 
+
     public void getPicturePath(){
-        db.collection("users").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("users").document(StateClass.userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         path = document.getString("picture");
-                        setPicture();
+                        StorageReference storageReference = storageRef.child(path);
+                        ImageView profilePicture = (ImageView) findViewById(R.id.profile_image);
+                        GlideApp.with(UserProfile.this)
+                                .load(storageReference)
+                                .into(profilePicture);
+                        //setPicture();
                         Log.d(TAG, "Picture found");
                     } else {
                         Log.d(TAG, "No such document");
@@ -131,8 +140,10 @@ public class UserProfile extends AppCompatActivity{
         });
     }
 
+
     public void setPicture(){
-        storageRef.child(path).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+        Log.d(TAG, (StateClass.profile));
+        storageRef.child(StateClass.profile).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(profilePicture);
@@ -144,7 +155,6 @@ public class UserProfile extends AppCompatActivity{
                 Log.d(TAG, "Error finding profile pictures");
             }
         });
-
     }
 
 
@@ -197,9 +207,9 @@ public class UserProfile extends AppCompatActivity{
 
     }
 
-    public void getTasks(String creatorId){
+    public void getTasks(){
         db.collection("tasks")
-                .whereEqualTo("id", creatorId)
+                .whereEqualTo("id", StateClass.userId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -238,7 +248,7 @@ public class UserProfile extends AppCompatActivity{
             Uri imageUri = data.getData();
             timestamp = new Timestamp(new Date());
             mBinding.profileImage.setImageURI(imageUri);
-            final StorageReference profileRef = storageRef.child("profile-pics/" + userId + timestamp.getSeconds());
+            final StorageReference profileRef = storageRef.child("profile-pics/" + StateClass.userId + timestamp.getSeconds());
             UploadTask uploadTask = profileRef.putFile(imageUri);
             Log.w(TAG, profileRef.getPath());
 
@@ -251,7 +261,7 @@ public class UserProfile extends AppCompatActivity{
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    DocumentReference userRef = db.collection("users").document(userId);
+                    DocumentReference userRef = db.collection("users").document(StateClass.userId);
                     userRef
                             .update("picture", profileRef.getPath())
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -286,6 +296,24 @@ public class UserProfile extends AppCompatActivity{
         }
     }
 
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        Log.w(TAG, "test test");
+        switch(touchEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+                if(x1 > x2){//Swipe left
+                    Intent i = new Intent(UserProfile.this, MainActivity.class);
+                    startActivity(i);
+                }
+                break;
+        }
+        return false;
+    }
 
     public void onClick(View v){
         int i = v.getId();

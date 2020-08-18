@@ -1,14 +1,14 @@
 package com.example.ourstatus;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -17,10 +17,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 
 import com.example.ourstatus.databinding.FeedBinding;
+import com.example.ourstatus.databinding.HomeBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,10 +41,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Feed extends AppCompatActivity {
+public class FeedFragment extends Fragment {
     private FeedBinding mBinding;
     CommentAdapter commentAdapter;
     private int height, width;
+    private boolean complete;
     private DisplayMetrics dm;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -53,45 +55,39 @@ public class Feed extends AppCompatActivity {
     private String taskId;
     private float x1, y1, x2, y2;
     private Dialog dialog;
+    private View v;
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference storageRef = storage.getReference();
-    private List<String> creatorIds;
-    private HashMap<String, String[]> uMap;
-    private HashMap<String, String[]> cMap;
-    private List<String> friendIds;
-    private List<String> firstIdFriends;
-    private List<String> secondIdFriends;
+    private List<String> creatorIds, friendIds, firstIdFriends, secondIdFriends;
+    private HashMap<String, String[]> uMap, cMap;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = FeedBinding.inflate(getLayoutInflater());
-        setContentView(mBinding.getRoot());
-    }
-
-    public void onStart(){
-        super.onStart();
-
+        v = mBinding.getRoot();
         feed = new ArrayList<>();
         dm = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) this.getSystemService(WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(dm);
+        complete = false;
+
+        DisplayMetrics dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         height = dm.heightPixels;
         width = dm.widthPixels;
-
         mAuth = FirebaseAuth.getInstance();
         getFriendIds();
+
+        return v;
     }
 
     public void getFriendIds(){
-        new getFriends().execute("", "", "");
+        Log.w(TAG, StateClass.userId);
+        new FeedFragment.getFriends().execute("", "", "");
     }
 
     private class getFriends extends AsyncTask<String, String, String> {
+
         @Override
         protected String doInBackground(String... strings) {
             firstIdFriends = new ArrayList<String>();
             secondIdFriends = new ArrayList<String>();
-
             friendIds = new ArrayList<String>();
 
             db.collection("friendship")
@@ -135,15 +131,15 @@ public class Feed extends AppCompatActivity {
                             }
                         }
                     });
-
+            int count = 1;
             while(firstIdFriends != null && secondIdFriends != null){
-                int count = 1;
+
+                Log.w(TAG, String.valueOf(count));
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 count++;
             }
 
@@ -252,17 +248,12 @@ public class Feed extends AppCompatActivity {
     }
 
     public void createFeed(HashMap<String, String[]> uMap){
-        final ListView listview = (ListView) findViewById(R.id.listview);
+        final ListView listview = (ListView) v.findViewById(R.id.listview);
         Collections.sort(feed);
         Log.d(TAG, "height: " + height);
-        final FeedAdapter adapter = new FeedAdapter(Feed.this, feed, uMap ,height, width, StateClass.userId, this);
+        final FeedAdapter adapter = new FeedAdapter(getActivity(), feed, uMap ,height, width, StateClass.userId, new Feed());
         listview.setAdapter(adapter);
-        listview.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                return onTouchEvent(motionEvent);
-            }
-        });
+        complete = true;
     }
 
     public void comment(View v){
@@ -346,13 +337,13 @@ public class Feed extends AppCompatActivity {
     }
 
     public void displayComments(){
-        dialog = new Dialog(this);
+        dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.comment_section);
         ListView commentList = (ListView) dialog.findViewById(R.id.comments_list);
 
         if(cMap != null){
             Collections.sort(comments);
-            commentAdapter = new CommentAdapter(Feed.this, comments, cMap, height, width, this);
+            commentAdapter = new CommentAdapter(getActivity(), comments, cMap, height, width, new Feed());
             commentList.setAdapter(commentAdapter);
         }
 
@@ -423,26 +414,21 @@ public class Feed extends AppCompatActivity {
         ref.set(comment);
     }
 
-    public boolean onTouchEvent(MotionEvent touchEvent){
-        switch(touchEvent.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
-                break;
-            case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                if(x1 < x2){//Swipe left
-                    Intent i = new Intent(Feed.this, MainActivity.class);
-                    startActivity(i);
-                }
-                break;
-        }
-        return false;
-    }
 
 
     public void exit(View v){
         dialog.dismiss();
+    }
+
+    public void onClick(View v) {
+        int i = v.getId();
+
+        if(i == R.id.like){
+            like(v);
+        }else if(i == R.id.comment_button){
+            comment(v);
+        } else{
+            submitComment(v);
+        }
     }
 }

@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:divider="@null"
+        android:listSelector="@android:color/transparent"
         app:layout_constraintTop_toTopOf="@id/feed_list_h1"
         app:layout_constraintBottom_toBottomOf="@id/feed_list_h2"/>
 

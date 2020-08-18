@@ -31,7 +31,6 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
     private static final String TAG = "EmailPassword";
     private CreateAccountBinding mBinding;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private String userId;
 
 
 
@@ -141,7 +140,7 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
     private void addAccount(User newUser){
         DocumentReference ref = db.collection("users").document();
         String id = ref.getId();
-        userId = id;
+        StateClass.userId = id;
         newUser.setId(id);
         ref.set(newUser);
     }
@@ -208,7 +207,6 @@ public class CreateAccount  extends AppCompatActivity implements View.OnClickLis
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             Intent i = new Intent(this, MainActivity.class);
-            i.putExtra("userId", userId);
             startActivity(i);
         }
     }

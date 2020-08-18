@@ -1,20 +1,25 @@
 package com.example.ourstatus;
-//Home Page
-import androidx.appcompat.app.AppCompatActivity;
+
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+
+import com.example.ourstatus.databinding.FeedBinding;
 import com.example.ourstatus.databinding.HomeBinding;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,10 +32,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity{
+public class HomeFragment extends Fragment {
     private static final String TAG = "EmailPassword";
-    private TextView dateText;
-    private TextView timeText;
+    private TextView dateText, timeText;
+    private Switch s;
     private FirebaseAuth mAuth;
     private HomeBinding mBinding;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -40,20 +45,28 @@ public class MainActivity extends AppCompatActivity{
     private int month, date, year, hour, minute;
     private float x1, y1, x2, y2;
 
-
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mBinding = HomeBinding.inflate(getLayoutInflater());
-        setContentView(mBinding.getRoot());
+        View v = mBinding.getRoot();
         mAuth = FirebaseAuth.getInstance();
-        dateText = findViewById(R.id.dateText);
-        timeText = findViewById(R.id.timeText);
-        this.userId = getIntent().getStringExtra("userId");
-        Button selectDate = findViewById(R.id.dateButton);
-        Button selectTime = findViewById(R.id.timeButton);
+        dateText = v.findViewById(R.id.dateText);
+        timeText = v.findViewById(R.id.timeText);
+        s = v.findViewById(R.id.switch1);
+        Button selectDate = v.findViewById(R.id.dateButton);
+        Button selectTime = v.findViewById(R.id.timeButton);
+        Button submit = v.findViewById(R.id.createTask);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int i = v.getId();
+                if(i == R.id.createTask) {
+                    createTask();
+                }
+            }
+        });
+
         currentUser = mAuth.getCurrentUser();
 
         selectDate.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +77,7 @@ public class MainActivity extends AppCompatActivity{
                 date = calendar.get(Calendar.DAY_OF_MONTH);
                 year = calendar.get(Calendar.YEAR);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this,
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int date) {
@@ -93,7 +106,7 @@ public class MainActivity extends AppCompatActivity{
                 Calendar calendar = Calendar.getInstance();
                 hour = calendar.get(Calendar.HOUR_OF_DAY);
                 minute = calendar.get(Calendar.MINUTE);
-                TimePickerDialog timePickerDialog = new TimePickerDialog(MainActivity.this,3,
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),3,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -127,31 +140,11 @@ public class MainActivity extends AppCompatActivity{
                 timePickerDialog.show();
             }
         });
-    }
-
-    public boolean onTouchEvent(MotionEvent touchEvent){
-        switch(touchEvent.getAction()){
-            case MotionEvent.ACTION_DOWN:
-                x1 = touchEvent.getX();
-                y1 = touchEvent.getY();
-                break;
-            case MotionEvent.ACTION_UP:
-                x2 = touchEvent.getX();
-                y2 = touchEvent.getY();
-                if(x1 < x2){//Swipe right
-                    Intent i = new Intent(MainActivity.this, UserProfile.class);
-                    startActivity(i);
-                } else if(x1 > x2){//Swipe left
-                    Intent i = new Intent(MainActivity.this, Feed.class);
-                    startActivity(i);
-                }
-                break;
-        }
-        return false;
+        return v;
     }
 
     public boolean validFields(){
-        boolean valid = true;
+        boolean valid = true ;
         String taskName = mBinding.taskName.getText().toString();
         if (TextUtils.isEmpty(taskName)) {
             mBinding.taskName.setError("Required.");
@@ -176,7 +169,7 @@ public class MainActivity extends AppCompatActivity{
         return valid;
     }
 
-    public void createTask(String creatorId){
+    public void createTask(){
         if(!validFields()){
             return;
         }
@@ -186,7 +179,6 @@ public class MainActivity extends AppCompatActivity{
         Timestamp targetDate = new Timestamp(taskTarget.getTime());
         Timestamp dateCreated = new Timestamp(new Date());
         String title = mBinding.taskName.getText().toString();
-        Switch s = (Switch) findViewById(R.id.switch1);
         DocumentReference ref = db.collection("tasks").document();
         String id = ref.getId();
 
@@ -203,26 +195,15 @@ public class MainActivity extends AppCompatActivity{
         mBinding.dateText.setText("Date");
         mBinding.switch1.setChecked(false);
         mBinding.timeText.setText("Time");
-        Toast.makeText(MainActivity.this, "Task created",
+        Toast.makeText(getActivity(), "Task created",
                 Toast.LENGTH_SHORT).show();
         Log.w(TAG, "Task created");
-    }
-
-
-
-    public void onRemindClick(View v){
-        startActivity(new Intent(this, UserProfile.class));
     }
 
     public void onClick(View v) {
         int i = v.getId();
 
-        if(i == R.id.createTask){
-            createTask(userId);
-        }else{
-            createTask(userId);
-        }
+
     }
 
 }
-
