@@ -34,11 +34,12 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
           }
         );
         if (val.length > 0) {
-          let userList = [];
+          let userSet = new Set<string>();
           let comments = val;
           val.forEach(comment => {
-            userList.push(comment.authorId);
+            userSet.add(comment.authorId);
           })
+          let userList = Array.from(userSet);
           this.accountSubscription = this.accountService.getAccountsByIds(userList).subscribe(
             (val) => {
               val.forEach(account => {

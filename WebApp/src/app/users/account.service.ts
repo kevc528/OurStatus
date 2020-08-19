@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
-import { Observable, merge, zip, concat } from 'rxjs';
+import { Observable, merge, zip, concat, combineLatest, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Account } from '../shared/model/account';
 import { AngularFireModule } from '@angular/fire';
 import * as firebase from "firebase/app";
@@ -70,7 +71,7 @@ export class AccountService {
       .where('request', '==', false)).valueChanges();
     let resultB = this.firestore.collection<Friendship>('friendship', ref => ref.where('secondId', '==', userId)
       .where('request', '==', false)).valueChanges();
-    let final = merge(resultA, resultB);
+    let final = combineLatest(resultA, resultB).pipe(map(([s1, s2]) => [...s1, ...s2]));
     return final;
   }
 
@@ -79,7 +80,7 @@ export class AccountService {
       .where('secondId', '==', secondId)).valueChanges();
     let resultB = this.firestore.collection<Friendship>('friendship', ref => ref.where('secondId', '==', firstId)
       .where('firstId', '==', secondId)).valueChanges();
-    let final = merge(resultA, resultB);
+    let final = combineLatest(resultA, resultB).pipe(map(([s1, s2]) => [...s1, ...s2]));
     return final;
   }
 

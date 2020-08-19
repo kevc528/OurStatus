@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 import { Task } from '../shared/model/task';
 import { AccountService } from '../users/account.service';
 
@@ -21,8 +21,17 @@ export class TaskService {
    * @param userIds the list of friends
    */
   getFeedTasks(userIds: string[]): Observable<Task[]> {
-    return this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', 'in', userIds)
-      .where('level', '==', 0).where('dateCompleted', '<', new Date())).valueChanges();
+    let obsList: Observable<Task[]>[] = [];
+    for (let i = 0; i < userIds.length; i += 10) {
+      let ids = [];
+      for (let j = i; j < Math.min(userIds.length, i + 10); j++) {
+        ids.push(userIds[j]);
+      }
+      let obs = this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', 'in', userIds)
+        .where('level', '==', 0).where('dateCompleted', '<', new Date())).valueChanges();
+      obsList.push(obs);
+    }
+    return merge(...obsList);
   }
 
   // getAssignedTasksForUser(username: string): Observable<any[]> {
