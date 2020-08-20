@@ -84,8 +84,8 @@ class SignUpViewController: UIViewController {
                     
                     let groupIds = [String]()
                     let friends = [String]()
-                    
-                    db.collection("users").addDocument(data: ["email": email, "firstName": firstName, "lastName": lastName, "username": username, "friends": friends, "groupIds": groupIds]) { (error) in
+                    let newEntry = db.collection("users").document()
+                    newEntry.setData(["email": email, "firstName": firstName, "lastName": lastName, "username": username, "friends": friends, "groupIds": groupIds, "id": newEntry.documentID]) { (error) in
                         if error != nil {
                             self.showAlert(title: "Could not initialize user data", message: "Please try again")
                         }
@@ -102,16 +102,16 @@ class SignUpViewController: UIViewController {
     }
     
     func transitionToHome() {
-        let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.taskCreatorViewController) as? HomeViewController
+        let scrollViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.scrollViewController) as? IntroPages
         
-        view.window?.rootViewController = homeViewController
+        view.window?.rootViewController = scrollViewController
         view.window?.makeKeyAndVisible()
     }
     
     func transitionToSignIn() {
-        let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.taskCreatorViewController) as? HomeViewController
+        let registerViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.registerViewController) as? SignUpViewController
         
-        view.window?.rootViewController = homeViewController
+        view.window?.rootViewController = registerViewController
         view.window?.makeKeyAndVisible()
     }
     

@@ -10,6 +10,11 @@ import Foundation
 
 struct Constants {
     struct Storyboard {
-        static let taskCreatorViewController = "TaskCreatorVC"
+        static let scrollViewController = "PageScrollId"
+        static let loginViewController = "LoginViewId"
+        static let registerViewController = "RegisterViewId"
+        static let feedViewController = "FeedID"
+        static let taskViewController = "TaskCreatorID"
+        static let profileViewController = "MyProfileID"
     }
 }

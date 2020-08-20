@@ -18,6 +18,12 @@
 		A58F592024B11B3300E4C7D6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A58F591F24B11B3300E4C7D6 /* Assets.xcassets */; };
 		A58F592324B11B3300E4C7D6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A58F592124B11B3300E4C7D6 /* LaunchScreen.storyboard */; };
 		A58F592B24B1287700E4C7D6 /* Poppins in Resources */ = {isa = PBXBuildFile; fileRef = A58F592A24B1287700E4C7D6 /* Poppins */; };
+		A5B5B6C024DBAF67005E33D9 /* MyProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5B6BF24DBAF67005E33D9 /* MyProfileViewController.swift */; };
+		A5B5B6C224DE4D9E005E33D9 /* IntroPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5B6C124DE4D9E005E33D9 /* IntroPages.swift */; };
+		A5B5B6E924E8D45E005E33D9 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5B6E724E8D45E005E33D9 /* PostTableViewCell.swift */; };
+		A5B5B6EA24E8D45E005E33D9 /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A5B5B6E824E8D45E005E33D9 /* PostTableViewCell.xib */; };
+		A5B5B6EC24E8E4BD005E33D9 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5B6EB24E8E4BD005E33D9 /* FeedViewController.swift */; };
+		A5B5B6F024EB6466005E33D9 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5B6EF24EB6466005E33D9 /* Post.swift */; };
 		A5D8A4EE24B6B72C00264C2D /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D8A4ED24B6B72C00264C2D /* SignUpViewController.swift */; };
 		A5D8A4F024B6B73D00264C2D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D8A4EF24B6B73D00264C2D /* LoginViewController.swift */; };
 		A5D8A4F224B6B74C00264C2D /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D8A4F124B6B74C00264C2D /* HomeViewController.swift */; };
@@ -37,6 +43,12 @@
 		A58F592224B11B3300E4C7D6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A58F592424B11B3300E4C7D6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A58F592A24B1287700E4C7D6 /* Poppins */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Poppins; path = ../../../Downloads/Poppins; sourceTree = "<group>"; };
+		A5B5B6BF24DBAF67005E33D9 /* MyProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileViewController.swift; sourceTree = "<group>"; };
+		A5B5B6C124DE4D9E005E33D9 /* IntroPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPages.swift; sourceTree = "<group>"; };
+		A5B5B6E724E8D45E005E33D9 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		A5B5B6E824E8D45E005E33D9 /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
+		A5B5B6EB24E8E4BD005E33D9 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		A5B5B6EF24EB6466005E33D9 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		A5D8A4ED24B6B72C00264C2D /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		A5D8A4EF24B6B73D00264C2D /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		A5D8A4F124B6B74C00264C2D /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -85,6 +97,7 @@
 		A58F591524B11B3000E4C7D6 /* OurStatus */ = {
 			isa = PBXGroup;
 			children = (
+				A5B5B6EE24EB63EC005E33D9 /* Models */,
 				A54A22E424BAD15400C7D199 /* Helpers */,
 				A5D8A4F324B6B76B00264C2D /* View Controller */,
 				A58F592A24B1287700E4C7D6 /* Poppins */,
@@ -100,13 +113,26 @@
 			path = OurStatus;
 			sourceTree = "<group>";
 		};
+		A5B5B6EE24EB63EC005E33D9 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A5B5B6EF24EB6466005E33D9 /* Post.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		A5D8A4F324B6B76B00264C2D /* View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				A5B5B6E724E8D45E005E33D9 /* PostTableViewCell.swift */,
+				A5B5B6E824E8D45E005E33D9 /* PostTableViewCell.xib */,
 				A58F591A24B11B3000E4C7D6 /* ViewController.swift */,
 				A5D8A4ED24B6B72C00264C2D /* SignUpViewController.swift */,
 				A5D8A4EF24B6B73D00264C2D /* LoginViewController.swift */,
 				A5D8A4F124B6B74C00264C2D /* HomeViewController.swift */,
+				A5B5B6BF24DBAF67005E33D9 /* MyProfileViewController.swift */,
+				A5B5B6C124DE4D9E005E33D9 /* IntroPages.swift */,
+				A5B5B6EB24E8E4BD005E33D9 /* FeedViewController.swift */,
 			);
 			path = "View Controller";
 			sourceTree = "<group>";
@@ -192,6 +218,7 @@
 				A58F592B24B1287700E4C7D6 /* Poppins in Resources */,
 				A58F592324B11B3300E4C7D6 /* LaunchScreen.storyboard in Resources */,
 				A54A22E124BAB76C00C7D199 /* GoogleService-Info.plist in Resources */,
+				A5B5B6EA24E8D45E005E33D9 /* PostTableViewCell.xib in Resources */,
 				A58F592024B11B3300E4C7D6 /* Assets.xcassets in Resources */,
 				A58F591E24B11B3000E4C7D6 /* Main.storyboard in Resources */,
 			);
@@ -263,13 +290,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5B5B6E924E8D45E005E33D9 /* PostTableViewCell.swift in Sources */,
 				A58F591B24B11B3000E4C7D6 /* ViewController.swift in Sources */,
 				A58F591724B11B3000E4C7D6 /* AppDelegate.swift in Sources */,
 				A54A22E324BAC41700C7D199 /* Utilities.swift in Sources */,
+				A5B5B6F024EB6466005E33D9 /* Post.swift in Sources */,
+				A5B5B6C024DBAF67005E33D9 /* MyProfileViewController.swift in Sources */,
 				A5D8A4EE24B6B72C00264C2D /* SignUpViewController.swift in Sources */,
+				A5B5B6C224DE4D9E005E33D9 /* IntroPages.swift in Sources */,
 				A5D8A4F024B6B73D00264C2D /* LoginViewController.swift in Sources */,
 				A58F591924B11B3000E4C7D6 /* SceneDelegate.swift in Sources */,
 				A5D8A4F224B6B74C00264C2D /* HomeViewController.swift in Sources */,
+				A5B5B6EC24E8E4BD005E33D9 /* FeedViewController.swift in Sources */,
 				A54A22E624BAD16400C7D199 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

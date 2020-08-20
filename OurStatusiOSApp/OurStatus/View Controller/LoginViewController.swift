@@ -67,9 +67,9 @@ class LoginViewController: UIViewController {
     }
     
     func transitionToHome() {
-        let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.taskCreatorViewController) as? HomeViewController
+        let scrollViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.scrollViewController) as? ViewController
         
-        view.window?.rootViewController = homeViewController
+        view.window?.rootViewController = scrollViewController
         view.window?.makeKeyAndVisible()
     }
 }
