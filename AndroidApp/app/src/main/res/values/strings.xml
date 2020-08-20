@@ -24,5 +24,6 @@
     <string name="comment_text">Username This is cool</string>
     <string name="scale_text">yo</string>
     <string name="add_a_comment">Add a comment ...</string>
+    <string name="friend_name">Friend name</string>
 
 </resources>

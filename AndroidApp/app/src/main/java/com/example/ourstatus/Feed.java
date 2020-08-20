@@ -255,7 +255,7 @@ public class Feed extends AppCompatActivity {
         final ListView listview = (ListView) findViewById(R.id.listview);
         Collections.sort(feed);
         Log.d(TAG, "height: " + height);
-        final FeedAdapter adapter = new FeedAdapter(Feed.this, feed, uMap ,height, width, StateClass.userId, this);
+        final FeedAdapter adapter = new FeedAdapter(Feed.this, feed, uMap ,height, width, StateClass.userId, null);
         listview.setAdapter(adapter);
         listview.setOnTouchListener(new View.OnTouchListener() {
             @Override

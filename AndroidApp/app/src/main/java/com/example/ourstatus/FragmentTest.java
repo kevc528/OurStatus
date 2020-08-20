@@ -16,7 +16,7 @@ public class FragmentTest extends FragmentActivity {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 2;
+    private static final int NUM_PAGES = 3;
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -39,6 +39,7 @@ public class FragmentTest extends FragmentActivity {
         viewPager = findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -53,10 +54,7 @@ public class FragmentTest extends FragmentActivity {
         }
     }
 
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
+
     private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
         public ScreenSlidePagerAdapter(FragmentActivity fa) {
             super(fa);
@@ -64,13 +62,14 @@ public class FragmentTest extends FragmentActivity {
 
         @Override
         public Fragment createFragment(int position) {
-            return new FeedFragment();
-/*
             switch(position) {
                 case 0:
                     Log.w(TAG, String.valueOf(position));
-                    return new HomeFragment();
+                    return new UserFragment();
                 case 1:
+                    Log.w(TAG, String.valueOf(position));
+                    return new HomeFragment();
+                case 2:
                     Log.w(TAG, String.valueOf(position));
                     return new FeedFragment();
                 default:
@@ -78,7 +77,7 @@ public class FragmentTest extends FragmentActivity {
 
             }
 
- */
+
         }
 
         @Override

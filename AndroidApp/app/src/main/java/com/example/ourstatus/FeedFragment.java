@@ -65,9 +65,7 @@ public class FeedFragment extends Fragment {
         v = mBinding.getRoot();
         feed = new ArrayList<>();
         dm = new DisplayMetrics();
-        complete = false;
 
-        DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
         height = dm.heightPixels;
         width = dm.widthPixels;
@@ -131,16 +129,12 @@ public class FeedFragment extends Fragment {
                             }
                         }
                     });
-            int count = 1;
             while(firstIdFriends != null && secondIdFriends != null){
-
-                Log.w(TAG, String.valueOf(count));
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                count++;
             }
 
             return "";
@@ -251,7 +245,7 @@ public class FeedFragment extends Fragment {
         final ListView listview = (ListView) v.findViewById(R.id.listview);
         Collections.sort(feed);
         Log.d(TAG, "height: " + height);
-        final FeedAdapter adapter = new FeedAdapter(getActivity(), feed, uMap ,height, width, StateClass.userId, new Feed());
+        final FeedAdapter adapter = new FeedAdapter(getActivity(), feed, uMap ,height, width, StateClass.userId, this);
         listview.setAdapter(adapter);
         complete = true;
     }
@@ -396,7 +390,6 @@ public class FeedFragment extends Fragment {
     }
 
     public void submitComment(View v) {
-
         ConstraintLayout parentRow = (ConstraintLayout) v.getParent();
         EditText commentText = (EditText) parentRow.getViewById(R.id.comment_input);
         String strComment = commentText.getText().toString();

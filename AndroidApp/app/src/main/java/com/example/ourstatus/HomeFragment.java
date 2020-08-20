@@ -188,7 +188,6 @@ public class HomeFragment extends Fragment {
             remind = false;
         }
 
-        //task = new Tasks(new ArrayList<String>(), creatorId, id, title, null, dateCreated, targetDate, 0, remind, new ArrayList<String>(), new ArrayList<String>(), 0);
         task = new Tasks(new ArrayList<String>(), StateClass.userId, id, title, null, dateCreated, targetDate, 0, remind, new ArrayList<String>(), new ArrayList<String>(), 0);
         ref.set(task);
         mBinding.taskName.setText("");
