@@ -17,19 +17,19 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="09P-ht-NPf">
-                        <rect key="frame" x="8" y="8" width="470" height="104"/>
+                        <rect key="frame" x="8" y="8" width="470" height="94"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="N7B-g1-k5v">
-                                <rect key="frame" x="10" y="15" width="70" height="70"/>
+                                <rect key="frame" x="10" y="15" width="60" height="60"/>
                                 <color key="backgroundColor" red="0.37644588950000002" green="0.35967129469999998" blue="0.90985196830000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="N7B-g1-k5v" secondAttribute="height" multiplier="1:1" id="Zzr-0d-J4Z"/>
-                                    <constraint firstAttribute="width" constant="70" id="oER-jR-kZB"/>
-                                    <constraint firstAttribute="height" constant="70" id="xFo-9c-INh"/>
+                                    <constraint firstAttribute="width" constant="60" id="oER-jR-kZB"/>
+                                    <constraint firstAttribute="height" constant="60" id="xFo-9c-INh"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do laundry today" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xg5-wL-SbA">
-                                <rect key="frame" x="88" y="36.5" width="274" height="37.5"/>
+                                <rect key="frame" x="78" y="36.5" width="284" height="27.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -57,7 +57,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UserName Completed Task:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vP-2X-ukz">
-                                <rect key="frame" x="88" y="17" width="157.5" height="14.5"/>
+                                <rect key="frame" x="78" y="17" width="157.5" height="14.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
