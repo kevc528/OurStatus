@@ -3,5 +3,5 @@ export interface Friendship {
   firstId: string;
   secondId: string;
   request: boolean;
-  actionUser: string;
+  recieveUser: string;
 }

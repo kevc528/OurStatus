@@ -34,6 +34,9 @@ import { StoreModule } from '@ngrx/store';
 import { userReducer } from './users/state/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { FriendProfileComponent } from './users/friend-profile/friend-profile.component';
+import { FriendPageComponent } from './mainapp/friend-page/friend-page.component';
+import { FriendRequestsComponent } from './social/friends/friend-requests/friend-requests.component';
+import { FriendSectionComponent } from './social/friends/friend-section/friend-section.component';
  
 @NgModule({
   declarations: [
@@ -55,6 +58,9 @@ import { FriendProfileComponent } from './users/friend-profile/friend-profile.co
     ProfilePageComponent,
     EditProfileComponent,
     FriendProfileComponent,
+    FriendPageComponent,
+    FriendRequestsComponent,
+    FriendSectionComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <hr>
 <p>
-  <b>{{task.creatorUsername}}</b> has completed the task: {{task.title}}
+  <b class="clickable" [routerLink]="['/app/users',task.creatorUsername]">{{task.creatorUsername}}</b> has completed the task: {{task.title}}
 </p>
 <span>
   <i (click)="likeClicked()" [ngStyle]="{'color': task.likedUsers.includes(userId) ? 'red' : 'white'}" class="fa fa-heart" ></i>

@@ -14,3 +14,12 @@ app-side-bar {
   padding:10px;
   width:210px;
 }
+
+.clickable {
+  cursor: pointer;
+}
+
+.profile-image {
+  height: 300px;
+  width: 300px;
+}

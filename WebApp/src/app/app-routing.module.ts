@@ -8,6 +8,7 @@ import { ForgotPasswordComponent } from './users/forgot-password/forgot-password
 import { TaskPageComponent } from './mainapp/task-page/task-page.component';
 import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
 import { ProfilePageComponent } from './mainapp/profile-page/profile-page.component';
+import { FriendPageComponent } from './mainapp/friend-page/friend-page.component';
 
 
 const routes: Routes = [
@@ -17,7 +18,8 @@ const routes: Routes = [
     { path: 'tasks', component: TaskPageComponent},
     { path:'', component: MainComponent },
     { path: 'feed', component: FeedPageComponent},
-    { path: 'profile', component: ProfilePageComponent}
+    { path: 'profile', component: ProfilePageComponent},
+    { path: 'users/:username', component: FriendPageComponent}
   ]},
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: '', component: StartComponent }

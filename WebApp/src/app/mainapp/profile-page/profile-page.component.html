@@ -1,11 +1,12 @@
 <app-side-bar></app-side-bar>
 <div class="content">
   <br>
-  <h1>My Profile</h1>
-  <h2>{{username}}</h2>
-  <img [src]="profilePic | async">
   <br>
+  <img class="profile" [src]="profilePic | async">
+  <h2 style="text-align: center;">{{username}}</h2>
+  <div class="text-center">
+    <button class="btn btn-large btn-outline-primary" (click)="openEditModal()">Edit Profile</button>
+  </div>
   <br>
-  <button class="btn btn-large btn-outline-primary" (click)="openEditModal()">Edit Profile</button>
-  <app-friend-profile></app-friend-profile>
+  <app-friend-section></app-friend-section>
 </div>

@@ -195,4 +195,31 @@ export class AccountService {
     );
     return promise;
   }
+
+  requestFriend(senderId: string, recipientId: string): Promise<void> {
+    let friendship: Friendship = {
+      id: '',
+      recieveUser: recipientId,
+      firstId: senderId,
+      secondId: recipientId,
+      request: true
+    };
+    return this.firestore.collection('friendship').add(friendship)
+      .then((doc) => {
+        this.firestore.collection('friendship').doc(doc.id).update({'id': doc.id});
+      })
+  }
+
+  confirmFriendRequest(friendshipId: string): Promise<void> {
+    return this.firestore.collection('friendship').doc(friendshipId)
+      .update({'recieveUser': null, 'request': false});
+  }
+
+  removeFriendship(friendshipId: string): Promise<void> {
+    return this.firestore.collection('friendship').doc(friendshipId).delete();
+  }
+
+  getFriendRequests(userId: string): Observable<Friendship[]> {
+    return this.firestore.collection<Friendship>('friendship', ref => ref.where('recieveUser', '==', userId)).valueChanges();
+  }
 }

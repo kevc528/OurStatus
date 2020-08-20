@@ -1,6 +1,14 @@
 <br>
 <br>
-<button class="btn btn-large btn-outline-primary" *ngIf="!friendship">Request Friend</button>
-<button class="btn btn-large btn-outline-primary" *ngIf="friendship&&!friendship.request">Remove Friend</button>
-<button class="btn btn-large btn-outline-primary" *ngIf="friendship&&friendship.request&&friendship.actionUser!=userId">Confirm/Deny Request</button>
-<button class="btn btn-large btn-outline-primary" *ngIf="friendship&&friendship.request&&friendship.actionUser==userId">Cancel Request</button>
+<h1>{{accountUsername}}</h1>
+<br>
+<img class="profile-image" [src]="pic | async">
+<br>
+<br>
+<div [hidden]="!buttonVisible">
+  <button class="btn btn-large btn-outline-primary" *ngIf="!friendship" (click)="requestFriend()">Request Friend</button>
+  <button class="btn btn-large btn-outline-primary" *ngIf="friendship&&!friendship.request" (click)="removeRequest()">Remove Friend</button>
+  <button class="btn btn-large btn-outline-primary" *ngIf="friendship&&friendship.request&&friendship.recieveUser==userId" (click)="confirmRequest()">Confirm Request</button>
+  <button class="btn btn-large btn-outline-primary" *ngIf="friendship&&friendship.request&&friendship.recieveUser==userId" (click)="removeRequest()" style="margin-left: 10px">Deny Request</button>
+  <button class="btn btn-large btn-outline-primary" *ngIf="friendship&&friendship.request&&friendship.recieveUser!=userId" (click)="removeRequest()">Cancel Request</button>
+</div>
