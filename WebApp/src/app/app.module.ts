@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 import { LoginComponent } from './users/login/login.component';
 import {FormsModule} from '@angular/forms';
@@ -21,6 +22,18 @@ import { ForgotPasswordComponent } from './users/forgot-password/forgot-password
 import { CookieService } from 'ngx-cookie-service';
 import { SideBarComponent } from './mainapp/side-bar/side-bar.component';
 import { TaskCreateComponent } from './tasks/task-create/task-create.component';
+import { TaskPageComponent } from './mainapp/task-page/task-page.component';
+import { FeedComponent } from './social/feed/feed.component';
+import { FeedListingComponent } from './social/feed-listing/feed-listing.component';
+import { CommentSectionComponent } from './social/comment-section/comment-section.component';
+import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
+import { ProfilePageComponent } from './mainapp/profile-page/profile-page.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EditProfileComponent } from './users/edit-profile/edit-profile.component';
+import { StoreModule } from '@ngrx/store';
+import { userReducer } from './users/state/user.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { FriendProfileComponent } from './users/friend-profile/friend-profile.component';
  
 @NgModule({
   declarations: [
@@ -34,14 +47,27 @@ import { TaskCreateComponent } from './tasks/task-create/task-create.component';
     ForgotPasswordComponent,
     SideBarComponent,
     TaskCreateComponent,
+    TaskPageComponent,
+    FeedComponent,
+    FeedListingComponent,
+    CommentSectionComponent,
+    FeedPageComponent,
+    ProfilePageComponent,
+    EditProfileComponent,
+    FriendProfileComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireStorageModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule,
+    StoreModule.forRoot({}, {}),
+    StoreModule.forFeature('user', userReducer),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

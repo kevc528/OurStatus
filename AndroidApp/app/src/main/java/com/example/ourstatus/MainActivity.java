@@ -1,28 +1,26 @@
 package com.example.ourstatus;
 //Home Page
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import com.example.ourstatus.databinding.HomeBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,12 +35,11 @@ public class MainActivity extends AppCompatActivity{
     private HomeBinding mBinding;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Calendar taskTarget = Calendar.getInstance();
-    FirebaseUser currentUser;
-    private int month;
-    private int date;
-    private int year;
-    private int hour;
-    private int minute;
+    private FirebaseUser currentUser;
+    private String userId;
+    private int month, date, year, hour, minute;
+    private float x1, y1, x2, y2;
+
 
 
 
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
         dateText = findViewById(R.id.dateText);
         timeText = findViewById(R.id.timeText);
-
+        this.userId = getIntent().getStringExtra("userId");
         Button selectDate = findViewById(R.id.dateButton);
         Button selectTime = findViewById(R.id.timeButton);
         currentUser = mAuth.getCurrentUser();
@@ -114,21 +111,78 @@ public class MainActivity extends AppCompatActivity{
                                     am_pm = "PM";
 
                                 String strHrsToShow = (c.get(Calendar.HOUR) == 0) ?"12":c.get(Calendar.HOUR)+"";
+                                String strMinToShow;
+                                int intMinToShow = c.get(Calendar.MINUTE);
 
-                                timeText.setText(strHrsToShow+":"+ c.get(Calendar.MINUTE)+" "+am_pm);
+                                if(intMinToShow < 10){
+                                    strMinToShow = "0" + intMinToShow;
+                                } else{
+                                    strMinToShow = "" + intMinToShow;
+                                }
+
+
+                                timeText.setText(strHrsToShow+":" + strMinToShow + " "+am_pm);
                             }
                         }, hour, minute, false);
                 timePickerDialog.show();
             }
         });
-
-
     }
 
+    public boolean onTouchEvent(MotionEvent touchEvent){
+        switch(touchEvent.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                x1 = touchEvent.getX();
+                y1 = touchEvent.getY();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = touchEvent.getX();
+                y2 = touchEvent.getY();
+                if(x1 < x2){//Swipe right
+                    Intent i = new Intent(MainActivity.this, UserProfile.class);
+                    startActivity(i);
+                } else if(x1 > x2){//Swipe left
+                    Intent i = new Intent(MainActivity.this, Feed.class);
+                    startActivity(i);
+                }
+                break;
+        }
+        return false;
+    }
 
-    public void createTask(String creatorUsername){
+    public boolean validFields(){
+        boolean valid = true;
+        String taskName = mBinding.taskName.getText().toString();
+        if (TextUtils.isEmpty(taskName)) {
+            mBinding.taskName.setError("Required.");
+            valid = false;
+        } else {
+            mBinding.taskName.setError(null);
+        }
+
+        if(mBinding.dateText.getText().toString().equals("Date")){
+            mBinding.dateText.setError("Required.");
+            valid = false;
+        } else{
+            return true;
+        }
+
+        if(mBinding.timeText.getText().toString().equals("Time")){
+            mBinding.timeText.setError("Required.");
+            valid = false;
+        }else {
+            mBinding.timeText.setError(null);
+        }
+        return valid;
+    }
+
+    public void createTask(String creatorId){
+        if(!validFields()){
+            return;
+        }
+
         boolean remind;
-        NewTask task;
+        Tasks task;
         Timestamp targetDate = new Timestamp(taskTarget.getTime());
         Timestamp dateCreated = new Timestamp(new Date());
         String title = mBinding.taskName.getText().toString();
@@ -142,49 +196,31 @@ public class MainActivity extends AppCompatActivity{
             remind = false;
         }
 
-        task = new NewTask(new ArrayList<String>(), creatorUsername, id, title, null, dateCreated, targetDate, 0, remind);
+        //task = new Tasks(new ArrayList<String>(), creatorId, id, title, null, dateCreated, targetDate, 0, remind, new ArrayList<String>(), new ArrayList<String>(), 0);
+        task = new Tasks(new ArrayList<String>(), StateClass.userId, id, title, null, dateCreated, targetDate, 0, remind, new ArrayList<String>(), new ArrayList<String>(), 0);
         ref.set(task);
-        Log.w(TAG, "userInfo: search failed");
+        mBinding.taskName.setText("");
+        mBinding.dateText.setText("Date");
+        mBinding.switch1.setChecked(false);
+        mBinding.timeText.setText("Time");
+        Toast.makeText(MainActivity.this, "Task created",
+                Toast.LENGTH_SHORT).show();
+        Log.w(TAG, "Task created");
     }
 
 
-    public void createTaskButton(){
-        Log.d(TAG, "userInfo: search begins");
-        String email = currentUser.getEmail();
 
-        db.collection("users")
-                .whereEqualTo("email", email)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            String username;
-                            for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
-                                Log.d(TAG, "userInfo: Found");
-                                username = document.getString("username");
-                                createTask(username);
-                                return;
-                            }
-                        } else {
-                            Log.w(TAG, "userInfo: search failed", task.getException());
-                        }
-                    }
-                });
-    }
-
-
-    public void goToProfile(View v){
-        setContentView(R.layout.user_profile);
+    public void onRemindClick(View v){
+        startActivity(new Intent(this, UserProfile.class));
     }
 
     public void onClick(View v) {
         int i = v.getId();
 
         if(i == R.id.createTask){
-            createTaskButton();
+            createTask(userId);
         }else{
-            goToProfile(v);
+            createTask(userId);
         }
     }
 

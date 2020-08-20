@@ -1,5 +1,6 @@
 package com.example.ourstatus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,17 +29,47 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
         mBinding = SignInBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        // Buttons
-        mBinding.signInButton.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
     }
 
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        if(currentUser != null){
+            getUserId(currentUser);
+        }
     }
 
+
+
+    public void getUserId(final FirebaseUser currentUser){
+        String email = currentUser.getEmail();
+
+        db.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
+                                StateClass.userId = document.getString("id");
+                                StateClass.profile = document.getString("picture");
+                                updateUI(currentUser);
+                                return;
+                            }
+                            //runs when no corresponding email found
+                            Log.w(TAG, "email: Not found", task.getException());
+                            Toast.makeText(SignIn.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.w(TAG, "email: Not found", task.getException());
+                            Toast.makeText(SignIn.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
@@ -61,6 +92,10 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(SignIn.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+
+                            StateClass.userId = null;
+                            StateClass.profile = null;
+                            StateClass.username = null;
                             updateUI(null);
                         }
                     }
@@ -86,6 +121,9 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
                             for (QueryDocumentSnapshot document : task.getResult()) {//runs when corresponding email found
                                 Log.d(TAG, "email: Found");
                                 email = document.getString("email");
+                                StateClass.userId = document.getString("id");
+                                StateClass.profile = document.getString("picture");
+                                StateClass.username = document.getString("username");
                                 signIn(email, password);
                                 return;
                             }
@@ -103,7 +141,7 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void resetPassword(){
-
+        startActivity(new Intent(this, ResetPassword.class));
     }
 
 
@@ -131,7 +169,9 @@ public class SignIn extends AppCompatActivity implements View.OnClickListener {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            setContentView(R.layout.home);
+            //Intent i = new Intent(this, MainActivity.class);
+            Intent i = new Intent(this, FragmentTest.class);
+            startActivity(i);
         }
     }
 

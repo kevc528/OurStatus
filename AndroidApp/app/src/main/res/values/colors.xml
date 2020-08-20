@@ -5,4 +5,7 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="grey">#A9BBC9</color>
     <color name="purple">#616CCB</color>
+    <color name="normal_text">#272140</color>
+    <color name="white">#FFFFFF</color>
+    <color name="light_blue">#F2F7FB</color>
 </resources>

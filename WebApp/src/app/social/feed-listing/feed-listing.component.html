@@ -1,0 +1,11 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<hr>
+<p>
+  <b>{{task.creatorUsername}}</b> has completed the task: {{task.title}}
+</p>
+<span>
+  <i (click)="likeClicked()" [ngStyle]="{'color': task.likedUsers.includes(userId) ? 'red' : 'white'}" class="fa fa-heart" ></i>
+  {{task.likes}}
+  <i (click)="commentClicked()" class="fa fa-comment"></i>
+</span>
+<p style="font-style:italic; font-size:small; margin-top: 15px">{{ task.dateCompleted.toDate() | date}}, {{ task.dateCompleted.toDate() | date: 'shortTime'}}</p>

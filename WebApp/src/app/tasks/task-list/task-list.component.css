@@ -1,10 +1,10 @@
 .card {
     margin-top: 3rem;
-    column-count: 2;
+    margin-right: 4rem;
     border: 0;
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
     background-color: #DDE7F2;
     overflow:hidden; overflow-y:scroll;
-    height:400px;
+    height:600px;
 }

@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class TaskComponent implements OnInit {
 
-  @Input() task: Task = null;
+  @Input() task: Task;
   path: string = ''
   hideDetail: boolean = true;
   
@@ -35,10 +35,12 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let date = new Date(this.task.targetDate.seconds * 1000);
     this.path = this.task.dateCompleted ? "assets/images/checked-checkbox.png" : "assets/images/unchecked-checkbox.png";
     this.editForm = {
       title: this.task.title,
-      targetDate: this.formatDate(new Date(this.task.targetDate.seconds * 1000)),
+      targetDate: this.formatDate(date),
+      targetTime: (date.getHours() > 9 ? date.getHours() : '0' + date.getHours()) + ':' + (date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()),
       remind: this.task.remind
     };
   }
@@ -56,18 +58,29 @@ export class TaskComponent implements OnInit {
   onInfoClick(): void {
     this.hideDetail = !this.hideDetail;
     if (this.hideDetail) {
+      let date = new Date(this.task.targetDate.seconds * 1000);
       this.editForm = {
         title: this.task.title,
         targetDate: this.formatDate(new Date(this.task.targetDate.seconds * 1000)),
+        targetTime: (date.getHours() > 9 ? date.getHours() : '0' + date.getHours()) + ':' + (date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes()),
         remind: this.task.remind
       };
     }
   }
 
+  onDeleteClick(): void {
+    this.taskService.deleteTask(this.task.id).then(
+      (val) => {
+        this.hideDetail = true;
+      }
+    )
+  }
+
   onSubmitEdits(): void {
     let temp = this.editForm.targetDate;
     var currTime = new Date(this.editForm.targetDate);
-    this.editForm.targetDate = new Date(currTime.getTime() + currTime.getTimezoneOffset() * 60000);
+    this.editForm.targetDate = new Date(this.editForm.targetDate + ' ' + this.editForm.targetTime);
+    delete this.editForm['targetTime'];
     this.taskService.editTask(this.task.id, this.editForm);
     this.editForm.targetDate = temp;
     this.hideDetail = true;

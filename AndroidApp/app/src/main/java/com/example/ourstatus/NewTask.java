@@ -6,15 +6,15 @@ import com.google.firebase.Timestamp;
 import java.util.List;
 
 public class NewTask{
-    private List<String> assignees;
-    private String creatorUsername, id, title;
+    private List<String> assignees, comments, likedUsers;
+    private String creatorId, id, title;
     private Timestamp dateCompleted, dateCreated, targetDate;
-    private int level;
+    private int level, likes;
     private boolean remind;
 
-    public NewTask(List<String> assignees, String creatorUsername, String id, String title, Timestamp dateCompleted, Timestamp dateCreated, Timestamp targetDate, int level, boolean remind) {
+    public NewTask(List<String> assignees, String creatorUsername, String id, String title, Timestamp dateCompleted, Timestamp dateCreated, Timestamp targetDate, int level, boolean remind, List<String> comments, List<String> likedUsers, int likes) {
         this.assignees = assignees;
-        this.creatorUsername = creatorUsername;
+        this.creatorId = creatorUsername;
         this.id = id;
         this.title = title;
         this.dateCompleted = dateCompleted;
@@ -33,11 +33,11 @@ public class NewTask{
     }
 
     public String getCreatorUsername() {
-        return creatorUsername;
+        return creatorId;
     }
 
     public void setCreatorUsername(String creatorUsername) {
-        this.creatorUsername = creatorUsername;
+        this.creatorId = creatorUsername;
     }
 
     public String getId() {
@@ -94,6 +94,30 @@ public class NewTask{
 
     public void setRemind(boolean remind) {
         this.remind = remind;
+    }
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
+    }
+
+    public List<String> getLikedUsers() {
+        return likedUsers;
+    }
+
+    public void setLikedUsers(List<String> likedUsers) {
+        this.likedUsers = likedUsers;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
 }

@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import { CookieService } from 'ngx-cookie-service';
+import { Store } from '@ngrx/store';
+import { State, UserState } from '../state/user.reducer';
+import * as UserActions from '../state/user.actions'
 
 @Component({
   selector: 'app-login',
@@ -25,7 +28,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private accountService: AccountService, private titleService: Title, private router: Router,
     private cookieService: CookieService) { 
-      if (this.cookieService.get('user')) {
+      if (this.cookieService.get('sessionId')) {
         this.router.navigate(['/app']);
       }
   }
@@ -117,8 +120,13 @@ export class LoginComponent implements OnInit {
           firebase.auth().signInWithEmailAndPassword(account.email, this.password)
             .then((val) => {
               subscription.unsubscribe();
-              this.cookieService.set('user', this.username);
-              router.navigate(['/app']);
+              this.accountService.addCookie(account.id).then(
+                (cookieId) => {
+                  this.cookieService.deleteAll('/');
+                  this.cookieService.set('sessionId', cookieId);
+                  this.router.navigate(['/app']);
+                }
+              )
             })
             .catch(function(error) {
               var errorCode = error.code;
@@ -129,6 +137,7 @@ export class LoginComponent implements OnInit {
                 obj.clearFields();
                 subscription.unsubscribe();
               } else {
+                console.log(error);
                 alert(errorMessage);
               }
             });

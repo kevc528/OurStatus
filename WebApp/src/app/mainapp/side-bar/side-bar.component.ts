@@ -1,25 +1,81 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { AccountService } from 'src/app/users/account.service';
+import { Store } from '@ngrx/store';
+import { State, getUsername, getPicture, UserState } from 'src/app/users/state/user.reducer';
+import * as UserActions from '../../users/state/user.actions'
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-side-bar',
   templateUrl: './side-bar.component.html',
   styleUrls: ['./side-bar.component.css']
 })
-export class SideBarComponent implements OnInit {
+export class SideBarComponent implements OnInit, OnDestroy {
 
   username: string;
+  usernameSub: Subscription;
+  profilePic;
 
-  constructor(private cookieService: CookieService, private router: Router) { 
+  constructor(private store: Store<State>, private cookieService: CookieService, private router: Router, private accountService: AccountService) { 
   }
 
   ngOnInit(): void {
-    this.username = this.cookieService.get('user');
+    this.usernameSub = this.store.select(getUsername).subscribe(
+      (val) => {
+        if (val == null) {
+          let cookie = this.cookieService.get('sessionId');
+          if (!cookie) {
+            this.store.dispatch(UserActions.logoutUser());
+            this.router.navigate(['/login']);
+          } else {
+            let sub = this.accountService.getUserIdFromCookie(cookie).subscribe(
+              val => {
+                sub.unsubscribe();
+                if (!val) {
+                  this.cookieService.deleteAll('/');
+                  this.store.dispatch(UserActions.logoutUser());
+                  this.router.navigate(['/login']);
+                } else {
+                  let id = val.userId;
+                  let userSub = this.accountService.getAccountFromId(id).subscribe(
+                    (account) => {
+                      userSub.unsubscribe();
+                      let user: UserState = {
+                        username: account.username,
+                        userId: account.id,
+                        picture: null
+                      }
+                      this.store.dispatch(UserActions.signIn({user}));
+                      let pic = this.accountService.getPicDownload(account.picture).subscribe(
+                        (val) => {
+                          pic.unsubscribe();
+                          this.store.dispatch(UserActions.changePicture({picture: val}));
+                        }
+                      );
+                    }
+                  )
+                }
+              }
+            )
+          }
+        } else {
+          this.username = val;
+        }
+      }
+    );
+    this.profilePic = this.store.select(getPicture);
+  }
+
+  ngOnDestroy(): void {
+    this.usernameSub.unsubscribe();
   }
 
   onLogOut(): void {
-    this.cookieService.delete('user');
+    this.accountService.deleteCookie(this.cookieService.get('sessionId'));
+    this.cookieService.deleteAll('/');
+    this.store.dispatch(UserActions.logoutUser());
     this.router.navigate(['/login']);
   }
 

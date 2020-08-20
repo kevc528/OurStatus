@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<div>
+  <div class="comment" *ngFor="let comment of commentList">
+    <hr>
+    <b>{{authorIdMap[comment.authorId]}}</b>  {{comment.content}}
+    <p style="font-style:italic; font-size:small; margin-top: 15px">{{ comment.date.toDate() | date}}, {{ comment.date.toDate() | date: 'shortTime'}}</p>
+  </div>
+  <hr>
+  <span>
+    <input type="text" [(ngModel)]="commentText" placeholder="Write a comment...">
+    <i class="fa fa-send-o" (click)="postComment()" [class.unsendable]="!commentText.length"></i>
+  </span>
+</div>

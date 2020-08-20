@@ -16,4 +16,13 @@
     <string name="retype_password">Retype Password</string>
     <string name="reset">Reset</string>
     <string name="task_name1">task_name1</string>
+    <string name="task_name2">task_name2</string>
+    <string name="task_name3">task_name3</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="username_completed_task">Username completed task:</string>
+    <string name="like_count">0</string>
+    <string name="comment_text">Username This is cool</string>
+    <string name="scale_text">yo</string>
+    <string name="add_a_comment">Add a comment ...</string>
+
 </resources>

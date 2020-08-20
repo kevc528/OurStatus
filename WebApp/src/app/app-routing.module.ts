@@ -5,13 +5,19 @@ import { CreateAccountComponent } from './users/create-account/create-account.co
 import { MainComponent } from './mainapp/main/main.component';
 import { StartComponent } from './mainapp/start/start.component';
 import { ForgotPasswordComponent } from './users/forgot-password/forgot-password.component';
+import { TaskPageComponent } from './mainapp/task-page/task-page.component';
+import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
+import { ProfilePageComponent } from './mainapp/profile-page/profile-page.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'create-account', component: CreateAccountComponent },
   { path: 'app', pathMatch: 'prefix', children: [
-    { path:'', component: MainComponent }
+    { path: 'tasks', component: TaskPageComponent},
+    { path:'', component: MainComponent },
+    { path: 'feed', component: FeedPageComponent},
+    { path: 'profile', component: ProfilePageComponent}
   ]},
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: '', component: StartComponent }
