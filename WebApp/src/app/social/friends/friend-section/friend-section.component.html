@@ -1,6 +1,9 @@
 <div class="card">
   <div class="card-body">
-    <h2>My Friends</h2>
+    <h2>
+      <hr style="height:0px; margin-top: 0; visibility:hidden;" />
+      My Friends
+    </h2>
     <ul class="nav nav-pills nav-fill">
       <li class="nav-item">
         <a class="nav-link" [class.active]="friendPage" [class.clickable]="!friendPage" (click)="friendPage=true">Friends</a>
@@ -9,5 +12,7 @@
         <a class="nav-link" [class.active]="!friendPage" [class.clickable]="friendPage" (click)="friendPage=false">Requests</a>
       </li>
     </ul>
+    <app-friend-requests *ngIf="!friendPage"></app-friend-requests>
+    <app-friend-list *ngIf="friendPage"></app-friend-list>
   </div>
 </div>

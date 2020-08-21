@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -37,6 +37,8 @@ import { FriendProfileComponent } from './users/friend-profile/friend-profile.co
 import { FriendPageComponent } from './mainapp/friend-page/friend-page.component';
 import { FriendRequestsComponent } from './social/friends/friend-requests/friend-requests.component';
 import { FriendSectionComponent } from './social/friends/friend-section/friend-section.component';
+import { LazyLoadImgComponent } from './shared/lazy-load-img/lazy-load-img.component';
+import { FriendListComponent } from './social/friends/friend-list/friend-list.component';
  
 @NgModule({
   declarations: [
@@ -61,6 +63,8 @@ import { FriendSectionComponent } from './social/friends/friend-section/friend-s
     FriendPageComponent,
     FriendRequestsComponent,
     FriendSectionComponent,
+    LazyLoadImgComponent,
+    FriendListComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,8 @@ import { FriendSectionComponent } from './social/friends/friend-section/friend-s
     NgbModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature('user', userReducer),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    LazyLoadImageModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]
