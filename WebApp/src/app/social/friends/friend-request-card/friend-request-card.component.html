@@ -1,0 +1,10 @@
+<div class="card">
+  <br>
+  <span>
+    <app-lazy-load-img style="float:left;" [defaultImage]="'assets/images/personal.png'" [lazyLoadUrl]="otherAccount.picture"></app-lazy-load-img>
+    <h3 style="float:left; margin-left: 30px; margin-right: 80px">{{otherAccount.username}}</h3>
+    <button class="btn btn-large btn-outline-primary" (click)="confirmRequest()">Accept Request</button>
+    <button style="margin-left: 10px;" class="btn btn-large btn-outline-primary" (click)="denyRequest()">Deny Request</button>
+  </span>
+  <br>
+</div>

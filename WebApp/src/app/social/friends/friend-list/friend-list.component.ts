@@ -15,6 +15,7 @@ export class FriendListComponent implements OnInit, OnDestroy {
   friendList: Account[] = [];
   userIdSub: Subscription;
   userId: string;
+  noFriends: boolean = false;
 
   constructor(private accountService: AccountService, private store: Store<State>) { }
 
@@ -27,6 +28,7 @@ export class FriendListComponent implements OnInit, OnDestroy {
             (friends) => {
               friendSub.unsubscribe()
               if (friends.length > 0) {
+                this.noFriends = false;
                 let friendIds = [];
                 friends.forEach((friendship) => {
                   if (friendship.firstId == this.userId) {
@@ -41,6 +43,9 @@ export class FriendListComponent implements OnInit, OnDestroy {
                     this.friendList = val;
                   }
                 )
+              } else {
+                this.noFriends = true;
+                this.friendList = [];
               }
             }
           )

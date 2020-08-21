@@ -1,0 +1,4 @@
+<h2 style="text-align: center; margin-top: 20px" *ngIf="noRequests">You have no friend requests!</h2>
+<div *ngFor="let request of requests">
+  <app-friend-request-card [friendship]="request" [userId]="userId"></app-friend-request-card>
+</div>

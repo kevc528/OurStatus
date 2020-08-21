@@ -39,6 +39,7 @@ import { FriendRequestsComponent } from './social/friends/friend-requests/friend
 import { FriendSectionComponent } from './social/friends/friend-section/friend-section.component';
 import { LazyLoadImgComponent } from './shared/lazy-load-img/lazy-load-img.component';
 import { FriendListComponent } from './social/friends/friend-list/friend-list.component';
+import { FriendRequestCardComponent } from './social/friends/friend-request-card/friend-request-card.component';
  
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { FriendListComponent } from './social/friends/friend-list/friend-list.co
     FriendSectionComponent,
     LazyLoadImgComponent,
     FriendListComponent,
+    FriendRequestCardComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+<h2 style="text-align: center; margin-top: 20px" *ngIf="noFriends">You have no friends!</h2>
 <div class="card" *ngFor="let friend of friendList" [routerLink]="['/app/users',friend.username]">
   <br>
   <br>
