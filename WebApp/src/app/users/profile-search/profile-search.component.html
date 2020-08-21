@@ -1,0 +1,6 @@
+<input type="text" [(ngModel)]="searchValue" (keyup)="search()"/>
+<div class="search-results" *ngIf="searchValue.length != 0">
+  <div *ngFor="let result of results | async">
+    {{result.username}}
+  </div>
+</div>

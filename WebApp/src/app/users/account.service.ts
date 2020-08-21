@@ -84,30 +84,6 @@ export class AccountService {
     return final;
   }
 
-  // finds account doc from username and updates the account w/ new data
-  // updateAccount(username: string, newData) {
-  //   var success: boolean;
-  //   var accountId: string;
-  //   var promise: Promise<void>;
-  //   let subscription = this.firestore.collection('users', ref => ref.where('username', '==', username))
-  //     .snapshotChanges()
-  //     .subscribe(
-  //       (res) => {
-  //         if (res.length >= 1) {
-  //           subscription.unsubscribe();
-  //           // accountId is the key for the key value in the db for a specific account
-  //           accountId = res[0].payload.doc.id;
-  //           success = true;
-  //           let accountDoc = this.firestore.collection('users').doc(accountId);
-  //           promise = accountDoc.update(newData);
-  //         } else {
-  //           subscription.unsubscribe();
-  //           success = false;
-  //         }
-  //         // return {'success': success, 'promise': promise};
-  //       }
-  //     );
-
   updateAccount(accountKey: string, newData): Promise<void> {
     let accountDoc = this.firestore.collection('users').doc(accountKey);
     return accountDoc.update(newData);
@@ -156,35 +132,6 @@ export class AccountService {
     this.firestore.collection('cookie').doc(id).delete();
   }
 
-  // deleteAccount(username: string) {
-  //   var success: boolean;
-  //   var accountId: string;
-  //   var promise: Promise<void>;
-  //   let subscription = this.firestore.collection('users', ref => ref.where('username', '==', username))
-  //     .snapshotChanges()
-  //     .subscribe(
-  //       (res) => {
-  //         if (res.length >= 1) {
-  //           subscription.unsubscribe();
-  //           // accountId is the key for the key value in the db for a specific account
-  //           accountId = res[0].payload.doc.id;
-  //           success = true;
-  //           let accountDoc = this.firestore.collection('users').doc(accountId);
-  //           promise = accountDoc.delete();
-  //         } else {
-  //           subscription.unsubscribe();
-  //           success = false;
-  //         }
-  //         // return {'success': success, 'promise': promise};
-  //       }
-  //     );
-    // setTimeout(() => {
-    //   subscription.unsubscribe();
-    //   return {'success': success, 'promise': promise};
-    // }, 30000);
-  //   return {'success': success, 'promise': promise};
-  // }
-
   deleteAccount(accountKey: string): Promise<void> {
     let accountDoc = this.firestore.collection('users').doc(accountKey);
     let promise = accountDoc.delete().then(
@@ -222,4 +169,10 @@ export class AccountService {
   getFriendRequests(userId: string): Observable<Friendship[]> {
     return this.firestore.collection<Friendship>('friendship', ref => ref.where('recieveUser', '==', userId)).valueChanges();
   }
+
+  searchProfiles(username: string): Observable<Account[]> {
+    return this.firestore.collection<Account>('users', ref => ref.orderBy("username").startAt(username.toLowerCase())
+      .endAt(username.toLowerCase()+"\uf8ff").limit(10)).valueChanges();
+  }
+
 }

@@ -9,6 +9,7 @@ import { TaskPageComponent } from './mainapp/task-page/task-page.component';
 import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
 import { ProfilePageComponent } from './mainapp/profile-page/profile-page.component';
 import { FriendPageComponent } from './mainapp/friend-page/friend-page.component';
+import { SearchPageComponent } from './mainapp/search-page/search-page.component';
 
 
 const routes: Routes = [
@@ -19,7 +20,8 @@ const routes: Routes = [
     { path:'', component: MainComponent },
     { path: 'feed', component: FeedPageComponent},
     { path: 'profile', component: ProfilePageComponent},
-    { path: 'users/:username', component: FriendPageComponent}
+    { path: 'users/:username', component: FriendPageComponent},
+    { path: 'search', component: SearchPageComponent}
   ]},
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: '', component: StartComponent }

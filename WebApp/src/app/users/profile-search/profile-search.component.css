@@ -1,0 +1,7 @@
+input[type=text] {
+  background-color: transparent;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}

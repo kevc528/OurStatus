@@ -40,6 +40,8 @@ import { FriendSectionComponent } from './social/friends/friend-section/friend-s
 import { LazyLoadImgComponent } from './shared/lazy-load-img/lazy-load-img.component';
 import { FriendListComponent } from './social/friends/friend-list/friend-list.component';
 import { FriendRequestCardComponent } from './social/friends/friend-request-card/friend-request-card.component';
+import { ProfileSearchComponent } from './users/profile-search/profile-search.component';
+import { SearchPageComponent } from './mainapp/search-page/search-page.component';
  
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { FriendRequestCardComponent } from './social/friends/friend-request-card
     LazyLoadImgComponent,
     FriendListComponent,
     FriendRequestCardComponent,
+    ProfileSearchComponent,
+    SearchPageComponent,
   ],
   imports: [
     BrowserModule,
