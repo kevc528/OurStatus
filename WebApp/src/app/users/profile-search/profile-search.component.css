@@ -4,4 +4,15 @@ input[type=text] {
   border-top: none;
   border-left: none;
   border-right: none;
+  width: 300px;
+}
+
+.search-results {
+  cursor: pointer;
+  margin: 10px;
+}
+
+.search-results:hover {
+  filter: brightness(80%);
+  -webkit-filter: brightness(80%);
 }
