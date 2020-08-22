@@ -42,6 +42,7 @@ import { FriendListComponent } from './social/friends/friend-list/friend-list.co
 import { FriendRequestCardComponent } from './social/friends/friend-request-card/friend-request-card.component';
 import { ProfileSearchComponent } from './users/profile-search/profile-search.component';
 import { SearchPageComponent } from './mainapp/search-page/search-page.component';
+import { FriendRecommendationsComponent } from './social/friends/friend-recommendations/friend-recommendations.component';
  
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { SearchPageComponent } from './mainapp/search-page/search-page.component
     FriendRequestCardComponent,
     ProfileSearchComponent,
     SearchPageComponent,
+    FriendRecommendationsComponent,
   ],
   imports: [
     BrowserModule,

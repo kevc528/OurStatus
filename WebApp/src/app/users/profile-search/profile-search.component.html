@@ -1,5 +1,5 @@
 <input type="text" [(ngModel)]="searchValue" (keyup)="search()"/>
-<div *ngIf="searchValue.length != 0">
+<div *ngIf="searchValue && searchValue.length != 0">
   <div class="card search-results" *ngFor="let result of results | async" style="margin-right: 40px;" [routerLink]="['/app/users',result.username]">
     <div class="card-body">
       <h5>{{result.username}}</h5>

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FriendSectionComponent implements OnInit {
 
-  friendPage = true;
+  friendPage = 0;
 
   constructor() { }
 

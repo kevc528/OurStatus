@@ -99,7 +99,7 @@ export class AccountService {
       let obs = this.firestore.collection<Account>('users', ref => ref.where('id', 'in', ids)).valueChanges();
       obsList.push(obs);
     }
-    return merge(...obsList);
+    return combineLatest(...obsList).pipe(map(x => [].concat.apply([], x)));
   }
 
   overwriteAccount(accountKey: string, newData): Promise<void> {

@@ -9,8 +9,6 @@
 
 h2 {
   color: #486379;
-  position: -webkit-sticky;
-  position: sticky;
   top: 0;
   padding-bottom: 15px;
   background-color: white;

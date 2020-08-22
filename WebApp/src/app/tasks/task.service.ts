@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentReference } from '@angular/fire/firestore';
-import { Observable, merge } from 'rxjs';
+import { Observable, merge, forkJoin, combineLatest } from 'rxjs';
 import { Task } from '../shared/model/task';
 import { AccountService } from '../users/account.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -27,11 +28,11 @@ export class TaskService {
       for (let j = i; j < Math.min(userIds.length, i + 10); j++) {
         ids.push(userIds[j]);
       }
-      let obs = this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', 'in', userIds)
+      let obs = this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', 'in', ids)
         .where('level', '==', 0).where('dateCompleted', '<', new Date())).valueChanges();
       obsList.push(obs);
     }
-    return merge(...obsList);
+    return combineLatest(...obsList).pipe(map(x => [].concat.apply([], x)));
   }
 
   // getAssignedTasksForUser(username: string): Observable<any[]> {

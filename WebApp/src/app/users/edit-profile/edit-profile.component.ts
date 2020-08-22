@@ -24,6 +24,8 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   picture;
   file;
   @Input() picPath;
+  error: boolean = false;
+  errorMessage: string;
 
   constructor(public activeModal: NgbActiveModal, private accountService: AccountService,
     private storage: AngularFireStorage, private store: Store<State>) { }
@@ -50,22 +52,35 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   }
 
   onSubmitEdits() {
+    this.error = false;
     if (this.username != this.originalUsername) {
-      this.accountService.updateAccount(
-        this.userId,
-        {
-          username: this.username
+      let checkUsernameSub = this.accountService.getAccount(this.username).subscribe(
+        (val) => {
+          checkUsernameSub.unsubscribe();
+          if (val.length == 0) {
+            this.activeModal.close();
+            this.accountService.updateAccount(
+              this.userId,
+              {
+                username: this.username
+              }
+            ).then(
+              val => {
+                this.store.dispatch(UserActions.changeUsername({ username: this.username }))
+              }
+            );
+          } else {
+            this.error = true;
+            this.errorMessage = "Username already exists";
+          }
         }
-      ).then(
-        val => {
-          this.store.dispatch(UserActions.changeUsername({ username: this.username }))
-        }
-      );
+      )
+    } else {
+      this.activeModal.close();
     }
     if (this.picture) {
       this.uploadPicture();
     }
-    this.activeModal.close();
   }
 
   onPicChange(event) {
