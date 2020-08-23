@@ -15,4 +15,6 @@ export interface Task {
     likes: number;
     likedUsers: string[];
     creatorUsername?: string;
+    creatorName?: string;
+    creatorPicture?: string;
 }

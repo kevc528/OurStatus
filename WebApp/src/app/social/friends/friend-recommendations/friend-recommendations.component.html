@@ -1,1 +1,10 @@
-<p>friend-recommendations works!</p>
+<h2 style="text-align: center; margin-top: 20px" *ngIf="noFriends">You have no friends! Add friends to get recommendations</h2>
+<h2 style="text-align: center; margin-top: 20px" *ngIf="noRecs">No recommendations at the moment</h2>
+<div class="card" *ngFor="let account of recommendationAccounts" [routerLink]="['/app/users',account.username]">
+  <br>
+  <br>
+  <app-lazy-load-img style="margin-left: auto; margin-right: auto;" [defaultImage]="'assets/images/personal.png'" [lazyLoadUrl]="account.picture"></app-lazy-load-img>
+  <hr>
+  <h3 style="text-align: center;">{{account.firstName}} {{account.lastName}}</h3>
+  <h5 style="text-align: center;">{{account.username}}</h5>
+</div>

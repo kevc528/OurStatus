@@ -2,8 +2,11 @@
 <div>
   <div class="comment" *ngFor="let comment of commentList">
     <hr>
-    <b>{{authorIdMap[comment.authorId]}}</b>  {{comment.content}}
-    <p style="font-style:italic; font-size:small; margin-top: 15px">{{ comment.date.toDate() | date}}, {{ comment.date.toDate() | date: 'shortTime'}}</p>
+    <app-lazy-load-img style="width: 50px; float: left;" [defaultImage]="'assets/images/personal.png'" [lazyLoadUrl]="authorIdMap[comment.authorId]?.picture"></app-lazy-load-img>
+    <div style="margin-left: 60px;">
+      <b [routerLink]="['/app/users',authorIdMap[comment.authorId]?.username]" style="cursor: pointer;">{{authorIdMap[comment.authorId]?.name}}</b>  {{comment.content}}
+      <p style="font-style:italic; font-size:small; margin-top: 15px">{{ comment.date.toDate() | date}}, {{ comment.date.toDate() | date: 'shortTime'}}</p>
+    </div>
   </div>
   <hr>
   <span>

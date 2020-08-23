@@ -55,10 +55,16 @@ export class FeedComponent implements OnInit, OnDestroy {
                     this.mappingSubscription = this.accountService.getAccountsByIds(userList).subscribe(
                       (val) => {
                         val.forEach(account => {
-                          this.friendIdMap[account.id] = account.username;
+                          this.friendIdMap[account.id] = {
+                            'creatorName': account.firstName + ' ' + account.lastName,
+                            'creatorUsername': account.username,
+                            'creatorPicture': account.picture
+                          };
                         });
                         tasks.forEach(task => {
-                          task['creatorUsername'] = this.friendIdMap[task.creatorId];
+                          task['creatorName'] = this.friendIdMap[task.creatorId].creatorName;
+                          task['creatorUsername'] = this.friendIdMap[task.creatorId].creatorUsername;
+                          task['creatorPicture'] = this.friendIdMap[task.creatorId].creatorPicture;
                         });
                         this.feedTasks = tasks.sort(
                           (a,b) => {

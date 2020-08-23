@@ -75,6 +75,13 @@ export class AccountService {
     return final;
   }
 
+  findFriendActivity(userId: string): Observable<Friendship[]> {
+    let resultA = this.firestore.collection<Friendship>('friendship', ref => ref.where('firstId', '==', userId)).valueChanges();
+    let resultB = this.firestore.collection<Friendship>('friendship', ref => ref.where('secondId', '==', userId)).valueChanges();
+    let final = combineLatest(resultA, resultB).pipe(map(([s1, s2]) => [...s1, ...s2]));
+    return final;
+  }
+
   findFriendship(firstId: string, secondId: string): Observable<Friendship[]> {
     let resultA = this.firestore.collection<Friendship>('friendship', ref => ref.where('firstId', '==', firstId)
       .where('secondId', '==', secondId)).valueChanges();
@@ -117,8 +124,9 @@ export class AccountService {
     return this.firestore.collection('users').doc(id).valueChanges();
   }
 
-  getPicDownload(path: string): Observable<any> {
-    return this.storage.ref(path).getDownloadURL();
+  getPicDownload(path: string): Observable<any> | null {
+    if (path)
+      return this.storage.ref(path).getDownloadURL();
   }
 
   addCookie(userId: string): Promise<string> {

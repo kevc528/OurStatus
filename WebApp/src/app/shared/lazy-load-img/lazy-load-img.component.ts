@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AccountService } from 'src/app/users/account.service';
 
@@ -7,7 +7,7 @@ import { AccountService } from 'src/app/users/account.service';
   templateUrl: './lazy-load-img.component.html',
   styleUrls: ['./lazy-load-img.component.css']
 })
-export class LazyLoadImgComponent implements OnInit {
+export class LazyLoadImgComponent implements OnInit, OnChanges {
 
   @Input() defaultImage: string;
   @Input() lazyLoadUrl: string;
@@ -16,6 +16,10 @@ export class LazyLoadImgComponent implements OnInit {
   constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.lazyLoadObs = this.accountService.getPicDownload(this.lazyLoadUrl);
+  }
+
+  ngOnChanges(): void {
     this.lazyLoadObs = this.accountService.getPicDownload(this.lazyLoadUrl);
   }
 

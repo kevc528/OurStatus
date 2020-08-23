@@ -1,0 +1,21 @@
+.card {
+  border-color: lightgray;
+  cursor: pointer;
+  border-radius: 1rem;
+  margin-left: 10%;
+  margin-right: 10%;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+  overflow:hidden;
+  width: 30%;
+  margin-top: 10px;
+  float: left;
+}
+
+h2 {
+  color: #486379;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  padding-bottom: 15px;
+  background-color: white;
+}

@@ -3,6 +3,9 @@ i {
   cursor: pointer;
   color: white;
   text-shadow: 0 0 1.5px #000;
+}
+
+.comment {
   margin-left: 20px;
 }
 

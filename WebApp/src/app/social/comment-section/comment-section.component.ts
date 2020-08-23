@@ -43,7 +43,11 @@ export class CommentSectionComponent implements OnInit, OnDestroy {
           this.accountSubscription = this.accountService.getAccountsByIds(userList).subscribe(
             (val) => {
               val.forEach(account => {
-                this.authorIdMap[account.id] = account.username;
+                this.authorIdMap[account.id] = {
+                  'username': account.username,
+                  'name': account.firstName + ' ' + account.lastName,
+                  'picture': account.picture
+                };
               });
               this.commentList = comments.sort(
                 (a,b) => {
