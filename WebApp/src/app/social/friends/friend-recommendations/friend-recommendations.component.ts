@@ -67,7 +67,7 @@ export class FriendRecommendationsComponent implements OnInit, OnDestroy {
               let weights = this.getWeights(myFriendSet, myRandomFriends, val);
               this.friendRecommendations = this.getRecommended(weights, myRandomFriends, myFriendActivitySet, val);
               if (this.friendRecommendations.length == 0) {
-                this.noRecs = false;
+                this.noRecs = true;
               } else {
                 let accountsSub = this.accountService.getAccountsByIds(this.friendRecommendations).subscribe(
                   (val) => {
