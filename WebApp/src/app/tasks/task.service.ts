@@ -29,7 +29,8 @@ export class TaskService {
         ids.push(userIds[j]);
       }
       let obs = this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', 'in', ids)
-        .where('level', '==', 0).where('dateCompleted', '<', new Date())).valueChanges();
+        .where('level', '==', 0).where('dateCompleted', '<', new Date())
+        .where('dateCompleted', '>', new Date(Date.now() - (7 * 24 * 60 * 60 * 1000)))).valueChanges();
       obsList.push(obs);
     }
     return combineLatest(...obsList).pipe(map(x => [].concat.apply([], x)));

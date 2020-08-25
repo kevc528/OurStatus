@@ -5,7 +5,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { Task } from 'src/app/shared/model/task';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { State, getUsername, getUserId } from 'src/app/users/state/user.reducer';
+import { State, getUsername, getUserId, getName, getPicture } from 'src/app/users/state/user.reducer';
 
 @Component({
   selector: 'app-feed',
@@ -16,11 +16,14 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   accountSubscription;
   userIdSubscription;
-  feedSubscription;
+  usernameSubscription;
+  nameSubscription;
   noFriends = false;
   feedTasks: Task[] = [];
+  personalTasks: Task[] = [];
   showComment = false;
   mappingSubscription;
+  friendFeed = true;
   friendIdMap = {};
   commentTaskId = '';
 
@@ -43,8 +46,9 @@ export class FeedComponent implements OnInit, OnDestroy {
                     return friendship.firstId;
                   }
                 })
-                this.feedSubscription = this.taskService.getFeedTasks(friendIds).subscribe(
+                let feedSubscription = this.taskService.getFeedTasks(friendIds).subscribe(
                   (val) => {
+                    feedSubscription.unsubscribe();
                     let tasks = val;
                     let userList = [];
                     val.forEach(
@@ -82,6 +86,31 @@ export class FeedComponent implements OnInit, OnDestroy {
               }
             }
           )
+          let personalSub = this.taskService.getFeedTasks([userId]).subscribe(
+            (val) => {
+              personalSub.unsubscribe();
+              this.usernameSubscription = this.store.select(getUsername).subscribe(
+                (username) => {
+                  this.nameSubscription = this.store.select(getName).subscribe(
+                    (name) => {
+                      val.forEach(task => {
+                        task['creatorName'] = name;
+                        task['creatorUsername'] = username;
+                        task['creatorPicture'] = this.store.select(getPicture);
+                      })
+                      this.personalTasks = val.sort(
+                        (a,b) => {
+                          let a_date = new Date(a.dateCompleted.seconds * 1000);
+                          let b_date = new Date(b.dateCompleted.seconds * 1000);
+                          return b_date.valueOf() - a_date.valueOf();
+                        }
+                      );
+                    }
+                  )
+                }
+              )
+            }
+          )
         }
       }
     );
@@ -91,14 +120,17 @@ export class FeedComponent implements OnInit, OnDestroy {
     if (this.accountSubscription) {
       this.accountSubscription.unsubscribe();
     }
-    if (this.feedSubscription) {
-      this.feedSubscription.unsubscribe();
-    }
     if (this.mappingSubscription) {
       this.mappingSubscription.unsubscribe();
     }
     if (this.userIdSubscription) {
       this.userIdSubscription.unsubscribe();
+    }
+    if (this.usernameSubscription) {
+      this.usernameSubscription.unsubscribe();
+    }
+    if (this.nameSubscription) {
+      this.nameSubscription.unsubscribe()
     }
   }
 

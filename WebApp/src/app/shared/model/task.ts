@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 export interface Task {
     // id: string;
     // don't need id because when tasks are read in from the user, we can assign associate task and key
@@ -16,5 +18,5 @@ export interface Task {
     likedUsers: string[];
     creatorUsername?: string;
     creatorName?: string;
-    creatorPicture?: string;
+    creatorPicture?: string | Observable<any>;
 }

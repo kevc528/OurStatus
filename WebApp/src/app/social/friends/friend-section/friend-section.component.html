@@ -1,20 +1,22 @@
 <div class="card">
   <div class="card-body">
-    <h2>
-      <hr style="height:0px; margin-top: 0; visibility:hidden;" />
-      My Friends
-    </h2>
-    <ul class="nav nav-pills nav-fill">
-      <li class="nav-item">
-        <a class="nav-link" [class.active]="friendPage==0" [class.clickable]="friendPage!=0" (click)="friendPage=0">Friends</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [class.active]="friendPage==1" [class.clickable]="friendPage!=1" (click)="friendPage=1">Requests</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" [class.active]="friendPage==2" [class.clickable]="friendPage!=2" (click)="friendPage=2">Recommendations</a>
-      </li>
-    </ul>
+    <div class="header">
+      <h2>
+        <hr style="height:0px; margin-top: 0; visibility:hidden;" />
+        My Friends
+      </h2>
+      <ul class="nav nav-pills nav-fill">
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="friendPage==0" [class.clickable]="friendPage!=0" (click)="friendPage=0">Friends</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="friendPage==1" [class.clickable]="friendPage!=1" (click)="friendPage=1">Requests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="friendPage==2" [class.clickable]="friendPage!=2" (click)="friendPage=2">Recommendations</a>
+        </li>
+      </ul>
+    </div>
     <app-friend-requests *ngIf="friendPage==1"></app-friend-requests>
     <app-friend-list *ngIf="friendPage==0"></app-friend-list>
     <app-friend-recommendations *ngIf="friendPage==2"></app-friend-recommendations>

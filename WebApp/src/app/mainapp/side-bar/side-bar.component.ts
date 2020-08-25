@@ -45,7 +45,9 @@ export class SideBarComponent implements OnInit, OnDestroy {
                       let user: UserState = {
                         username: account.username,
                         userId: account.id,
-                        picture: null
+                        picture: null,
+                        firstName: account.firstName,
+                        lastName: account.lastName
                       }
                       this.store.dispatch(UserActions.signIn({user}));
                       let pic = this.accountService.getPicDownload(account.picture).subscribe(

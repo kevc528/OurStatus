@@ -11,16 +11,19 @@ export class LazyLoadImgComponent implements OnInit, OnChanges {
 
   @Input() defaultImage: string;
   @Input() lazyLoadUrl: string;
-  lazyLoadObs: Observable<any>;
+  @Input() useObs: boolean = false;
+  @Input() lazyLoadObs: Observable<any>;
 
   constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
-    this.lazyLoadObs = this.accountService.getPicDownload(this.lazyLoadUrl);
+    if (!this.useObs)
+      this.lazyLoadObs = this.accountService.getPicDownload(this.lazyLoadUrl);
   }
 
   ngOnChanges(): void {
-    this.lazyLoadObs = this.accountService.getPicDownload(this.lazyLoadUrl);
+    if (!this.useObs)
+      this.lazyLoadObs = this.accountService.getPicDownload(this.lazyLoadUrl);
   }
 
 }

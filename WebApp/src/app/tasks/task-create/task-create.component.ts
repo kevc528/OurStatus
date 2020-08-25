@@ -70,7 +70,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
     this.task.title = ''
     this.task.remind = false;
     this.dateString = this.formatDate(new Date());
-    this.timeString = (this.task.targetDate.getHours() > 9 ? this.task.targetDate.getHours() : '0' + this.task.targetDate.getHours()) + ':' + (this.task.targetDate.getMinutes() > 9 ? this.task.targetDate.getMinutes() : '0' + this.task.targetDate.getMinutes());
+    this.timeString = ((new Date()).getHours() > 9 ? (new Date()).getHours() : '0' + (new Date()).getHours()) + ':' + ((new Date()).getMinutes() > 9 ? (new Date()).getMinutes() : '0' + (new Date()).getMinutes());
   }
 
   onSubmit(form: NgForm) {

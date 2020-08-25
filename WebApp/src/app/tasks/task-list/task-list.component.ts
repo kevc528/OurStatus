@@ -24,23 +24,25 @@ export class TaskListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userIdSubscription = this.store.select(getUserId).subscribe(
       val => {
-        this.userId = val;
-        this.subscription = this.taskService.getTasksForUser(this.userId, 0).subscribe(
-          val => {
-            if (val.length == 0) {
-              this.noTasks = true;
-            } else {
-              this.noTasks = false;
-              this.taskList = val.sort(
-                (a,b) => {
-                  let a_date = new Date(a.targetDate.seconds * 1000);
-                  let b_date = new Date(b.targetDate.seconds * 1000);
-                  return a_date.valueOf() - b_date.valueOf();
-                }
-              );
+        if (val != null) {
+          this.userId = val;
+          this.subscription = this.taskService.getTasksForUser(this.userId, 0).subscribe(
+            val => {
+              if (val.length == 0) {
+                this.noTasks = true;
+              } else {
+                this.noTasks = false;
+                this.taskList = val.sort(
+                  (a,b) => {
+                    let a_date = new Date(a.targetDate.seconds * 1000);
+                    let b_date = new Date(b.targetDate.seconds * 1000);
+                    return a_date.valueOf() - b_date.valueOf();
+                  }
+                );
+              }
             }
-          }
-        );
+          );
+        }
       }
     )
     // CODE TO ADD A NEW TASK

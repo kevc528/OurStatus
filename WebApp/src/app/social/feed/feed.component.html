@@ -4,11 +4,26 @@
     <div class="card" [class.comment-section]="showComment">
       <div [hidden]="showComment">
         <div *ngIf="!noFriends" class="card-body">
-          <h2>
+          <div class="header">
             <hr style="height:0px; margin-top: 0; visibility:hidden;" />
-            Recent
-          </h2>
-          <app-feed-listing *ngFor="let task of feedTasks" [task]="task" (comments)="onCommentSection($event)"></app-feed-listing>
+            <ul class="nav nav-pills nav-fill">
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="friendFeed" [class.clickable]="!friendFeed" (click)="friendFeed=true">Friends</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" [class.active]="!friendFeed" [class.clickable]="friendFeed" (click)="friendFeed=false">Personal</a>
+              </li>
+            </ul>
+            <h2>
+              Recent
+            </h2>
+          </div>
+          <div *ngIf="friendFeed">
+            <app-feed-listing *ngFor="let task of feedTasks" [task]="task" (comments)="onCommentSection($event)"></app-feed-listing>
+          </div>
+          <div *ngIf="!friendFeed">
+            <app-feed-listing *ngFor="let task of personalTasks" [task]="task" [useObs]="true" (comments)="onCommentSection($event)"></app-feed-listing>
+          </div>
         </div>
         <div *ngIf="noFriends" class="card-body">
           <h1>You have no friends!</h1>
@@ -16,11 +31,11 @@
       </div>
       <div *ngIf="showComment">
         <div class="card-body">
-          <h2>
+          <div class="header">
             <hr style="height:0px; margin-top: 0; visibility:hidden;" />
             <i (click)="onBackFeed()" class="fa fa-arrow-left"></i>
-            Comments
-          </h2>
+            <h2>Comments</h2>
+          </div>
           <app-comment-section [taskId]="commentTaskId" (backToFeed)="onBackFeed()"></app-comment-section>
         </div>
       </div>

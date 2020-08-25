@@ -20,6 +20,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   userIdSub;
   userId;
   picPath;
+  name;
 
   constructor(private cookieService: CookieService, private accountService: AccountService,
     private modalService: NgbModal, private store: Store<State>) { }
@@ -35,6 +36,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
               this.picPath = this.account.picture;
               this.profilePic = this.accountService.getPicDownload(this.account.picture);
               this.username = this.account.username;
+              this.name = this.account.firstName + ' ' + this.account.lastName;
             }
           )
         }

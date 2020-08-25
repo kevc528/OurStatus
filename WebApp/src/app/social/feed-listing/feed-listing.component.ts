@@ -14,6 +14,8 @@ import { State, getUserId } from 'src/app/users/state/user.reducer';
 export class FeedListingComponent implements OnInit, OnDestroy {
 
   @Input() task: Task;
+  @Input() personal;
+  @Input() useObs = false;
   userId;
   sub;
   @Output() comments = new EventEmitter<string>();
@@ -33,15 +35,20 @@ export class FeedListingComponent implements OnInit, OnDestroy {
   }
 
   likeClicked(): void {
-    if (!this.task.likedUsers.includes(this.userId)) {
+    if (!this.task.likedUsers.includes(this.userId)) { 
       this.task.likes += 1;
       this.task.likedUsers.push(this.userId);
-      this.taskService.editTask(this.task.id, this.task);
     } else {
       this.task.likes -= 1;
       this.task.likedUsers.splice(this.task.likedUsers.indexOf(this.userId), 1);
-      this.taskService.editTask(this.task.id, this.task);
     }
+    let updated = {
+      ...this.task
+    }
+    delete updated['creatorUsername'];
+    delete updated['creatorName'];
+    delete updated['creatorPicture'];
+    this.taskService.editTask(this.task.id, updated);
   }
   
   commentClicked(): void {
