@@ -10,6 +10,7 @@ import { FeedPageComponent } from './mainapp/feed-page/feed-page.component';
 import { ProfilePageComponent } from './mainapp/profile-page/profile-page.component';
 import { FriendPageComponent } from './mainapp/friend-page/friend-page.component';
 import { SearchPageComponent } from './mainapp/search-page/search-page.component';
+import { CalendarPageComponent } from './mainapp/calendar-page/calendar-page.component';
 
 
 const routes: Routes = [
@@ -21,7 +22,8 @@ const routes: Routes = [
     { path: 'feed', component: FeedPageComponent},
     { path: 'profile', component: ProfilePageComponent},
     { path: 'users/:username', component: FriendPageComponent},
-    { path: 'search', component: SearchPageComponent}
+    { path: 'search', component: SearchPageComponent},
+    { path: 'calendar', component: CalendarPageComponent}
   ]},
   { path: 'forgot-password', component: ForgotPasswordComponent},
   { path: '', component: StartComponent }

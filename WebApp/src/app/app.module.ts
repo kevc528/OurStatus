@@ -4,6 +4,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { FullCalendarModule } from '@fullcalendar/angular'; // the main connector. must go first
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -43,6 +46,14 @@ import { FriendRequestCardComponent } from './social/friends/friend-request-card
 import { ProfileSearchComponent } from './users/profile-search/profile-search.component';
 import { SearchPageComponent } from './mainapp/search-page/search-page.component';
 import { FriendRecommendationsComponent } from './social/friends/friend-recommendations/friend-recommendations.component';
+import { TaskCalendarComponent } from './tasks/task-calendar/task-calendar.component';
+import { CalendarPageComponent } from './mainapp/calendar-page/calendar-page.component';
+import { CalendarTaskModalComponent } from './tasks/calendar-task-modal/calendar-task-modal.component';
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  interactionPlugin
+]);
  
 @NgModule({
   declarations: [
@@ -73,6 +84,9 @@ import { FriendRecommendationsComponent } from './social/friends/friend-recommen
     ProfileSearchComponent,
     SearchPageComponent,
     FriendRecommendationsComponent,
+    TaskCalendarComponent,
+    CalendarPageComponent,
+    CalendarTaskModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +100,8 @@ import { FriendRecommendationsComponent } from './social/friends/friend-recommen
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature('user', userReducer),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    FullCalendarModule
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

@@ -13,7 +13,9 @@ import { Store } from '@ngrx/store';
 })
 export class TaskListComponent implements OnInit, OnDestroy {
 
-  taskList: Task[] = [];
+  @Input() taskList: Task[];
+  @Input() calendar: boolean = false;
+  @Input() emptyCalendar: boolean = false;
   userId;
   subscription: Subscription;
   noTasks: boolean;
@@ -22,29 +24,32 @@ export class TaskListComponent implements OnInit, OnDestroy {
   constructor(private store: Store<State>,private taskService: TaskService, private cookieService: CookieService) { }
 
   ngOnInit(): void {
-    this.userIdSubscription = this.store.select(getUserId).subscribe(
-      val => {
-        if (val != null) {
-          this.userId = val;
-          this.subscription = this.taskService.getTasksForUser(this.userId, 0).subscribe(
-            val => {
-              if (val.length == 0) {
-                this.noTasks = true;
-              } else {
-                this.noTasks = false;
-                this.taskList = val.sort(
-                  (a,b) => {
-                    let a_date = new Date(a.targetDate.seconds * 1000);
-                    let b_date = new Date(b.targetDate.seconds * 1000);
-                    return a_date.valueOf() - b_date.valueOf();
-                  }
-                );
+    if (!this.calendar) {
+      this.userIdSubscription = this.store.select(getUserId).subscribe(
+        val => {
+          if (val != null) {
+            this.userId = val;
+            this.subscription = this.taskService.getUncompletedTasksForUser(this.userId, 0).subscribe(
+              val => {
+                if (val.length == 0) {
+                  this.taskList = [];
+                  this.noTasks = true;
+                } else {
+                  this.noTasks = false;
+                  this.taskList = val.sort(
+                    (a,b) => {
+                      let a_date = new Date(a.targetDate.seconds * 1000);
+                      let b_date = new Date(b.targetDate.seconds * 1000);
+                      return a_date.valueOf() - b_date.valueOf();
+                    }
+                  );
+                }
               }
-            }
-          );
+            );
+          }
         }
-      }
-    )
+      )
+    }
     // CODE TO ADD A NEW TASK
     // var newTask = {
     //   creatorUsername: 'jqaz123',
@@ -67,7 +72,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userIdSubscription.unsubscribe();
-    this.subscription.unsubscribe();
+    if (this.userIdSubscription)
+      this.userIdSubscription.unsubscribe();
+    if (this.subscription)
+      this.subscription.unsubscribe();
   }
 }

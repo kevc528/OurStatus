@@ -17,6 +17,29 @@ export class TaskService {
       .where('level', '==', level)).valueChanges();
   }
 
+  getTasksForUserDates(creatorId: string, level: number, startDate: Date, endDate: Date): Observable<Task[]> {
+    let noncomplete = this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', '==', creatorId)
+      .where('level', '==', level).where('dateCompleted', '==', null)
+      .where('targetDate', '>=', startDate).where('targetDate', '<', endDate)).valueChanges();
+    let complete = this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', '==', creatorId)
+      .where('level', '==', level).where('dateCompleted', '>', new Date(0))
+      .where('dateCompleted', '>=', startDate).where('dateCompleted', '<', endDate)).valueChanges();
+    return combineLatest(noncomplete, complete).pipe(map(([s1, s2]) => [...s1, ...s2]));
+  }
+
+  getUncompletedTasksForUser(creatorId: string, level: number): Observable<Task[]> {
+    return this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', '==', creatorId)
+      .where('level', '==', level).where('dateCompleted', '==', null)
+      .where('targetDate', '>=', new Date())).valueChanges();
+  }
+
+  getRemindersForUser(creatorId: string, level: number): Observable<Task[]> {
+    return this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', '==', creatorId)
+      .where('level', '==', level).where('dateCompleted', '==', null).where('remind', '==', true)
+      .where('targetDate', '>=', new Date())
+      .where('targetDate', '<=', new Date((new Date()).getTime() + 1000*60*60*24))).valueChanges();
+  }
+
   /**
    * getFeedTasks will get the completed tasks of the user id array
    * @param userIds the list of friends
@@ -65,6 +88,7 @@ export class TaskService {
   }
 
   unresolveTask(taskId: string) {
+    console.log('here');
     this.editTask(taskId, {'dateCompleted': null})
   }
 
