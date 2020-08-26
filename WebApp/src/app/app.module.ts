@@ -49,6 +49,7 @@ import { FriendRecommendationsComponent } from './social/friends/friend-recommen
 import { TaskCalendarComponent } from './tasks/task-calendar/task-calendar.component';
 import { CalendarPageComponent } from './mainapp/calendar-page/calendar-page.component';
 import { CalendarTaskModalComponent } from './tasks/calendar-task-modal/calendar-task-modal.component';
+import { TaskRemindComponent } from './tasks/task-remind/task-remind.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -87,6 +88,7 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     TaskCalendarComponent,
     CalendarPageComponent,
     CalendarTaskModalComponent,
+    TaskRemindComponent,
   ],
   imports: [
     BrowserModule,
