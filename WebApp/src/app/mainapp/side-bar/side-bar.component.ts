@@ -29,7 +29,7 @@ export class SideBarComponent implements OnInit, OnDestroy {
           if (!cookie) {
             this.cookieService.deleteAll('/');
             this.store.dispatch(UserActions.logoutUser());
-            this.router.navigate(['/login']);
+            this.router.navigateByUrl('/login');
           } else {
             let sub = this.accountService.getUserIdFromCookie(cookie).subscribe(
               val => {
@@ -37,7 +37,7 @@ export class SideBarComponent implements OnInit, OnDestroy {
                 if (!val) {
                   this.cookieService.deleteAll('/');
                   this.store.dispatch(UserActions.logoutUser());
-                  this.router.navigate(['/login']);
+                  this.router.navigateByUrl('/login');
                   this.accountService.deleteCookie(cookie);
                 } else {
                   let id = val.userId;
@@ -45,7 +45,7 @@ export class SideBarComponent implements OnInit, OnDestroy {
                   if (expiration < new Date()) {
                     this.cookieService.deleteAll('/');
                     this.store.dispatch(UserActions.logoutUser());
-                    this.router.navigate(['/login']);
+                    this.router.navigateByUrl('/login');
                     this.accountService.deleteCookie(cookie);
                   } else {
                     let userSub = this.accountService.getAccountFromId(id).subscribe(
@@ -88,7 +88,7 @@ export class SideBarComponent implements OnInit, OnDestroy {
     this.accountService.deleteCookie(this.cookieService.get('sessionId'));
     this.cookieService.deleteAll('/');
     this.store.dispatch(UserActions.logoutUser());
-    this.router.navigate(['/login']);
+    this.router.navigateByUrl('/login');
   }
 
 }
