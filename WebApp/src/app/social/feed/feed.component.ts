@@ -22,7 +22,6 @@ export class FeedComponent implements OnInit, OnDestroy {
   feedTasks: Task[] = [];
   personalTasks: Task[] = [];
   showComment = false;
-  mappingSubscription;
   friendFeed = true;
   friendIdMap = {};
   commentTaskId = '';
@@ -56,8 +55,9 @@ export class FeedComponent implements OnInit, OnDestroy {
                         userList.push(task.creatorId);
                       }
                     )
-                    this.mappingSubscription = this.accountService.getAccountsByIds(userList).subscribe(
+                    let mappingSubscription = this.accountService.getAccountsByIds(userList).subscribe(
                       (val) => {
+                        mappingSubscription.unsubscribe();
                         val.forEach(account => {
                           this.friendIdMap[account.id] = {
                             'creatorName': account.firstName + ' ' + account.lastName,
@@ -119,9 +119,6 @@ export class FeedComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.accountSubscription) {
       this.accountSubscription.unsubscribe();
-    }
-    if (this.mappingSubscription) {
-      this.mappingSubscription.unsubscribe();
     }
     if (this.userIdSubscription) {
       this.userIdSubscription.unsubscribe();

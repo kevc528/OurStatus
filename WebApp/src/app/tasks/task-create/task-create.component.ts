@@ -77,6 +77,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   onSubmit(form: NgForm) {
     if (form.valid) {
       this.task.targetDate = new Date(this.dateString + ' ' + this.timeString);
+      this.task.dateCreated = new Date();
       this.taskService.addTask(this.task).then(
         val => {this.clearForm();},
         err => {console.log(err)}
