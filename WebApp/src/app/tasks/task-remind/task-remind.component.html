@@ -1,8 +1,11 @@
-<div ngbDropdown class="d-inline-block remind">
-  <img src="assets/images/notification.png" ngbDropdownToggle>
-  <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-    <div ngbDropdownItem>Action - 1</div>
-    <div ngbDropdownItem>Another Action</div>
-    <div ngbDropdownItem>Something else is here</div>
+<div ngbDropdown class="remind">
+  <img [src]="(reminders | async)?.length > 0 ? 'assets/images/notification-marked.png' : 'assets/images/notification.png'" ngbDropdownToggle>
+  <div ngbDropdownMenu aria-labelledby="dropdownBasic1" class="big-dropdown">
+    <h3 *ngIf="(reminders | async)?.length > 0" ngbDropdownItem style="text-align: center;">Upcoming Tasks</h3>
+    <h3 *ngIf="(reminders | async)?.length == 0" ngbDropdownItem style="text-align: center;">No upcoming Tasks</h3>
+    <div ngbDropdownItem *ngFor="let reminder of reminders | async" [routerLink]="['/app/tasks']">
+      <b>{{reminder.title}}</b>
+      <p style="font-style:italic; font-size:small; margin-top: 15px">Due {{ reminder.targetDate.toDate() | date}}, {{ reminder.targetDate.toDate() | date: 'shortTime'}}</p>
+    </div>
   </div>
 </div>

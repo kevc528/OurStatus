@@ -130,7 +130,10 @@ export class AccountService {
   }
 
   addCookie(userId: string): Promise<string> {
-    return this.firestore.collection('cookie').add({ userId })
+    return this.firestore.collection('cookie').add({ 
+      'userId': userId,
+      'expiration': new Date((new Date()).getTime() + 1000*60*60*24)
+     })
       .then((doc) => {
         return doc.id;
       });

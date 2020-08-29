@@ -18,4 +18,8 @@ export class CommentService {
     return this.firestore.collection('comments').add(comment);
   }
 
+  deleteComment(commentId: string): Promise<any> {
+    return this.firestore.collection('comments').doc(commentId).delete();
+  }
+
 }

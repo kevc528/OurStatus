@@ -4,13 +4,15 @@ import { Observable, merge, forkJoin, combineLatest } from 'rxjs';
 import { Task } from '../shared/model/task';
 import { AccountService } from '../users/account.service';
 import { map } from 'rxjs/operators';
+import { CommentService } from '../social/comment.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  constructor(private firestore: AngularFirestore, private accountService: AccountService) {}
+  constructor(private firestore: AngularFirestore, private accountService: AccountService,
+      private commentService: CommentService) {}
 
   getTasksForUser(creatorId: string, level: number): Observable<Task[]> {
     return this.firestore.collection<Task>('tasks', ref => ref.where('creatorId', '==', creatorId)

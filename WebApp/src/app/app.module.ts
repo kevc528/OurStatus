@@ -101,7 +101,6 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NgbModule,
     StoreModule.forRoot({}, {}),
     StoreModule.forFeature('user', userReducer),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     LazyLoadImageModule,
     FullCalendarModule
   ],

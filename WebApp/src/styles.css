@@ -23,3 +23,11 @@ app-side-bar {
   height: 300px;
   width: 300px;
 }
+
+body {
+  background-color: #F2F7FB;
+}
+
+h2 {
+  color: #486379;
+}
