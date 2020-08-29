@@ -49,7 +49,7 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
           title: null,
           dateCreated: new Date(),
           dateCompleted: null,
-          targetDate: new Date(),
+          targetDate: new Date(new Date().getTime() + 1000 * 60 * 60),
           remind: false,
           level: 0,
           likes: 0,
@@ -66,11 +66,12 @@ export class TaskCreateComponent implements OnInit, OnDestroy {
   }
 
   clearForm() {
+    let newDate = new Date(new Date().getTime() + 1000 * 60 * 60);
     this.reset = true;
     this.task.title = ''
     this.task.remind = false;
-    this.dateString = this.formatDate(new Date());
-    this.timeString = ((new Date()).getHours() > 9 ? (new Date()).getHours() : '0' + (new Date()).getHours()) + ':' + ((new Date()).getMinutes() > 9 ? (new Date()).getMinutes() : '0' + (new Date()).getMinutes());
+    this.dateString = this.formatDate(newDate);
+    this.timeString = (newDate.getHours() > 9 ? newDate.getHours() : '0' + newDate.getHours()) + ':' + (newDate.getMinutes() > 9 ? newDate.getMinutes() : '0' + newDate.getMinutes());
   }
 
   onSubmit(form: NgForm) {
