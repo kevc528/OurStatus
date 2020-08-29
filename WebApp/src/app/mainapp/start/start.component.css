@@ -1,0 +1,11 @@
+p {
+  font-size: x-large;
+}
+
+img {  
+  margin: auto;
+  display: block;
+  width: 30%;
+  height: 30%;
+  margin-bottom: 20px;
+}

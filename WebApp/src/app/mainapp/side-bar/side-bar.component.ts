@@ -37,27 +37,36 @@ export class SideBarComponent implements OnInit, OnDestroy {
                   this.cookieService.deleteAll('/');
                   this.store.dispatch(UserActions.logoutUser());
                   this.router.navigate(['/login']);
+                  this.accountService.deleteCookie(cookie);
                 } else {
                   let id = val.userId;
-                  let userSub = this.accountService.getAccountFromId(id).subscribe(
-                    (account) => {
-                      userSub.unsubscribe();
-                      let user: UserState = {
-                        username: account.username,
-                        userId: account.id,
-                        picture: null,
-                        firstName: account.firstName,
-                        lastName: account.lastName
-                      }
-                      this.store.dispatch(UserActions.signIn({user}));
-                      let pic = this.accountService.getPicDownload(account.picture).subscribe(
-                        (val) => {
-                          pic.unsubscribe();
-                          this.store.dispatch(UserActions.changePicture({picture: val}));
+                  let expiration = new Date(val.expiration.seconds * 1000);
+                  if (expiration < new Date()) {
+                    this.cookieService.deleteAll('/');
+                    this.store.dispatch(UserActions.logoutUser());
+                    this.router.navigate(['/login']);
+                    this.accountService.deleteCookie(cookie);
+                  } else {
+                    let userSub = this.accountService.getAccountFromId(id).subscribe(
+                      (account) => {
+                        userSub.unsubscribe();
+                        let user: UserState = {
+                          username: account.username,
+                          userId: account.id,
+                          picture: null,
+                          firstName: account.firstName,
+                          lastName: account.lastName
                         }
-                      );
-                    }
-                  )
+                        this.store.dispatch(UserActions.signIn({user}));
+                        let pic = this.accountService.getPicDownload(account.picture).subscribe(
+                          (val) => {
+                            pic.unsubscribe();
+                            this.store.dispatch(UserActions.changePicture({picture: val}));
+                          }
+                        );
+                      }
+                    )
+                  }
                 }
               }
             )
